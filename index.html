@@ -345,6 +345,170 @@
     color: var(--gold);
   }
 
+  /* ---------- RSVP form ---------- */
+  .rsvp-form {
+    background: var(--cream-deep);
+    border: 1px solid var(--line);
+    padding: 2.75rem 2.25rem;
+    position: relative;
+  }
+
+  .rsvp-form::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px solid var(--gold-light);
+    pointer-events: none;
+  }
+
+  .rsvp-fieldset {
+    margin-bottom: 2.25rem;
+  }
+
+  .rsvp-legend {
+    font-family: 'Cormorant', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 1.1rem;
+  }
+
+  .rsvp-field { margin-bottom: 1.25rem; }
+
+  .rsvp-field label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .rsvp-form input[type="text"],
+  .rsvp-form input[type="email"],
+  .rsvp-form input[type="tel"],
+  .rsvp-form input[type="number"],
+  .rsvp-form textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 0.55rem 0.1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .rsvp-form input:focus,
+  .rsvp-form textarea:focus {
+    border-bottom-color: var(--gold);
+  }
+
+  .rsvp-form input::placeholder,
+  .rsvp-form textarea::placeholder {
+    color: #BDB6A6;
+    opacity: 1;
+    font-weight: 300;
+  }
+
+  .rsvp-form textarea {
+    resize: vertical;
+    min-height: 60px;
+    line-height: 1.6;
+  }
+
+  .rsvp-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 520px) {
+    .rsvp-row2 { grid-template-columns: 1fr; }
+  }
+
+  .rsvp-choice-group {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .rsvp-choice {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .rsvp-choice input { accent-color: var(--gold); width: 15px; height: 15px; }
+
+  .rsvp-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .rsvp-checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .rsvp-checkbox-item input {
+    accent-color: var(--gold);
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  #guestDetails {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+  }
+
+  #guestDetails.open {
+    max-height: 700px;
+    opacity: 1;
+  }
+
+  .rsvp-submit-row { text-align: center; margin-top: 0.5rem; }
+
+  .rsvp-form button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: none;
+    padding: 0.9rem 2.75rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .rsvp-form button:hover { background: var(--gold); }
+  .rsvp-form button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .rsvp-status {
+    text-align: center;
+    margin-top: 1.4rem;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .rsvp-status.show { display: block; }
+  .rsvp-status.success { color: var(--gold); }
+  .rsvp-status.error { color: #A8524A; }
+
   /* ---------- Nav ---------- */
   nav {
     position: sticky;
@@ -371,72 +535,140 @@
   }
 
   nav a:hover { color: var(--gold); }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.25rem;
+    padding-left: clamp(1rem, 4vw, 2.5rem);
+    border-left: 1px solid var(--line);
+  }
+
+  .lang-toggle button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink);
+    opacity: 0.5;
+    padding: 0.1rem 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .lang-toggle button.active {
+    opacity: 1;
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .lang-toggle .lang-sep {
+    color: var(--line);
+    font-size: 0.72rem;
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#home">Home</a>
-  <a href="#details">Details</a>
-  <a href="#location">Location</a>
-  <a href="#stay">Stay & Dine</a>
+  <a href="#home" data-i18n="nav_home">Home</a>
+  <a href="#details" data-i18n="nav_details">Details</a>
+  <a href="#location" data-i18n="nav_location">Location</a>
+  <a href="#stay" data-i18n="nav_stay">Stay & Dine</a>
+  <a href="#rsvp" data-i18n="nav_rsvp">RSVP</a>
+  <span class="lang-toggle">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <span class="lang-sep">/</span>
+    <button type="button" class="lang-btn" data-lang="pt">PT</button>
+  </span>
 </nav>
 
 <header class="hero" id="home">
-  <p class="eyebrow">Together with their families</p>
+  <p class="eyebrow" data-i18n="hero_eyebrow">Together with their families</p>
   <h1>
     Rudolf
     <span class="ampersand">&amp;</span>
     Natalia
   </h1>
-  <p class="date-line">25 <span>·</span> July <span>·</span> 2027 — Solar de Pancas, Alenquer, Portugal</p>
+  <p class="date-line">25 <span>·</span> <span data-i18n="hero_month">July</span> <span>·</span> 2027 — Solar de Pancas, Alenquer, Portugal</p>
 
   <div class="countdown" id="countdown">
-    <div class="unit"><div class="num" id="days">00</div><div class="label">Days</div></div>
+    <div class="unit"><div class="num" id="days">00</div><div class="label" data-i18n="cd_days">Days</div></div>
     <div class="sep">:</div>
-    <div class="unit"><div class="num" id="hours">00</div><div class="label">Hours</div></div>
+    <div class="unit"><div class="num" id="hours">00</div><div class="label" data-i18n="cd_hours">Hours</div></div>
     <div class="sep">:</div>
-    <div class="unit"><div class="num" id="minutes">00</div><div class="label">Minutes</div></div>
+    <div class="unit"><div class="num" id="minutes">00</div><div class="label" data-i18n="cd_minutes">Minutes</div></div>
     <div class="sep">:</div>
-    <div class="unit"><div class="num" id="seconds">00</div><div class="label">Seconds</div></div>
+    <div class="unit"><div class="num" id="seconds">00</div><div class="label" data-i18n="cd_seconds">Seconds</div></div>
   </div>
 
-  <p class="scroll-hint">Scroll for details</p>
+  <p class="scroll-hint" data-i18n="hero_scroll">Scroll for details</p>
 </header>
 
 <section id="details">
-  <div class="section-title"><h2>The celebration</h2></div>
+  <div class="section-title"><h2 data-i18n="details_title">The celebration</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
   <ul class="schedule">
     <li>
-      <div class="time">15:00</div>
+      <div class="time">15:30</div>
       <div class="event">
-        <h4>Ceremony</h4>
-        <p>Church ceremony — venue and exact address to be confirmed.</p>
+        <h4 data-i18n="sched1_title">Arrival</h4>
+        <p>Igreja de Santa Quitéria de Meca</p>
       </div>
     </li>
     <li>
-      <div class="time">17:00</div>
+      <div class="time">16:00</div>
       <div class="event">
-        <h4>Cocktail hour</h4>
-        <p>Welcome drinks and canapés at Solar de Pancas.</p>
+        <h4 data-i18n="sched2_title">Ceremony</h4>
+        <p>Igreja de Santa Quitéria de Meca</p>
+      </div>
+    </li>
+    <li>
+      <div class="time">17:30</div>
+      <div class="event">
+        <h4 data-i18n="sched3_title">Reception</h4>
+        <p>Solar de Pancas</p>
       </div>
     </li>
     <li>
       <div class="time">19:00</div>
       <div class="event">
-        <h4>Dinner & celebration</h4>
-        <p>Reception, dinner, speeches and dancing into the night.</p>
+        <h4 data-i18n="sched4_title">Cocktail Hour</h4>
+        <p>Solar de Pancas</p>
+      </div>
+    </li>
+    <li>
+      <div class="time">20:30</div>
+      <div class="event">
+        <h4 data-i18n="sched5_title">Dinner</h4>
+        <p>Solar de Pancas</p>
+      </div>
+    </li>
+    <li>
+      <div class="time">22:30</div>
+      <div class="event">
+        <h4 data-i18n="sched6_title">Party</h4>
+        <p>Solar de Pancas</p>
+      </div>
+    </li>
+    <li>
+      <div class="time">01:30</div>
+      <div class="event">
+        <h4 data-i18n="sched7_title">Transfer to Lisbon</h4>
+        <p data-i18n="sched7_desc">Departure from Solar de Pancas</p>
       </div>
     </li>
   </ul>
 
-  <p class="notice">Dress code, full schedule and additional details will be added here as the date approaches.</p>
+  <p class="notice" data-i18n="details_notice">Dress code, full schedule and additional details will be added here as the date approaches.</p>
 </section>
 
 <section id="location">
-  <div class="section-title"><h2>Location</h2></div>
+  <div class="section-title"><h2 data-i18n="location_title">Location</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
   <div class="map-wrap">
@@ -445,7 +677,7 @@
       allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
     </iframe>
   </div>
-  <p class="map-caption">Ceremony — Igreja de Santa Quitéria de Meca</p>
+  <p class="map-caption" data-i18n="loc_caption_ceremony">Ceremony — Igreja de Santa Quitéria de Meca</p>
 
   <div class="map-wrap">
     <iframe
@@ -453,63 +685,294 @@
       allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
     </iframe>
   </div>
-  <p class="map-caption">Reception — Solar de Pancas (about 3 km from the church)</p>
+  <p class="map-caption" data-i18n="loc_caption_reception">Reception — Solar de Pancas (about 3 km from the church)</p>
 
   <div class="card-grid" style="margin-bottom: 2.5rem;">
     <div class="card">
-      <p class="meta">Ceremony</p>
+      <p class="meta" data-i18n="loc_card1_meta">Ceremony</p>
       <h3>Igreja de Santa Quitéria de Meca</h3>
-      <p>The historic basílica where the ceremony will take place, set in the countryside near Alenquer.</p>
-      <a class="link" href="https://maps.google.com/?cid=1530734410214013978" target="_blank" rel="noopener">View on map</a>
+      <p data-i18n="loc_card1_desc">The historic basílica where the ceremony will take place, set in the countryside near Alenquer.</p>
+      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=1530734410214013978" target="_blank" rel="noopener">View on map</a>
     </div>
     <div class="card">
-      <p class="meta">Reception</p>
+      <p class="meta" data-i18n="loc_card2_meta">Reception</p>
       <h3>Solar de Pancas</h3>
-      <p>A historic manor house and gardens, hosting the cocktail hour and reception.</p>
-      <a class="link" href="https://maps.google.com/?cid=5606870038303177558" target="_blank" rel="noopener">View on map</a>
+      <p data-i18n="loc_card2_desc">A historic manor house and gardens, hosting the cocktail hour and reception.</p>
+      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=5606870038303177558" target="_blank" rel="noopener">View on map</a>
     </div>
   </div>
 </section>
 
 <section id="stay">
-  <div class="section-title"><h2>Where to stay & dine</h2></div>
+  <div class="section-title"><h2 data-i18n="stay_title">Where to stay & dine</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
   <div class="card-grid">
     <div class="card">
-      <p class="meta">Accommodation</p>
-      <h3>Hotel suggestion</h3>
-      <p>A short drive from the venue, with comfortable rooms for guests staying overnight.</p>
-      <a class="link" href="#">View on map</a>
+      <p class="meta" data-i18n="stay_card1_meta">Accommodation</p>
+      <h3 data-i18n="stay_card1_title">Hotel suggestion</h3>
+      <p data-i18n="stay_card1_desc">A short drive from the venue, with comfortable rooms for guests staying overnight.</p>
+      <a class="link" data-i18n="loc_link" href="#">View on map</a>
     </div>
     <div class="card">
-      <p class="meta">Accommodation</p>
-      <h3>Local guesthouse</h3>
-      <p>A charming, more intimate option in the heart of Alenquer.</p>
-      <a class="link" href="#">View on map</a>
+      <p class="meta" data-i18n="stay_card2_meta">Accommodation</p>
+      <h3 data-i18n="stay_card2_title">Local guesthouse</h3>
+      <p data-i18n="stay_card2_desc">A charming, more intimate option in the heart of Alenquer.</p>
+      <a class="link" data-i18n="loc_link" href="#">View on map</a>
     </div>
     <div class="card">
-      <p class="meta">Dining</p>
-      <h3>Restaurant recommendation</h3>
-      <p>Traditional Portuguese cuisine, ideal for a relaxed meal before or after the big day.</p>
-      <a class="link" href="#">View on map</a>
+      <p class="meta" data-i18n="stay_card3_meta">Dining</p>
+      <h3 data-i18n="stay_card3_title">Restaurant recommendation</h3>
+      <p data-i18n="stay_card3_desc">Traditional Portuguese cuisine, ideal for a relaxed meal before or after the big day.</p>
+      <a class="link" data-i18n="loc_link" href="#">View on map</a>
     </div>
     <div class="card">
-      <p class="meta">Dining</p>
-      <h3>Restaurant recommendation</h3>
-      <p>A cozy spot for lunch, perfect for guests exploring the region.</p>
-      <a class="link" href="#">View on map</a>
+      <p class="meta" data-i18n="stay_card4_meta">Dining</p>
+      <h3 data-i18n="stay_card4_title">Restaurant recommendation</h3>
+      <p data-i18n="stay_card4_desc">A cozy spot for lunch, perfect for guests exploring the region.</p>
+      <a class="link" data-i18n="loc_link" href="#">View on map</a>
     </div>
   </div>
 
-  <p class="notice">Specific hotel and restaurant recommendations with links and addresses will be added closer to the wedding.</p>
+  <p class="notice" data-i18n="stay_notice">Specific hotel and restaurant recommendations with links and addresses will be added closer to the wedding.</p>
+</section>
+
+<section id="rsvp">
+  <div class="section-title"><h2 data-i18n="rsvp_title">RSVP</h2></div>
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+  <p data-i18n="rsvp_intro" style="text-align:center; margin-top:-1.5rem; margin-bottom:2.5rem; font-size:0.95rem; opacity:0.75;">
+    We can't wait to celebrate with you — please let us know by filling in the form below.
+  </p>
+
+  <form id="rsvpForm" class="rsvp-form">
+    <div class="rsvp-fieldset">
+      <p class="rsvp-legend" data-i18n="rsvp_legend_details">Your details</p>
+      <div class="rsvp-field">
+        <label for="full_name" data-i18n="rsvp_label_name">Full name</label>
+        <input type="text" id="full_name" name="full_name" data-i18n-placeholder="rsvp_ph_name" placeholder="e.g. Maria Santos" required>
+      </div>
+      <div class="rsvp-row2">
+        <div class="rsvp-field">
+          <label for="email" data-i18n="rsvp_label_email">Email</label>
+          <input type="email" id="email" name="email" data-i18n-placeholder="rsvp_ph_email" placeholder="your@email.com" required>
+        </div>
+        <div class="rsvp-field">
+          <label for="phone_number" data-i18n="rsvp_label_phone">Phone number</label>
+          <input type="tel" id="phone_number" name="phone_number" data-i18n-placeholder="rsvp_ph_phone" placeholder="+351 912 345 678">
+        </div>
+      </div>
+    </div>
+
+    <div class="rsvp-fieldset">
+      <p class="rsvp-legend" data-i18n="rsvp_legend_attending">Will you be joining us?</p>
+      <div class="rsvp-choice-group">
+        <label class="rsvp-choice">
+          <input type="radio" name="attending" value="yes" required>
+          <span data-i18n="rsvp_choice_yes">Joyfully accept</span>
+        </label>
+        <label class="rsvp-choice">
+          <input type="radio" name="attending" value="no" required>
+          <span data-i18n="rsvp_choice_no">Regretfully decline</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="guestDetails">
+      <div class="rsvp-fieldset">
+        <p class="rsvp-legend" data-i18n="rsvp_legend_party">Your party</p>
+        <div class="rsvp-field">
+          <label for="number_of_guests" data-i18n="rsvp_label_guests">Number of guests (including you)</label>
+          <input type="number" id="number_of_guests" name="number_of_guests" min="1" value="1">
+        </div>
+        <div class="rsvp-field">
+          <label for="guest_names" data-i18n="rsvp_label_guestnames">Guest name(s)</label>
+          <textarea id="guest_names" name="guest_names" data-i18n-placeholder="rsvp_ph_guestnames" placeholder="One name per line"></textarea>
+        </div>
+        <div class="rsvp-field">
+          <label for="dietary_restrictions" data-i18n="rsvp_label_dietary">Dietary restrictions or allergies</label>
+          <textarea id="dietary_restrictions" name="dietary_restrictions" data-i18n-placeholder="rsvp_ph_dietary" placeholder="e.g. Vegetarian, gluten-free, nut allergy"></textarea>
+        </div>
+      </div>
+
+      <div class="rsvp-fieldset">
+        <p class="rsvp-legend" data-i18n="rsvp_legend_travel">Travel & stay</p>
+        <div class="rsvp-checkbox-list">
+          <label class="rsvp-checkbox-item">
+            <input type="checkbox" name="travel_from_lisbon">
+            <span data-i18n="rsvp_travel_from">I would like transportation from Lisbon</span>
+          </label>
+          <label class="rsvp-checkbox-item">
+            <input type="checkbox" name="travel_to_lisbon">
+            <span data-i18n="rsvp_travel_to">I would like transportation back to Lisbon</span>
+          </label>
+          <label class="rsvp-checkbox-item">
+            <input type="checkbox" name="help_accommodation">
+            <span data-i18n="rsvp_travel_stay">I would like help finding accommodation</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="rsvp-fieldset">
+      <p class="rsvp-legend" data-i18n="rsvp_legend_note">A note for us</p>
+      <div class="rsvp-field">
+        <textarea id="message" name="message" data-i18n-placeholder="rsvp_ph_message" placeholder="Any well wishes, questions, or song requests"></textarea>
+      </div>
+    </div>
+
+    <div class="rsvp-submit-row">
+      <button type="submit" id="submitBtn" data-i18n="rsvp_btn_send">Send RSVP</button>
+    </div>
+
+    <p class="rsvp-status" id="statusMsg"></p>
+  </form>
+
+  <p class="notice" data-i18n="rsvp_gift_note">A gifts page (registry or honeymoon fund) is coming soon.</p>
 </section>
 
 <footer>
-  <p>Rudolf &amp; Natalia — 25 July 2027</p>
+  <p data-i18n="footer_text">Rudolf &amp; Natalia — 25 July 2027</p>
 </footer>
 
 <script>
+  const translations = {
+    en: {
+      nav_home: "Home", nav_details: "Details", nav_location: "Location", nav_stay: "Stay & Dine", nav_rsvp: "RSVP",
+      hero_eyebrow: "Together with their families", hero_month: "July", hero_scroll: "Scroll for details",
+      cd_days: "Days", cd_hours: "Hours", cd_minutes: "Minutes", cd_seconds: "Seconds", cd_married: "We are married!",
+      details_title: "The celebration",
+      sched1_title: "Arrival", sched2_title: "Ceremony", sched3_title: "Reception", sched4_title: "Cocktail Hour",
+      sched5_title: "Dinner", sched6_title: "Party", sched7_title: "Transfer to Lisbon",
+      sched7_desc: "Departure from Solar de Pancas",
+      details_notice: "Dress code, full schedule and additional details will be added here as the date approaches.",
+      location_title: "Location",
+      loc_caption_ceremony: "Ceremony — Igreja de Santa Quitéria de Meca",
+      loc_caption_reception: "Reception — Solar de Pancas (about 3 km from the church)",
+      loc_card1_meta: "Ceremony",
+      loc_card1_desc: "The historic basílica where the ceremony will take place, set in the countryside near Alenquer.",
+      loc_card2_meta: "Reception",
+      loc_card2_desc: "A historic manor house and gardens, hosting the cocktail hour and reception.",
+      loc_link: "View on map",
+      stay_title: "Where to stay & dine",
+      stay_card1_meta: "Accommodation", stay_card1_title: "Hotel suggestion",
+      stay_card1_desc: "A short drive from the venue, with comfortable rooms for guests staying overnight.",
+      stay_card2_meta: "Accommodation", stay_card2_title: "Local guesthouse",
+      stay_card2_desc: "A charming, more intimate option in the heart of Alenquer.",
+      stay_card3_meta: "Dining", stay_card3_title: "Restaurant recommendation",
+      stay_card3_desc: "Traditional Portuguese cuisine, ideal for a relaxed meal before or after the big day.",
+      stay_card4_meta: "Dining", stay_card4_title: "Restaurant recommendation",
+      stay_card4_desc: "A cozy spot for lunch, perfect for guests exploring the region.",
+      stay_notice: "Specific hotel and restaurant recommendations with links and addresses will be added closer to the wedding.",
+      rsvp_title: "RSVP",
+      rsvp_intro: "We can't wait to celebrate with you — please let us know by filling in the form below.",
+      rsvp_legend_details: "Your details",
+      rsvp_label_name: "Full name", rsvp_ph_name: "e.g. Maria Santos",
+      rsvp_label_email: "Email", rsvp_ph_email: "your@email.com",
+      rsvp_label_phone: "Phone number", rsvp_ph_phone: "+351 912 345 678",
+      rsvp_legend_attending: "Will you be joining us?",
+      rsvp_choice_yes: "Joyfully accept", rsvp_choice_no: "Regretfully decline",
+      rsvp_legend_party: "Your party",
+      rsvp_label_guests: "Number of guests (including you)",
+      rsvp_label_guestnames: "Guest name(s)", rsvp_ph_guestnames: "One name per line",
+      rsvp_label_dietary: "Dietary restrictions or allergies",
+      rsvp_ph_dietary: "e.g. Vegetarian, gluten-free, nut allergy",
+      rsvp_legend_travel: "Travel & stay",
+      rsvp_travel_from: "I would like transportation from Lisbon",
+      rsvp_travel_to: "I would like transportation back to Lisbon",
+      rsvp_travel_stay: "I would like help finding accommodation",
+      rsvp_legend_note: "A note for us",
+      rsvp_ph_message: "Any well wishes, questions, or song requests",
+      rsvp_btn_send: "Send RSVP", rsvp_btn_sending: "Sending…",
+      rsvp_status_success: "Thank you — your RSVP has been received!",
+      rsvp_status_error: "Something went wrong — please try again, or reach out to us directly.",
+      rsvp_gift_note: "A gifts page (registry or honeymoon fund) is coming soon.",
+      footer_text: "Rudolf & Natalia — 25 July 2027",
+    },
+    pt: {
+      nav_home: "Início", nav_details: "Detalhes", nav_location: "Localização", nav_stay: "Estadia & Restauração", nav_rsvp: "RSVP",
+      hero_eyebrow: "Juntos com as suas famílias", hero_month: "Julho", hero_scroll: "Deslize para ver mais",
+      cd_days: "Dias", cd_hours: "Horas", cd_minutes: "Minutos", cd_seconds: "Segundos", cd_married: "Já somos casados!",
+      details_title: "A Celebração",
+      sched1_title: "Chegada", sched2_title: "Cerimónia", sched3_title: "Receção", sched4_title: "Hora de Cocktail",
+      sched5_title: "Jantar", sched6_title: "Festa", sched7_title: "Transporte para Lisboa",
+      sched7_desc: "Partida do Solar de Pancas",
+      details_notice: "O código de vestuário, o horário completo e outros detalhes serão adicionados aqui à medida que a data se aproxima.",
+      location_title: "Localização",
+      loc_caption_ceremony: "Cerimónia — Igreja de Santa Quitéria de Meca",
+      loc_caption_reception: "Receção — Solar de Pancas (a cerca de 3 km da igreja)",
+      loc_card1_meta: "Cerimónia",
+      loc_card1_desc: "A histórica basílica onde decorrerá a cerimónia, situada no campo perto de Alenquer.",
+      loc_card2_meta: "Receção",
+      loc_card2_desc: "Um solar histórico com jardins, que acolherá o cocktail e a receção.",
+      loc_link: "Ver no mapa",
+      stay_title: "Onde ficar e comer",
+      stay_card1_meta: "Alojamento", stay_card1_title: "Sugestão de hotel",
+      stay_card1_desc: "A uma curta distância de carro do local, com quartos confortáveis para quem pernoita.",
+      stay_card2_meta: "Alojamento", stay_card2_title: "Casa de hóspedes local",
+      stay_card2_desc: "Uma opção acolhedora e mais íntima no coração de Alenquer.",
+      stay_card3_meta: "Restauração", stay_card3_title: "Recomendação de restaurante",
+      stay_card3_desc: "Cozinha tradicional portuguesa, ideal para uma refeição tranquila antes ou depois do grande dia.",
+      stay_card4_meta: "Restauração", stay_card4_title: "Recomendação de restaurante",
+      stay_card4_desc: "Um espaço acolhedor para almoçar, perfeito para quem for explorar a região.",
+      stay_notice: "Recomendações específicas de hotéis e restaurantes, com links e moradas, serão adicionadas mais perto do casamento.",
+      rsvp_title: "RSVP",
+      rsvp_intro: "Mal podemos esperar para celebrar convosco — por favor avisem-nos preenchendo o formulário abaixo.",
+      rsvp_legend_details: "Os seus dados",
+      rsvp_label_name: "Nome completo", rsvp_ph_name: "ex.: Maria Santos",
+      rsvp_label_email: "Email", rsvp_ph_email: "oseu@email.com",
+      rsvp_label_phone: "Número de telefone", rsvp_ph_phone: "+351 912 345 678",
+      rsvp_legend_attending: "Vai juntar-se a nós?",
+      rsvp_choice_yes: "Aceitamos com alegria", rsvp_choice_no: "Declinamos, com pesar",
+      rsvp_legend_party: "O seu grupo",
+      rsvp_label_guests: "Número de convidados (incluindo você)",
+      rsvp_label_guestnames: "Nome(s) dos convidados", rsvp_ph_guestnames: "Um nome por linha",
+      rsvp_label_dietary: "Restrições alimentares ou alergias",
+      rsvp_ph_dietary: "ex.: Vegetariano, sem glúten, alergia a frutos secos",
+      rsvp_legend_travel: "Viagem e alojamento",
+      rsvp_travel_from: "Gostaria de transporte a partir de Lisboa",
+      rsvp_travel_to: "Gostaria de transporte de regresso a Lisboa",
+      rsvp_travel_stay: "Gostaria de ajuda para encontrar alojamento",
+      rsvp_legend_note: "Uma mensagem para nós",
+      rsvp_ph_message: "Votos, perguntas ou pedidos de música",
+      rsvp_btn_send: "Enviar Confirmação", rsvp_btn_sending: "A enviar…",
+      rsvp_status_success: "Obrigado — a sua confirmação foi recebida!",
+      rsvp_status_error: "Ocorreu um erro — por favor tente novamente ou contacte-nos diretamente.",
+      rsvp_gift_note: "Brevemente: uma página de presentes (lista de casamento ou lua de mel).",
+      footer_text: "Rudolf & Natalia — 25 de Julho de 2027",
+    },
+  };
+
+  let currentLang = 'en';
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+    const dict = translations[lang];
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key] !== undefined) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (dict[key] !== undefined) el.placeholder = dict[key];
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    document.documentElement.lang = lang;
+
+    try { localStorage.setItem('site-lang', lang); } catch (e) {}
+
+    updateCountdown();
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+  });
+
   const weddingDate = new Date('2027-07-25T15:00:00+01:00').getTime();
 
   function updateCountdown() {
@@ -518,7 +981,7 @@
 
     if (distance < 0) {
       document.getElementById('countdown').innerHTML =
-        '<p style="font-family: \'Cormorant Garamond\', serif; font-size: 1.8rem;">We are married!</p>';
+        '<p style="font-family: \'Cormorant Garamond\', serif; font-size: 1.8rem;">' + translations[currentLang].cd_married + '</p>';
       return;
     }
 
@@ -527,14 +990,82 @@
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    document.getElementById('days').textContent = String(days).padStart(2, '0');
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    const daysEl = document.getElementById('days');
+    if (daysEl) {
+      daysEl.textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
   }
 
-  updateCountdown();
+  let savedLang = 'en';
+  try { savedLang = localStorage.getItem('site-lang') || 'en'; } catch (e) {}
+  applyLanguage(savedLang);
   setInterval(updateCountdown, 1000);
+</script>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // ---- fill these in from Supabase: Project Settings > API Keys ----
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
+  // --------------------------------------------------------------------
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById('rsvpForm');
+  const guestDetails = document.getElementById('guestDetails');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+
+  form.querySelectorAll('input[name="attending"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      guestDetails.classList.toggle('open', e.target.value === 'yes');
+    });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const dict = translations[currentLang];
+    statusMsg.classList.remove('show', 'success', 'error');
+    submitBtn.disabled = true;
+    submitBtn.textContent = dict.rsvp_btn_sending;
+
+    const data = new FormData(form);
+    const attending = data.get('attending');
+
+    const payload = {
+      full_name: data.get('full_name'),
+      email: data.get('email'),
+      phone_number: data.get('phone_number') || null,
+      attending,
+      number_of_guests: attending === 'yes' ? parseInt(data.get('number_of_guests') || '1', 10) : 0,
+      guest_names: attending === 'yes' ? (data.get('guest_names') || null) : null,
+      dietary_restrictions: attending === 'yes' ? (data.get('dietary_restrictions') || null) : null,
+      travel_from_lisbon: data.get('travel_from_lisbon') === 'on',
+      travel_to_lisbon: data.get('travel_to_lisbon') === 'on',
+      help_accommodation: data.get('help_accommodation') === 'on',
+      message: data.get('message') || null,
+    };
+
+    const { error } = await supabase.from('rsvps').insert([payload]);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = dict.rsvp_btn_send;
+
+    if (error) {
+      statusMsg.textContent = dict.rsvp_status_error;
+      statusMsg.classList.add('show', 'error');
+      console.error(error);
+    } else {
+      statusMsg.textContent = dict.rsvp_status_success;
+      statusMsg.classList.add('show', 'success');
+      form.reset();
+      guestDetails.classList.remove('open');
+    }
+  });
 </script>
 
 </body>

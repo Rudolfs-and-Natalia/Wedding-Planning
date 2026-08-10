@@ -262,14 +262,41 @@
     border: 1px solid var(--line);
     padding: 10px;
     background: var(--cream-deep);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 
-  .map-wrap iframe {
+  .map-crop {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .map-crop::after {
+    /* Safety net: masks any thin residual sliver of Google's header bar,
+       regardless of whether the exact crop amount below is slightly off. */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: var(--cream-deep);
+    z-index: 2;
+  }
+
+  .map-crop iframe {
+    position: absolute;
+    /* Google's My Maps embed header bar height varies a bit by map — shifting the
+       iframe up by this amount and overflowing the container crops it out of view.
+       If a sliver of the bar still shows, increase both numbers below a bit further;
+       if too much of the map gets cut off, decrease them. */
+    top: -70px;
+    left: 0;
     width: 100%;
-    height: 320px;
+    height: calc(100% + 70px);
     border: 0;
     display: block;
+    /* Subtle warm tint so Google's default map colors sit closer to the site palette.
+       Adjust or remove this line freely — sepia/saturate/hue-rotate/contrast values below. */
+    filter: sepia(22%) saturate(75%) hue-rotate(-6deg) contrast(1.03);
   }
 
   .map-caption {
@@ -278,8 +305,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-top: 0.9rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.1rem;
   }
 
   /* ---------- Schedule list ---------- */
@@ -671,21 +697,15 @@
   <div class="section-title"><h2 data-i18n="location_title">Location</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
+  <p class="map-caption" data-i18n="loc_caption_venues">Alenquer, Portugal — ceremony, reception & the route between them</p>
   <div class="map-wrap">
-    <iframe
-      src="https://www.google.com/maps?q=Igreja+de+Santa+Quit%C3%A9ria+de+Meca,+Alenquer,+Portugal&output=embed"
-      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+    <div class="map-crop">
+      <iframe
+        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
   </div>
-  <p class="map-caption" data-i18n="loc_caption_ceremony">Ceremony — Igreja de Santa Quitéria de Meca</p>
-
-  <div class="map-wrap">
-    <iframe
-      src="https://www.google.com/maps?q=Solar+de+Pancas,+Alenquer,+Portugal&output=embed"
-      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-  <p class="map-caption" data-i18n="loc_caption_reception">Reception — Solar de Pancas (about 3 km from the church)</p>
 
   <div class="card-grid" style="margin-bottom: 2.5rem;">
     <div class="card">
@@ -846,8 +866,7 @@
       sched7_desc: "Departure from Solar de Pancas",
       details_notice: "Dress code, full schedule and additional details will be added here as the date approaches.",
       location_title: "Location",
-      loc_caption_ceremony: "Ceremony — Igreja de Santa Quitéria de Meca",
-      loc_caption_reception: "Reception — Solar de Pancas (about 3 km from the church)",
+      loc_caption_venues: "Alenquer, Portugal — ceremony, reception & the route between them",
       loc_card1_meta: "Ceremony",
       loc_card1_desc: "The historic basílica where the ceremony will take place, set in the countryside near Alenquer.",
       loc_card2_meta: "Reception",
@@ -898,8 +917,7 @@
       sched7_desc: "Partida do Solar de Pancas",
       details_notice: "O código de vestuário, o horário completo e outros detalhes serão adicionados aqui à medida que a data se aproxima.",
       location_title: "Localização",
-      loc_caption_ceremony: "Cerimónia — Igreja de Santa Quitéria de Meca",
-      loc_caption_reception: "Receção — Solar de Pancas (a cerca de 3 km da igreja)",
+      loc_caption_venues: "Alenquer, Portugal — cerimónia, receção e o trajeto entre elas",
       loc_card1_meta: "Cerimónia",
       loc_card1_desc: "A histórica basílica onde decorrerá a cerimónia, situada no campo perto de Alenquer.",
       loc_card2_meta: "Receção",
@@ -1009,8 +1027,8 @@
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
   // ---- fill these in from Supabase: Project Settings > API Keys ----
-  const SUPABASE_URL = 'https://rqloocktutjmzhtgcdqa.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_O0NYdNIXpiFQQkltvRgPnw_MBNd3mnG';
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
   // --------------------------------------------------------------------
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

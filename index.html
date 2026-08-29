@@ -998,6 +998,14 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* Anchors the image to the viewport itself rather than to this box.
+       Paired with the same four background-* declarations on
+       .intro-reveal below, this guarantees the two are pixel-identical
+       regardless of any difference in the two elements' own heights (the
+       gate is exactly viewport-sized; the reveal section is a normal
+       in-flow box that can end up a touch taller/shorter depending on its
+       content) — so there's no visible shift when the gate disappears. */
+    background-attachment: fixed;
     overflow: hidden;
     transition: opacity 0.9s ease 0.35s, visibility 0.9s ease 0.35s;
   }
@@ -1171,6 +1179,11 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* Same background-attachment: fixed as .envelope-gate above — this
+       anchors the image to the viewport rather than to this element's own
+       (variable-height) box, so it lines up pixel-for-pixel with the
+       gate's background and the transition between them is invisible. */
+    background-attachment: fixed;
   }
 
   .intro-reveal-stack {

@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="gate-locked">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rudolf & Natalia — 25 July 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Cormorant:ital,wght@0,500;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cormorant:ital,wght@0,500;1,500;1,600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F3EA;
-    --cream-deep: #EFE8D8;
-    --ink: #1E2B26;
-    --gold: #B6904F;
-    --gold-light: #D8BE8A;
-    --line: rgba(30, 43, 38, 0.18);
+    --moss: #414a30;
+    --moss-deep: #2b3320;
+    --moss-mid: #545f3b;
+    --maroon: #5c1f27;
+    --maroon-light: #7c2f38;
+    --cream: #f5efe0;
+    --cream-deep: #ece2c8;
+    --cream-paper: #faf6ea;
+    --ink: #2a2a1e;
+    --gold: #b6863b;
+    --gold-light: #d9b878;
+    --line: rgba(42, 42, 30, 0.2);
+    --line-on-dark: rgba(245, 239, 224, 0.28);
+
+    --section-bg-1: var(--cream);
+    --section-bg-2: var(--cream-deep);
+    --section-bg-3: var(--cream);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,10 +33,10 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Courier Prime', 'Courier New', monospace;
     background: var(--cream);
     color: var(--ink);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.7;
     letter-spacing: 0.01em;
   }
@@ -33,14 +44,51 @@
   h1, h2, h3 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
   }
 
-  /* ---------- Decorative fan motif ---------- */
+  /* ---------- Decorative fan / sun motif ---------- */
   .fan {
-    width: 64px;
-    height: 32px;
+    width: 46px;
+    height: 46px;
     margin: 0 auto;
+    display: block;
+  }
+
+  .fan svg { width: 100%; height: 100%; display: block; }
+
+  /* ---------- Alenquer section ---------- */
+  .section-alenquer {
+    position: relative;
+    background-color: #f6f1e3;
+    padding: 0 0 3rem;
+  }
+
+  .section-alenquer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  body > section.section-alenquer > .alenquer-image-wrap {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    padding-right: 10.5vw;
+    transform: translateY(-24vw); /* visual-only shift: crosses into the hero above without moving this section's own box */
+  }
+
+  .alenquer-image-wrap img {
+    width: min(760px, 82vw);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 14px 30px rgba(0,0,0,0.28));
   }
 
   /* ---------- Header / Hero ---------- */
@@ -51,26 +99,95 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 3rem 1.5rem;
+    padding: 6rem 1.5rem 3rem;
     position: relative;
-    background:
-      repeating-linear-gradient(135deg, transparent 0 38px, rgba(182,144,79,0.05) 38px 39px),
-      repeating-linear-gradient(45deg, transparent 0 38px, rgba(182,144,79,0.05) 38px 39px),
-      var(--cream);
+    overflow: hidden;
+    color: var(--cream);
+    background-image:
+      radial-gradient(ellipse at 30% 12%, rgba(217,184,120,0.14), transparent 55%),
+      linear-gradient(180deg, rgba(30,36,20,0.16) 0%, rgba(30,36,20,0.24) 55%, rgba(20,25,14,0.42) 100%),
+      url("images/hero-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .hero::before {
+    /* vignette + grain-ish frame */
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 14vw rgba(0,0,0,0.28);
+    pointer-events: none;
+  }
+
+  .hero-fan-top {
+    position: absolute;
+    top: 8%;
+    left: 6%;
+    width: clamp(46px, 7vw, 70px);
+    opacity: 0.55;
+  }
+
+  @media (max-width: 640px) {
+    .hero-fan-top { display: none; }
+  }
+
+  .hero-title-img {
+    display: block;
+    width: min(627px, 76vw);
+    height: auto;
+    margin: 0 auto 1.6rem;
+    filter: drop-shadow(0 4px 22px rgba(0,0,0,0.4));
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-ground-texture {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 32%;
+    background-image: url("images/hero-ground-texture.jpg");
+    background-size: cover;
+    background-position: center bottom;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.35), 0 2px 0 rgba(217,184,120,0.4) inset;
+    border-top: 2px solid rgba(20,25,14,0.55);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .hero .eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.32em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.38em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
+    color: var(--gold-light);
+    margin-bottom: 1.6rem;
+    position: relative;
+    z-index: 1;
   }
 
   .hero h1 {
-    font-size: clamp(2.6rem, 9vw, 5.5rem);
-    line-height: 1.15;
-    margin-bottom: 1.25rem;
+    font-family: 'Cormorant', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(3rem, 10vw, 6.4rem);
+    line-height: 1.08;
+    margin-bottom: 0.4rem;
+    color: var(--cream-paper);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.35);
+    position: relative;
+    z-index: 1;
   }
 
   .hero .ampersand {
@@ -78,78 +195,109 @@
     font-family: 'Cormorant', serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(1.6rem, 5vw, 2.6rem);
-    color: var(--gold);
-    margin: 0.1em 0;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--gold-light);
+    margin: 0.15em 0;
+  }
+
+  .hero .eyebrow-small {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--line-on-dark);
+    margin: 0.6rem 0 1.4rem;
+    position: relative;
+    z-index: 1;
   }
 
   .hero .date-line {
-    font-size: 0.95rem;
-    letter-spacing: 0.18em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 2.5rem;
-    color: var(--ink);
+    margin-bottom: 2.2rem;
+    color: var(--cream);
+    opacity: 0.85;
+    position: relative;
+    z-index: 1;
   }
 
   .hero .date-line span {
-    color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* ---------- Envelope / Save-the-date motif (now an image) ---------- */
+  .envelope {
+    position: relative;
+    width: min(960px, 74vw);
+    margin: -11vw auto 1.2rem;
+    margin-left: calc(50% - min(480px, 37vw) - 9vw); /* shift left of center */
+    z-index: 1;
+  }
+
+  @media (max-width: 480px) {
+    .envelope { margin-left: calc(50% - min(480px, 37vw) - 5vw); margin-top: -7vw; }
+  }
+
+  .envelope-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 26px rgba(0,0,0,0.35));
   }
 
   /* ---------- Countdown ---------- */
   .countdown {
     display: flex;
-    gap: clamp(0.75rem, 3vw, 2.5rem);
-    margin: 1rem 0 2.5rem;
+    gap: clamp(0.5rem, 2.4vw, 1.5rem);
+    margin: 0.8rem 0 2.2rem;
+    position: relative;
+    z-index: 1;
+    transform: translateX(-9vw); /* align center with the envelope image's center */
+  }
+
+  @media (max-width: 480px) {
+    .countdown { transform: translateX(-5vw); }
   }
 
   .countdown .unit {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 64px;
+    min-width: 48px;
   }
 
   .countdown .num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 7vw, 3.6rem);
-    font-weight: 500;
-    color: var(--ink);
-    border: 1px solid var(--gold);
-    border-radius: 2px;
-    padding: 0.4rem 0.6rem;
-    min-width: 70px;
+    font-size: clamp(1.4rem, 4.6vw, 2.5rem);
+    font-weight: 600;
+    color: var(--cream-paper);
+    border: 1px dashed var(--gold-light);
+    padding: 0.3rem 0.4rem;
+    min-width: 48px;
     text-align: center;
-    position: relative;
+    background: rgba(0,0,0,0.15);
   }
-
-  .countdown .num::before,
-  .countdown .num::after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border: 1px solid var(--gold);
-    transform: rotate(45deg);
-  }
-  .countdown .num::before { top: -4px; left: -4px; border-right: none; border-bottom: none; background: var(--cream); }
-  .countdown .num::after { bottom: -4px; right: -4px; border-left: none; border-top: none; background: var(--cream); }
 
   .countdown .label {
-    font-size: 0.7rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.62rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-top: 0.6rem;
-    color: var(--ink);
-    opacity: 0.65;
+    margin-top: 0.55rem;
+    color: var(--gold-light);
+    opacity: 0.85;
   }
 
   .countdown .sep {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 7vw, 3.6rem);
+    font-size: clamp(1.8rem, 6vw, 3.2rem);
     color: var(--gold-light);
     align-self: flex-start;
     margin-top: 0.4rem;
     display: none;
+    opacity: 0.6;
   }
 
   @media (min-width: 540px) {
@@ -157,27 +305,54 @@
   }
 
   .hero .scroll-hint {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.8;
+    color: var(--gold-light);
+    opacity: 0.75;
+    position: relative;
+    z-index: 1;
   }
 
   /* ---------- Sections ---------- */
   section {
-    padding: 5rem 1.5rem;
+    padding: 4rem 1.5rem;
     max-width: 760px;
     margin: 0 auto;
   }
 
+  body > section { max-width: none; padding-left: 0; padding-right: 0; position: relative; }
+  body > section > * {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  body > section:nth-of-type(3n+1) { background: var(--section-bg-1); }
+  body > section:nth-of-type(3n+2) { background: var(--section-bg-2); }
+  body > section:nth-of-type(3n)   { background: var(--section-bg-3); }
+
   .section-title {
     text-align: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
+    position: relative;
+  }
+
+  .section-eyebrow {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
   }
 
   .section-title h2 {
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    font-size: clamp(1.9rem, 5vw, 2.7rem);
+    color: var(--maroon);
   }
 
   .divider {
@@ -186,13 +361,14 @@
     justify-content: center;
     gap: 0.75rem;
     margin: 0 auto 3rem;
-    width: 160px;
+    width: 170px;
   }
 
   .divider .line {
     flex: 1;
     height: 1px;
     background: var(--gold);
+    opacity: 0.6;
   }
 
   .divider .diamond {
@@ -206,63 +382,161 @@
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem 1.75rem;
   }
 
   .card {
-    background: var(--cream-deep);
+    background: var(--cream-paper);
     border: 1px solid var(--line);
-    padding: 2rem 1.75rem;
+    padding: 1.9rem 1.7rem 1.6rem;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 22px rgba(43,51,32,0.14);
   }
+
+  .card-grid .card:nth-child(odd)  { transform: rotate(-0.9deg); }
+  .card-grid .card:nth-child(even) { transform: rotate(0.9deg); }
 
   .card::before {
     content: '';
     position: absolute;
-    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
     border: 1px solid var(--gold-light);
     pointer-events: none;
   }
 
+  .card::after {
+    /* washi-tape accent */
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 58px;
+    height: 20px;
+    background: rgba(182, 134, 59, 0.35);
+    border: 1px solid rgba(182, 134, 59, 0.5);
+  }
+
   .card h3 {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     margin-bottom: 0.6rem;
     color: var(--ink);
   }
 
   .card .meta {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--maroon);
     margin-bottom: 0.9rem;
   }
 
   .card p {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   .card a.link {
     display: inline-block;
+    align-self: flex-start;
     margin-top: 1rem;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--line);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--maroon);
     text-decoration: none;
-    border-bottom: 1px solid var(--gold);
-    padding-bottom: 2px;
     transition: opacity 0.2s ease;
   }
 
   .card a.link:hover { opacity: 0.6; }
 
+  /* ---------- Venue icon ---------- */
+  .card-icon-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.1rem;
+  }
+
+  .card-icon {
+    width: 46px;
+    height: 46px;
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card-icon-img {
+    height: 66px;
+    width: auto;
+    display: block;
+    filter: sepia(35%) saturate(70%) hue-rotate(-8deg) contrast(1.02);
+  }
+
+  /* ---------- Location cards: centered text ---------- */
+  .location-card .meta,
+  .location-card h3 {
+    text-align: center;
+  }
+
+  .location-card h3 {
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- Arrival time row ---------- */
+  .arrival-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--line);
+  }
+
+  .arrival-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: var(--maroon);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .arrival-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--maroon);
+  }
+
+  .arrival-time {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.88rem;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+
   /* ---------- Map embeds ---------- */
   .map-wrap {
     border: 1px solid var(--line);
     padding: 10px;
-    background: var(--cream-deep);
+    background: var(--cream-paper);
     margin-bottom: 2.5rem;
+    box-shadow: 0 12px 26px rgba(43,51,32,0.16);
+    transform: rotate(-0.6deg);
   }
 
   .map-crop {
@@ -272,52 +546,155 @@
   }
 
   .map-crop::after {
-    /* Safety net: masks any thin residual sliver of Google's header bar,
-       regardless of whether the exact crop amount below is slightly off. */
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 8px;
-    background: var(--cream-deep);
+    background: var(--cream-paper);
     z-index: 2;
   }
 
   .map-crop iframe {
     position: absolute;
-    /* Google's My Maps embed header bar height varies a bit by map — shifting the
-       iframe up by this amount and overflowing the container crops it out of view.
-       If a sliver of the bar still shows, increase both numbers below a bit further;
-       if too much of the map gets cut off, decrease them. */
     top: -70px;
     left: 0;
     width: 100%;
     height: calc(100% + 70px);
     border: 0;
     display: block;
-    /* Subtle warm tint so Google's default map colors sit closer to the site palette.
-       Adjust or remove this line freely — sepia/saturate/hue-rotate/contrast values below. */
-    filter: sepia(22%) saturate(75%) hue-rotate(-6deg) contrast(1.03);
+    filter: sepia(28%) saturate(70%) hue-rotate(-8deg) contrast(1.04);
   }
 
   .map-caption {
     text-align: center;
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--maroon);
     margin-bottom: 1.1rem;
   }
 
-  /* ---------- Schedule list ---------- */
+  /* ---------- Plaque (Casa / house number tile) ---------- */
+  .plaque-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.6rem;
+  }
+
+  .plaque {
+    background: var(--maroon);
+    color: var(--cream-paper);
+    width: 108px;
+    padding: 0.9rem 0.6rem 0.8rem;
+    text-align: center;
+    border: 2px solid var(--gold-light);
+    outline: 1px solid var(--maroon);
+    outline-offset: 3px;
+    box-shadow: 0 10px 20px rgba(43,51,32,0.25);
+    transform: rotate(-2deg);
+    position: relative;
+  }
+
+  .plaque-star {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gold-light);
+    margin-bottom: 0.35rem;
+  }
+
+  .plaque-title {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.15em;
+  }
+
+  .plaque-number {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    margin-top: 0.2rem;
+    color: var(--gold-light);
+  }
+
+  /* ---------- About the region ---------- */
+  .about-intro {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2.6rem;
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .about-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .about-gallery-squares {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+
+  .about-photo {
+    border: 10px solid var(--cream-paper);
+    border-bottom-width: 34px;
+    background: var(--cream-paper);
+    overflow: hidden;
+    box-shadow: 0 14px 26px rgba(43,51,32,0.22);
+  }
+
+  .about-gallery > div:nth-child(odd) .about-photo { transform: rotate(-1.3deg); }
+  .about-gallery > div:nth-child(even) .about-photo { transform: rotate(1.1deg); }
+  .about-gallery-squares .about-photo:nth-child(1) { transform: rotate(-1.6deg); }
+  .about-gallery-squares .about-photo:nth-child(2) { transform: rotate(1.6deg); }
+
+  .about-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(30%) saturate(62%) hue-rotate(-8deg) contrast(1.03) brightness(1.02);
+  }
+
+  .about-photo-wide { aspect-ratio: 16 / 9; }
+  .about-photo-square { aspect-ratio: 1 / 1; }
+
+  .about-gallery .map-caption { margin-bottom: 0.7rem; }
+
+  @media (max-width: 560px) {
+    .about-gallery-squares { grid-template-columns: 1fr; }
+  }
+
+  .schedule-date {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    margin-bottom: 2rem;
+  }
+
+  /* ---------- Schedule list (ticket style) ---------- */
   .schedule {
     list-style: none;
+    background: var(--cream-paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 24px rgba(43,51,32,0.14);
+    padding: 0.5rem 1.5rem;
   }
 
   .schedule li {
     display: flex;
     gap: 1.5rem;
     padding: 1.1rem 0;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px dashed var(--line);
     align-items: baseline;
   }
 
@@ -325,22 +702,25 @@
 
   .schedule .time {
     font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
     font-size: 1.3rem;
-    color: var(--gold);
+    color: var(--maroon);
     min-width: 90px;
     flex-shrink: 0;
   }
 
   .schedule .event h4 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    font-size: 1rem;
-    letter-spacing: 0.05em;
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     margin-bottom: 0.2rem;
   }
 
   .schedule .event p {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     opacity: 0.75;
   }
 
@@ -349,41 +729,44 @@
     text-align: center;
     font-size: 0.85rem;
     font-style: italic;
-    font-family: 'Cormorant', serif;
+    font-family: 'Cormorant Garamond', serif;
     color: var(--ink);
-    opacity: 0.6;
-    margin-top: 2rem;
+    opacity: 0.65;
+    margin-top: 2.2rem;
   }
 
   /* ---------- Footer ---------- */
   footer {
     text-align: center;
-    padding: 4rem 1.5rem 3rem;
-    border-top: 1px solid var(--line);
+    padding: 4.5rem 1.5rem 3.5rem;
+    background: var(--moss-deep);
+    color: var(--cream);
   }
 
-  footer .fan { margin-bottom: 1.25rem; }
+  footer .fan { margin: 0 auto 1.3rem; opacity: 0.85; }
 
   footer p {
-    font-size: 0.75rem;
-    letter-spacing: 0.25em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-light);
   }
 
   /* ---------- RSVP form ---------- */
   .rsvp-form {
-    background: var(--cream-deep);
+    background: var(--cream-paper);
     border: 1px solid var(--line);
-    padding: 2.75rem 2.25rem;
+    padding: 2.75rem 2.1rem;
     position: relative;
+    box-shadow: 0 14px 30px rgba(43,51,32,0.16);
   }
 
   .rsvp-form::before {
     content: '';
     position: absolute;
     top: 10px; left: 10px; right: 10px; bottom: 10px;
-    border: 1px solid var(--gold-light);
+    border: 1px dashed var(--gold-light);
     pointer-events: none;
   }
 
@@ -392,11 +775,11 @@
   }
 
   .rsvp-legend {
-    font-family: 'Cormorant', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.3rem;
-    color: var(--gold);
+    color: var(--maroon);
     margin-bottom: 1.1rem;
   }
 
@@ -404,11 +787,12 @@
 
   .rsvp-field label {
     display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink);
-    opacity: 0.6;
+    opacity: 0.65;
     margin-bottom: 0.5rem;
   }
 
@@ -422,8 +806,8 @@
     border-bottom: 1px solid var(--line);
     background: transparent;
     padding: 0.55rem 0.1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.92rem;
     color: var(--ink);
     outline: none;
     transition: border-color 0.2s ease;
@@ -431,14 +815,14 @@
 
   .rsvp-form input:focus,
   .rsvp-form textarea:focus {
-    border-bottom-color: var(--gold);
+    border-bottom-color: var(--maroon);
   }
 
   .rsvp-form input::placeholder,
   .rsvp-form textarea::placeholder {
-    color: #BDB6A6;
+    color: #b6ac96;
     opacity: 1;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   .rsvp-form textarea {
@@ -467,11 +851,11 @@
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     cursor: pointer;
   }
 
-  .rsvp-choice input { accent-color: var(--gold); width: 15px; height: 15px; }
+  .rsvp-choice input { accent-color: var(--maroon); width: 15px; height: 15px; }
 
   .rsvp-checkbox-list {
     display: flex;
@@ -483,12 +867,12 @@
     display: flex;
     align-items: flex-start;
     gap: 0.65rem;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
   }
 
   .rsvp-checkbox-item input {
-    accent-color: var(--gold);
+    accent-color: var(--maroon);
     width: 16px; height: 16px;
     margin-top: 2px;
     flex-shrink: 0;
@@ -509,19 +893,19 @@
   .rsvp-submit-row { text-align: center; margin-top: 0.5rem; }
 
   .rsvp-form button {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.78rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--cream);
-    background: var(--ink);
+    background: var(--maroon);
     border: none;
     padding: 0.9rem 2.75rem;
     cursor: pointer;
     transition: background 0.2s ease;
   }
 
-  .rsvp-form button:hover { background: var(--gold); }
+  .rsvp-form button:hover { background: var(--gold); color: var(--ink); }
   .rsvp-form button:disabled { opacity: 0.55; cursor: not-allowed; }
 
   .rsvp-status {
@@ -532,7 +916,7 @@
   }
 
   .rsvp-status.show { display: block; }
-  .rsvp-status.success { color: var(--gold); }
+  .rsvp-status.success { color: var(--maroon); }
   .rsvp-status.error { color: #A8524A; }
 
   /* ---------- Nav ---------- */
@@ -543,24 +927,25 @@
     display: flex;
     justify-content: center;
     gap: clamp(1rem, 4vw, 2.5rem);
-    padding: 1.1rem 1rem;
-    background: rgba(247, 243, 234, 0.92);
+    padding: 1.05rem 1rem;
+    background: rgba(43, 51, 32, 0.92);
     backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(217,184,120,0.25);
     flex-wrap: wrap;
   }
 
   nav a {
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--cream);
     text-decoration: none;
     transition: color 0.2s ease;
     white-space: nowrap;
   }
 
-  nav a:hover { color: var(--gold); }
+  nav a:hover { color: var(--gold-light); }
 
   .lang-toggle {
     display: flex;
@@ -568,42 +953,317 @@
     gap: 0.4rem;
     margin-left: 0.25rem;
     padding-left: clamp(1rem, 4vw, 2.5rem);
-    border-left: 1px solid var(--line);
+    border-left: 1px solid rgba(217,184,120,0.25);
   }
 
   .lang-toggle button {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--ink);
-    opacity: 0.5;
+    color: var(--cream);
+    opacity: 0.55;
     padding: 0.1rem 0;
     transition: opacity 0.2s ease, color 0.2s ease;
   }
 
   .lang-toggle button.active {
     opacity: 1;
-    color: var(--gold);
-    border-bottom: 1px solid var(--gold);
+    color: var(--gold-light);
+    border-bottom: 1px solid var(--gold-light);
   }
 
   .lang-toggle .lang-sep {
-    color: var(--line);
-    font-size: 0.72rem;
+    color: rgba(245,239,224,0.3);
+    font-size: 0.7rem;
+  }
+
+  /* ================================================================
+     Envelope intro gate + reveal page
+     ================================================================ */
+
+  html.gate-locked, html.gate-locked body { overflow: hidden; height: 100%; }
+
+  .envelope-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+    overflow: hidden;
+    transition: opacity 0.9s ease 0.35s, visibility 0.9s ease 0.35s;
+  }
+
+  .envelope-gate::before {
+    /* faint vignette so the stage doesn't feel like a flat blank room */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 42%, rgba(182,134,59,0.10), transparent 62%);
+    pointer-events: none;
+  }
+
+  .envelope-gate.gate-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .envelope-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 2rem;
+  }
+
+  .envelope-pile {
+    position: relative;
+    width: clamp(220px, 46vw, 380px);
+    aspect-ratio: 1000 / 1861;
+  }
+
+  .envelope-pile img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .env-lower {
+    /* margin-top percentages resolve against the containing block's WIDTH
+       (a long-standing CSS behavior), which is exactly what we need here
+       since the fold offset is proportional to the envelope's width. */
+    margin-top: 36.2%;
+    filter: drop-shadow(0 14px 30px rgba(43,51,32,0.32));
+    transition: transform 1.05s cubic-bezier(.65,0,.35,1) 0.05s,
+                opacity 0.9s ease 0.35s;
+  }
+
+  .env-upper {
+    top: 0;
+    z-index: 2;
+    filter: drop-shadow(0 10px 22px rgba(43,51,32,0.28));
+    transition: transform 1.05s cubic-bezier(.65,0,.35,1),
+                opacity 0.9s ease 0.35s;
+  }
+
+  .envelope-pile.opened .env-upper {
+    transform: translateY(-135%) rotate(-3deg);
+    opacity: 0;
+  }
+
+  .envelope-pile.opened .env-lower {
+    transform: translateY(120%) rotate(2deg);
+    opacity: 0;
+  }
+
+  .env-seal-btn {
+    position: absolute;
+    left: 30%;
+    top: 44%;
+    width: 39%;
+    height: 10.5%;
+    z-index: 3;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+    animation: seal-breathe 3.2s ease-in-out infinite;
+  }
+
+  .env-seal-btn:focus-visible {
+    outline: 2px solid var(--gold-light);
+    outline-offset: 4px;
+  }
+
+  .envelope-pile.opened .env-seal-btn {
+    animation: none;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  @keyframes seal-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.045); }
+  }
+
+  .envelope-hint {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    opacity: 0.72;
+    text-align: center;
+    transition: opacity 0.5s ease;
+  }
+
+  .envelope-stage.opened .envelope-hint {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .env-seal-btn { animation: none; }
+    .env-upper, .env-lower, .envelope-gate { transition-duration: 0.4s !important; }
+  }
+
+  /* ---------- Second page reveal ---------- */
+  body > section.intro-reveal {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-image: url("images/Second_page_background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .intro-reveal-stack {
+    display: grid;
+    place-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .intro-reveal-stack > * {
+    grid-area: 1 / 1;
+  }
+
+  .intro-reveal-mark {
+    display: block;
+    width: min(620px, 78vw);
+    height: auto;
+    filter: drop-shadow(0 4px 18px rgba(43,51,32,0.25));
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 1.3s ease, transform 1.3s ease;
+  }
+
+  .intro-reveal-mark.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Fades back out ~2s after it appears, at the same moment the third
+     background begins its wipe. Its own transition (below) — rather than
+     the one above — governs this change, since CSS uses the transition
+     declared on the element's END state when animating a property change. */
+  .intro-reveal-mark.faded-out {
+    opacity: 0;
+    transform: translateY(-14px);
+    transition: opacity 2s ease, transform 2s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-reveal-mark, .intro-reveal-mark.faded-out { transition-duration: 0.5s !important; }
+  }
+
+  /* Third background: wipes in from the bottom-right corner, sitting behind
+     all of the section's text/image content but above the section's own
+     (Second_page_background) CSS background. */
+  .intro-reveal-bg3 {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("images/Third_background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    clip-path: circle(0% at 100% 100%);
+    transition: opacity 0.7s ease, clip-path 1.9s ease;
+    pointer-events: none;
+  }
+
+  .intro-reveal-bg3.revealed {
+    opacity: 1;
+    clip-path: circle(200% at 100% 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-reveal-bg3 { transition-duration: 0.5s !important; }
+  }
+
+  .intro-reveal-savedate {
+    display: block;
+    width: min(440px, 70vw);
+    height: auto;
+    filter: drop-shadow(0 10px 26px rgba(43,51,32,0.3));
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+
+  .intro-reveal-savedate.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-reveal-savedate { transition-duration: 0.5s !important; }
+  }
+
+  .intro-reveal-scroll {
+    margin-top: 2.4rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    opacity: 0.8;
+    position: relative;
+    z-index: 1;
   }
 </style>
 </head>
 <body>
 
+<div class="envelope-gate" id="envelopeGate">
+  <div class="envelope-stage" id="envelopeStage">
+    <div class="envelope-pile" id="envelopePile">
+      <img class="env-lower" src="images/Envelope_lower.png" alt="" aria-hidden="true">
+      <img class="env-upper" src="images/Envelope_upper.png" alt="" aria-hidden="true">
+      <button class="env-seal-btn" id="sealBtn" aria-label="Break the wax seal to open the envelope"></button>
+    </div>
+    <p class="envelope-hint" id="envelopeHint">Tap the seal to open</p>
+  </div>
+</div>
+
+<section class="intro-reveal" id="introReveal" aria-hidden="true">
+  <div class="intro-reveal-bg3" id="introBg3" aria-hidden="true"></div>
+  <div class="intro-reveal-stack">
+    <img class="intro-reveal-mark" id="introMark" src="images/RnN.png" alt="The Portuguese dream of Rūdolfs &amp; Natália — Alenquer, Portugal">
+    <img class="intro-reveal-savedate" id="introSaveDate" src="images/envelope_open.png" alt="We are getting married — Save the date, 25.07.2027, Alenquer, Portugal">
+  </div>
+  <span class="intro-reveal-scroll">Scroll down</span>
+</section>
+
 <nav>
   <a href="#home" data-i18n="nav_home">Home</a>
   <a href="#details" data-i18n="nav_details">Details</a>
   <a href="#location" data-i18n="nav_location">Location</a>
-  <a href="#stay" data-i18n="nav_stay">Stay & Dine</a>
+  <a href="#schedule" data-i18n="nav_schedule">Schedule</a>
   <a href="#rsvp" data-i18n="nav_rsvp">RSVP</a>
   <span class="lang-toggle">
     <button type="button" class="lang-btn active" data-lang="en">EN</button>
@@ -613,13 +1273,18 @@
 </nav>
 
 <header class="hero" id="home">
-  <p class="eyebrow" data-i18n="hero_eyebrow">Together with their families</p>
-  <h1>
-    Rudolf
-    <span class="ampersand">&amp;</span>
-    Natalia
-  </h1>
-  <p class="date-line">25 <span>·</span> <span data-i18n="hero_month">July</span> <span>·</span> 2027 — Solar de Pancas, Alenquer, Portugal</p>
+  <div class="hero-ground-texture" aria-hidden="true"></div>
+  <svg class="hero-fan-top" viewBox="0 0 60 40" fill="none" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+    <path d="M30 38 L30 6 M30 38 L14 10 M30 38 L46 10 M30 38 L6 22 M30 38 L54 22"/>
+    <path d="M8 38 A22 22 0 0 1 52 38"/>
+  </svg>
+  <img class="hero-title-img" src="images/hero-title.png" alt="The portuguese dream of Rūdolfs &amp; Natália — Alenquer, Portugal">
+  <p class="eyebrow visually-hidden" data-i18n="hero_eyebrow">Together with their families</p>
+  <p class="date-line visually-hidden">25 <span>·</span> <span data-i18n="hero_month">July</span> <span>·</span> 2027 — Solar de Pancas, Alenquer, Portugal</p>
+
+  <div class="envelope">
+    <img class="envelope-img" src="images/save-the-date.png" alt="Save the date — Alenquer, Portugal, 25.07.2027">
+  </div>
 
   <div class="countdown" id="countdown">
     <div class="unit"><div class="num" id="days">00</div><div class="label" data-i18n="cd_days">Days</div></div>
@@ -634,9 +1299,74 @@
   <p class="scroll-hint" data-i18n="hero_scroll">Scroll for details</p>
 </header>
 
+<section id="alenquer" class="section-alenquer">
+  <div class="alenquer-image-wrap">
+    <img src="images/alenquer-collage.png" alt="Alenquer collage — Casa N.5 tile, vineyard grapes, lemon">
+  </div>
+</section>
+
 <section id="details">
-  <div class="section-title"><h2 data-i18n="details_title">The celebration</h2></div>
+  <div class="section-title"><span class="section-eyebrow" data-i18n="details_eyebrow">25 · 07 · 2027</span><h2 data-i18n="details_title">The celebration</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+  <div class="card-grid" style="margin-bottom: 2.5rem;">
+    <div class="card location-card">
+      <div class="card-icon-wrap">
+        <img class="card-icon-img" src="images/icon-location.png" alt="">
+      </div>
+      <p class="meta" data-i18n="loc_card1_meta">Ceremony</p>
+      <h3>Igreja de Santa Quitéria de Meca</h3>
+      <p data-i18n="loc_card1_desc">The historic basílica where the ceremony will take place, set in the countryside near Alenquer.</p>
+      <div class="arrival-row">
+        <svg class="arrival-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7 V12 L15.5 14"/>
+        </svg>
+        <span class="arrival-label" data-i18n="loc_arrival_label">Arrival</span>
+        <span class="arrival-time">15:30</span>
+      </div>
+      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=1530734410214013978" target="_blank" rel="noopener">View on map</a>
+    </div>
+    <div class="card location-card">
+      <div class="card-icon-wrap">
+        <img class="card-icon-img" src="images/icon-map.png" alt="">
+      </div>
+      <p class="meta" data-i18n="loc_card2_meta">Reception</p>
+      <h3>Solar de Pancas</h3>
+      <p data-i18n="loc_card2_desc">A historic manor house and gardens, hosting the cocktail hour and reception.</p>
+      <div class="arrival-row">
+        <svg class="arrival-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7 V12 L15.5 14"/>
+        </svg>
+        <span class="arrival-label" data-i18n="loc_arrival_label">Arrival</span>
+        <span class="arrival-time">17:30</span>
+      </div>
+      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=5606870038303177558" target="_blank" rel="noopener">View on map</a>
+    </div>
+  </div>
+</section>
+
+<section id="location">
+  <div class="section-title"><span class="section-eyebrow" data-i18n="location_eyebrow">Find your way</span><h2 data-i18n="location_title">Location</h2></div>
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+  <p class="map-caption" data-i18n="loc_caption_venues">Alenquer, Portugal — ceremony, reception & the route between them</p>
+  <div class="map-wrap">
+    <div class="map-crop">
+      <iframe
+        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<section id="schedule">
+  <div class="section-title"><span class="section-eyebrow" data-i18n="schedule_eyebrow">The day, hour by hour</span><h2 data-i18n="schedule_title">Wedding Schedule</h2></div>
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+  <p class="schedule-date" data-i18n="schedule_date">25 July 2027 · Alenquer</p>
 
   <ul class="schedule">
     <li>
@@ -693,72 +1423,8 @@
   <p class="notice" data-i18n="details_notice">Dress code, full schedule and additional details will be added here as the date approaches.</p>
 </section>
 
-<section id="location">
-  <div class="section-title"><h2 data-i18n="location_title">Location</h2></div>
-  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
-
-  <p class="map-caption" data-i18n="loc_caption_venues">Alenquer, Portugal — ceremony, reception & the route between them</p>
-  <div class="map-wrap">
-    <div class="map-crop">
-      <iframe
-        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F"
-        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-    </div>
-  </div>
-
-  <div class="card-grid" style="margin-bottom: 2.5rem;">
-    <div class="card">
-      <p class="meta" data-i18n="loc_card1_meta">Ceremony</p>
-      <h3>Igreja de Santa Quitéria de Meca</h3>
-      <p data-i18n="loc_card1_desc">The historic basílica where the ceremony will take place, set in the countryside near Alenquer.</p>
-      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=1530734410214013978" target="_blank" rel="noopener">View on map</a>
-    </div>
-    <div class="card">
-      <p class="meta" data-i18n="loc_card2_meta">Reception</p>
-      <h3>Solar de Pancas</h3>
-      <p data-i18n="loc_card2_desc">A historic manor house and gardens, hosting the cocktail hour and reception.</p>
-      <a class="link" data-i18n="loc_link" href="https://maps.google.com/?cid=5606870038303177558" target="_blank" rel="noopener">View on map</a>
-    </div>
-  </div>
-</section>
-
-<section id="stay">
-  <div class="section-title"><h2 data-i18n="stay_title">Where to stay & dine</h2></div>
-  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
-
-  <div class="card-grid">
-    <div class="card">
-      <p class="meta" data-i18n="stay_card1_meta">Accommodation</p>
-      <h3 data-i18n="stay_card1_title">Hotel suggestion</h3>
-      <p data-i18n="stay_card1_desc">A short drive from the venue, with comfortable rooms for guests staying overnight.</p>
-      <a class="link" data-i18n="loc_link" href="#">View on map</a>
-    </div>
-    <div class="card">
-      <p class="meta" data-i18n="stay_card2_meta">Accommodation</p>
-      <h3 data-i18n="stay_card2_title">Local guesthouse</h3>
-      <p data-i18n="stay_card2_desc">A charming, more intimate option in the heart of Alenquer.</p>
-      <a class="link" data-i18n="loc_link" href="#">View on map</a>
-    </div>
-    <div class="card">
-      <p class="meta" data-i18n="stay_card3_meta">Dining</p>
-      <h3 data-i18n="stay_card3_title">Restaurant recommendation</h3>
-      <p data-i18n="stay_card3_desc">Traditional Portuguese cuisine, ideal for a relaxed meal before or after the big day.</p>
-      <a class="link" data-i18n="loc_link" href="#">View on map</a>
-    </div>
-    <div class="card">
-      <p class="meta" data-i18n="stay_card4_meta">Dining</p>
-      <h3 data-i18n="stay_card4_title">Restaurant recommendation</h3>
-      <p data-i18n="stay_card4_desc">A cozy spot for lunch, perfect for guests exploring the region.</p>
-      <a class="link" data-i18n="loc_link" href="#">View on map</a>
-    </div>
-  </div>
-
-  <p class="notice" data-i18n="stay_notice">Specific hotel and restaurant recommendations with links and addresses will be added closer to the wedding.</p>
-</section>
-
 <section id="rsvp">
-  <div class="section-title"><h2 data-i18n="rsvp_title">RSVP</h2></div>
+  <div class="section-title"><span class="section-eyebrow" data-i18n="rsvp_eyebrow">Join us</span><h2 data-i18n="rsvp_title">RSVP</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
   <p data-i18n="rsvp_intro" style="text-align:center; margin-top:-1.5rem; margin-bottom:2.5rem; font-size:0.95rem; opacity:0.75;">
     We can't wait to celebrate with you — please let us know by filling in the form below.
@@ -851,16 +1517,92 @@
 </section>
 
 <footer>
+  <div class="fan">
+    <svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <path d="M30 38 L30 6 M30 38 L14 10 M30 38 L46 10 M30 38 L6 22 M30 38 L54 22"/>
+      <path d="M8 38 A22 22 0 0 1 52 38"/>
+    </svg>
+  </div>
   <p data-i18n="footer_text">Rudolf &amp; Natalia — 25 July 2027</p>
 </footer>
 
 <script>
+  (function () {
+    const gate = document.getElementById('envelopeGate');
+    const stage = document.getElementById('envelopeStage');
+    const pile = document.getElementById('envelopePile');
+    const sealBtn = document.getElementById('sealBtn');
+    const introReveal = document.getElementById('introReveal');
+    const introMark = document.getElementById('introMark');
+    const introBg3 = document.getElementById('introBg3');
+    const introSaveDate = document.getElementById('introSaveDate');
+    let opened = false;
+
+    function openEnvelope() {
+      if (opened) return;
+      opened = true;
+
+      pile.classList.add('opened');
+      stage.classList.add('opened');
+      sealBtn.setAttribute('aria-hidden', 'true');
+      sealBtn.disabled = true;
+      introReveal.removeAttribute('aria-hidden');
+
+      // Let the flaps finish sliding, then fade the whole gate away and
+      // bring in the name mark at the same moment (previously handled via
+      // a baked-in CSS transition-delay; now timed here in JS so the later
+      // fade-out below can use its own, different transition duration).
+      setTimeout(() => {
+        gate.classList.add('gate-hidden');
+        introMark.classList.add('revealed');
+      }, 550);
+
+      setTimeout(() => {
+        gate.setAttribute('aria-hidden', 'true');
+      }, 1500);
+
+      // Reveal sequence, timed from the moment the envelope was clicked:
+      // the name mark fades in first (0.55s delay + 1.3s transition = 1.85s
+      // to fully appear). ~2s after that, it fades back out over ~2s while,
+      // at the same moment, the third background wipes in from the
+      // bottom-right corner; ~0.5s after the wipe starts, the save-the-date
+      // image fades in in the same spot the name mark occupied. Scrolling
+      // unlocks once the slowest of these final fades has finished.
+      setTimeout(() => {
+        introMark.classList.remove('revealed');
+        introMark.classList.add('faded-out');
+        introBg3.classList.add('revealed');
+      }, 3850);
+      setTimeout(() => { introSaveDate.classList.add('revealed'); }, 4350);
+      setTimeout(() => {
+        document.documentElement.classList.remove('gate-locked');
+      }, 5850);
+    }
+
+    sealBtn.addEventListener('click', openEnvelope);
+    sealBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openEnvelope();
+      }
+    });
+  })();
+</script>
+
+<script>
   const translations = {
     en: {
-      nav_home: "Home", nav_details: "Details", nav_location: "Location", nav_stay: "Stay & Dine", nav_rsvp: "RSVP",
+      nav_home: "Home", nav_details: "Details", nav_schedule: "Schedule", nav_location: "Location", nav_rsvp: "RSVP",
       hero_eyebrow: "Together with their families", hero_month: "July", hero_scroll: "Scroll for details",
+      hero_envelope_label: "Save the date",
       cd_days: "Days", cd_hours: "Hours", cd_minutes: "Minutes", cd_seconds: "Seconds", cd_married: "We are married!",
       details_title: "The celebration",
+      details_eyebrow: "25 · 07 · 2027",
+      location_eyebrow: "Find your way",
+      schedule_eyebrow: "The day, hour by hour",
+      rsvp_eyebrow: "Join us",
+      schedule_title: "Wedding Schedule",
+      schedule_date: "25 July 2027 · Alenquer",
       sched1_title: "Arrival", sched2_title: "Ceremony", sched3_title: "Reception", sched4_title: "Cocktail Hour",
       sched5_title: "Dinner", sched6_title: "Party", sched7_title: "Transfer to Lisbon",
       sched7_desc: "Departure from Solar de Pancas",
@@ -871,17 +1613,8 @@
       loc_card1_desc: "The historic basílica where the ceremony will take place, set in the countryside near Alenquer.",
       loc_card2_meta: "Reception",
       loc_card2_desc: "A historic manor house and gardens, hosting the cocktail hour and reception.",
+      loc_arrival_label: "Arrival",
       loc_link: "View on map",
-      stay_title: "Where to stay & dine",
-      stay_card1_meta: "Accommodation", stay_card1_title: "Hotel suggestion",
-      stay_card1_desc: "A short drive from the venue, with comfortable rooms for guests staying overnight.",
-      stay_card2_meta: "Accommodation", stay_card2_title: "Local guesthouse",
-      stay_card2_desc: "A charming, more intimate option in the heart of Alenquer.",
-      stay_card3_meta: "Dining", stay_card3_title: "Restaurant recommendation",
-      stay_card3_desc: "Traditional Portuguese cuisine, ideal for a relaxed meal before or after the big day.",
-      stay_card4_meta: "Dining", stay_card4_title: "Restaurant recommendation",
-      stay_card4_desc: "A cozy spot for lunch, perfect for guests exploring the region.",
-      stay_notice: "Specific hotel and restaurant recommendations with links and addresses will be added closer to the wedding.",
       rsvp_title: "RSVP",
       rsvp_intro: "We can't wait to celebrate with you — please let us know by filling in the form below.",
       rsvp_legend_details: "Your details",
@@ -908,10 +1641,17 @@
       footer_text: "Rudolf & Natalia — 25 July 2027",
     },
     pt: {
-      nav_home: "Início", nav_details: "Detalhes", nav_location: "Localização", nav_stay: "Estadia & Restauração", nav_rsvp: "RSVP",
+      nav_home: "Início", nav_details: "Detalhes", nav_schedule: "Programa", nav_location: "Localização", nav_rsvp: "RSVP",
       hero_eyebrow: "Juntos com as suas famílias", hero_month: "Julho", hero_scroll: "Deslize para ver mais",
+      hero_envelope_label: "Guardem a data",
       cd_days: "Dias", cd_hours: "Horas", cd_minutes: "Minutos", cd_seconds: "Segundos", cd_married: "Já somos casados!",
       details_title: "A Celebração",
+      details_eyebrow: "25 · 07 · 2027",
+      location_eyebrow: "O caminho",
+      schedule_eyebrow: "O dia, hora a hora",
+      rsvp_eyebrow: "Junte-se a nós",
+      schedule_title: "Programa do Casamento",
+      schedule_date: "25 de julho de 2027 · Alenquer",
       sched1_title: "Chegada", sched2_title: "Cerimónia", sched3_title: "Receção", sched4_title: "Hora de Cocktail",
       sched5_title: "Jantar", sched6_title: "Festa", sched7_title: "Transporte para Lisboa",
       sched7_desc: "Partida do Solar de Pancas",
@@ -922,17 +1662,8 @@
       loc_card1_desc: "A histórica basílica onde decorrerá a cerimónia, situada no campo perto de Alenquer.",
       loc_card2_meta: "Receção",
       loc_card2_desc: "Um solar histórico com jardins, que acolherá o cocktail e a receção.",
+      loc_arrival_label: "Chegada",
       loc_link: "Ver no mapa",
-      stay_title: "Onde ficar e comer",
-      stay_card1_meta: "Alojamento", stay_card1_title: "Sugestão de hotel",
-      stay_card1_desc: "A uma curta distância de carro do local, com quartos confortáveis para quem pernoita.",
-      stay_card2_meta: "Alojamento", stay_card2_title: "Casa de hóspedes local",
-      stay_card2_desc: "Uma opção acolhedora e mais íntima no coração de Alenquer.",
-      stay_card3_meta: "Restauração", stay_card3_title: "Recomendação de restaurante",
-      stay_card3_desc: "Cozinha tradicional portuguesa, ideal para uma refeição tranquila antes ou depois do grande dia.",
-      stay_card4_meta: "Restauração", stay_card4_title: "Recomendação de restaurante",
-      stay_card4_desc: "Um espaço acolhedor para almoçar, perfeito para quem for explorar a região.",
-      stay_notice: "Recomendações específicas de hotéis e restaurantes, com links e moradas, serão adicionadas mais perto do casamento.",
       rsvp_title: "RSVP",
       rsvp_intro: "Mal podemos esperar para celebrar convosco — por favor avisem-nos preenchendo o formulário abaixo.",
       rsvp_legend_details: "Os seus dados",
@@ -1027,8 +1758,8 @@
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
   // ---- fill these in from Supabase: Project Settings > API Keys ----
-  const SUPABASE_URL = 'https://rqloocktutjmzhtgcdqa.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_O0NYdNIXpiFQQkltvRgPnw_MBNd3mnG';
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
   // --------------------------------------------------------------------
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

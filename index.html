@@ -994,18 +994,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--cream);
+    background-image: url("images/Second_page_background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
     transition: opacity 0.9s ease 0.35s, visibility 0.9s ease 0.35s;
-  }
-
-  .envelope-gate::before {
-    /* faint vignette so the stage doesn't feel like a flat blank room */
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 42%, rgba(182,134,59,0.10), transparent 62%);
-    pointer-events: none;
   }
 
   .envelope-gate.gate-hidden {
@@ -1025,7 +1019,11 @@
   .envelope-pile {
     position: relative;
     width: clamp(220px, 46vw, 380px);
-    aspect-ratio: 1000 / 1861;
+    /* Both new images share the same native width (1625px), so the pile's
+       total height is simply their two heights stacked directly: the top
+       image's own height (2125px) up to where its opaque flap ends at the
+       seam (1768px in), plus the bottom image's full height (1750px). */
+    aspect-ratio: 1625 / 3518;
   }
 
   .envelope-pile img {
@@ -1042,38 +1040,38 @@
 
   .env-lower {
     /* margin-top percentages resolve against the containing block's WIDTH
-       (a long-standing CSS behavior), which is exactly what we need here
-       since the fold offset is proportional to the envelope's width. */
-    margin-top: 36.2%;
-    filter: drop-shadow(0 14px 30px rgba(43,51,32,0.32));
-    transition: transform 1.05s cubic-bezier(.65,0,.35,1) 0.05s,
-                opacity 0.9s ease 0.35s;
+       (a long-standing CSS behavior) — since both images now share the
+       same native width, this places the lower image's top edge exactly
+       at the seam (1768 / 1625 = 108.8%), directly under where the flap's
+       opaque region ends. */
+    margin-top: 108.8%;
+    transition: transform 1.05s cubic-bezier(.65,0,.35,1) 0.05s;
   }
 
   .env-upper {
     top: 0;
     z-index: 2;
-    filter: drop-shadow(0 10px 22px rgba(43,51,32,0.28));
-    transition: transform 1.05s cubic-bezier(.65,0,.35,1),
-                opacity 0.9s ease 0.35s;
+    transition: transform 1.05s cubic-bezier(.65,0,.35,1);
   }
 
   .envelope-pile.opened .env-upper {
     transform: translateY(-135%) rotate(-3deg);
-    opacity: 0;
   }
 
   .envelope-pile.opened .env-lower {
     transform: translateY(120%) rotate(2deg);
-    opacity: 0;
   }
 
   .env-seal-btn {
     position: absolute;
-    left: 30%;
-    top: 44%;
-    width: 39%;
-    height: 10.5%;
+    /* Measured directly from the new Top_envelope_image.png: the seal
+       spans roughly cols 547–1105 of 1625 (33.7%–68%) and rows 1769–2101
+       of the 3518-tall pile (50.3%–59.7%), with a little extra padding
+       here for a comfortable tap target. */
+    left: 32%;
+    top: 49%;
+    width: 37%;
+    height: 11%;
     z-index: 3;
     background: none;
     border: none;
@@ -1106,7 +1104,8 @@
   .envelope-hint {
     position: absolute;
     left: 50%;
-    top: 58%;
+    /* Sits just below the seal's bottom edge (59.7%) with a small gap. */
+    top: 63%;
     transform: translateX(-50%);
     margin: 0;
     width: max-content;
@@ -1154,7 +1153,7 @@
          always fully covers both dimensions — then add a small 4% overscan
          on top so it bleeds past every edge rather than landing flush,
          guaranteeing no cream gaps show at the sides on any phone. */
-      width: calc(max(100dvh * 0.53735, 100vw) * 1.04);
+      width: calc(max(100dvh * 0.46191, 100vw) * 1.04);
     }
   }
 

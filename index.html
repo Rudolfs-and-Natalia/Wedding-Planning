@@ -1168,6 +1168,20 @@
   /* ---------- Second page reveal ---------- */
   body > section.intro-reveal {
     position: relative;
+    /* Explicit z-index (any value) forces this element to establish its
+       own stacking context. Without this, .intro-reveal-bg3's
+       z-index: -1 below has no *local* context to be negative within, so
+       it escapes to the page's root stacking context instead — where it
+       ends up painted behind this section's own background-image rather
+       than in front of it (since this section's background is just
+       normal in-flow content at the root level, which paints after any
+       root-level negative-z-index content). With a local stacking
+       context here, bg3's negative z-index is correctly scoped to just
+       this section: behind this section's own background is impossible
+       (that's painted first, as this box's own background, regardless),
+       and it now correctly sits in front of it, behind the mark/savedate/
+       scroll text as intended. */
+    z-index: 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

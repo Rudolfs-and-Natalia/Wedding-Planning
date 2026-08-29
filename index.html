@@ -1213,7 +1213,7 @@
 
   .intro-reveal-mark {
     display: block;
-    width: min(620px, 78vw);
+    width: min(682px, 85.8vw);
     height: auto;
     filter: drop-shadow(0 4px 18px rgba(43,51,32,0.25));
     opacity: 0;
@@ -1266,23 +1266,81 @@
     .intro-reveal-bg3 { transition-duration: 0.5s !important; }
   }
 
-  .intro-reveal-savedate {
-    display: block;
-    width: min(440px, 70vw);
-    height: auto;
+  .intro-reveal-savedate-wrap {
+    position: relative;
+    width: min(484px, 77vw);
+    /* Lets the timer inside use cqw (container-query width) units, so its
+       font sizes scale exactly in proportion to the image at any screen
+       size — the same way percentage positioning keeps it locked in
+       place. */
+    container-type: inline-size;
     filter: drop-shadow(0 10px 26px rgba(43,51,32,0.3));
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 1.2s ease, transform 1.2s ease;
   }
 
-  .intro-reveal-savedate.revealed {
+  .intro-reveal-savedate-wrap.revealed {
     opacity: 1;
     transform: translateY(0);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .intro-reveal-savedate { transition-duration: 0.5s !important; }
+    .intro-reveal-savedate-wrap { transition-duration: 0.5s !important; }
+  }
+
+  .intro-reveal-savedate-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Countdown redesigned to sit right on the card in the save-the-date
+     image, directly below the printed date. Position/size are measured
+     directly from the image (1625 × 2542): the date text sits at roughly
+     48–53% down, so the timer starts a little below that, and stays
+     within the card's left/clear portion (the velvet envelope flap
+     encroaches from the right lower down). Font matches the date's own
+     color; cqw units keep it locked to the image's own scale. */
+  .savedate-timer {
+    position: absolute;
+    left: 17%;
+    top: 55%;
+    width: 39%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: Constantia, 'Cormorant Garamond', serif;
+    color: #541319;
+  }
+
+  .savedate-timer .sdt-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .savedate-timer .sdt-num {
+    font-size: 5cqw;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .savedate-timer .sdt-label {
+    font-size: 3cqw;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.72;
+    margin-top: 0.4cqw;
+    white-space: nowrap;
+  }
+
+  .savedate-timer .sdt-sep {
+    font-size: 4cqw;
+    opacity: 0.45;
+    align-self: center;
+    transform: translateY(-0.6cqw);
   }
 
   .intro-reveal-scroll {
@@ -1315,7 +1373,18 @@
   <div class="intro-reveal-bg3" id="introBg3" aria-hidden="true"></div>
   <div class="intro-reveal-stack">
     <img class="intro-reveal-mark" id="introMark" src="images/RnN.png" alt="The Portuguese dream of Rūdolfs &amp; Natália — Alenquer, Portugal">
-    <img class="intro-reveal-savedate" id="introSaveDate" src="images/envelope_open.png" alt="We are getting married — Save the date, 25.07.2027, Alenquer, Portugal">
+    <div class="intro-reveal-savedate-wrap" id="introSaveDate">
+      <img class="intro-reveal-savedate-img" src="images/envelope_open.png" alt="We are getting married — Save the date, 25.07.2027, Alenquer, Portugal">
+      <div class="savedate-timer" id="savedateTimer" aria-hidden="true">
+        <div class="sdt-unit"><span class="sdt-num" id="sdtDays">00</span><span class="sdt-label">Days</span></div>
+        <div class="sdt-sep">:</div>
+        <div class="sdt-unit"><span class="sdt-num" id="sdtHours">00</span><span class="sdt-label">Hrs</span></div>
+        <div class="sdt-sep">:</div>
+        <div class="sdt-unit"><span class="sdt-num" id="sdtMinutes">00</span><span class="sdt-label">Min</span></div>
+        <div class="sdt-sep">:</div>
+        <div class="sdt-unit"><span class="sdt-num" id="sdtSeconds">00</span><span class="sdt-label">Sec</span></div>
+      </div>
+    </div>
   </div>
   <span class="intro-reveal-scroll">Scroll down</span>
 </section>
@@ -1802,6 +1871,8 @@
     if (distance < 0) {
       document.getElementById('countdown').innerHTML =
         '<p style="font-family: \'Cormorant Garamond\', serif; font-size: 1.8rem;">' + translations[currentLang].cd_married + '</p>';
+      const sdt = document.getElementById('savedateTimer');
+      if (sdt) sdt.style.display = 'none';
       return;
     }
 
@@ -1816,6 +1887,14 @@
       document.getElementById('hours').textContent = String(hours).padStart(2, '0');
       document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
       document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    const sdtDaysEl = document.getElementById('sdtDays');
+    if (sdtDaysEl) {
+      sdtDaysEl.textContent = String(days).padStart(2, '0');
+      document.getElementById('sdtHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('sdtMinutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('sdtSeconds').textContent = String(seconds).padStart(2, '0');
     }
   }
 

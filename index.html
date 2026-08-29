@@ -1163,6 +1163,31 @@
          guaranteeing no cream gaps show at the sides on any phone. */
       width: calc(max(100dvh * 0.46191, 100vw) * 1.04);
     }
+
+    /* On phones, "opened" only slides the flaps 80% of the way — leaving
+       ~20% of each still visible — rather than sending them fully out of
+       frame right away. The JS times things so this partial-open state
+       coincides with the name mark fading in and holds while it's on
+       screen; a second class, "fully-open", added later, carries the
+       flaps the rest of the way out, timed to land exactly when the name
+       fades out and the third background starts wiping in. Equal
+       specificity to the rules above, so appearing later here lets it
+       take over once both classes are present. */
+    .envelope-pile.opened .env-upper {
+      transform: translateY(-80%) rotate(-3deg);
+    }
+
+    .envelope-pile.opened .env-lower {
+      transform: translateY(80%) rotate(2deg);
+    }
+
+    .envelope-pile.fully-open .env-upper {
+      transform: translateY(-135%) rotate(-3deg);
+    }
+
+    .envelope-pile.fully-open .env-lower {
+      transform: translateY(120%) rotate(2deg);
+    }
   }
 
   /* ---------- Second page reveal ---------- */
@@ -1589,49 +1614,65 @@
       if (opened) return;
       opened = true;
 
+      const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
+
       pile.classList.add('opened');
       stage.classList.add('opened');
       sealBtn.setAttribute('aria-hidden', 'true');
       sealBtn.disabled = true;
       introReveal.removeAttribute('aria-hidden');
 
-      // The name mark always starts fading in at the same moment (0.55s),
-      // exactly as before.
+      // On phones, the name mark starts fading in immediately, the instant
+      // the envelope is tapped open. On larger screens it still waits
+      // 0.55s, as before.
       setTimeout(() => {
         introMark.classList.add('revealed');
-      }, 550);
+      }, isPhoneWidth ? 0 : 550);
 
-      // On phones, the cream gate is set (via CSS above) to disappear
-      // instantly rather than fading — so it needs to wait until the flap
-      // -slide animation has actually finished (~1.25s) before snapping
-      // away, or the flaps would appear to vanish mid-motion. On larger
-      // screens the gate still fades gradually over ~0.9s starting at
-      // 0.55s, as before, so it can start right away.
-      const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
+      // On phones, "opened" (above) only slides the flaps 80% of the way
+      // open (via the CSS override for phones), so they stay ~20% visible
+      // while the name mark is on screen, rather than clearing the frame
+      // immediately. The cream gate also disappears instantly rather than
+      // fading (set via CSS), so both of these need to wait until the
+      // full-open moment below — not the old ~1.25s flap-animation mark —
+      // or the partially-open flaps and the gate behind them would vanish
+      // too soon. On larger screens the flaps slide fully away right away
+      // and the gate still just fades gradually over ~0.9s starting at
+      // 0.55s, exactly as before.
       setTimeout(() => {
         gate.classList.add('gate-hidden');
-      }, isPhoneWidth ? 1300 : 550);
+      }, isPhoneWidth ? 3300 : 550);
 
       setTimeout(() => {
         gate.setAttribute('aria-hidden', 'true');
-      }, 1500);
+      }, isPhoneWidth ? 3350 : 1500);
 
-      // Reveal sequence, timed from the moment the envelope was clicked:
-      // the name mark fades in first (0.55s delay + 1.3s transition = 1.85s
-      // to fully appear). ~2s after that, it fades back out over ~2s while,
-      // at the same moment, the third background wipes in from the
+      // Reveal sequence. On larger screens this is timed from the click:
+      // the name mark fades in first (0.55s delay + 1.3s transition =
+      // 1.85s to fully appear). ~2s after that, it fades back out over ~2s
+      // while, at the same moment, the third background wipes in from the
       // bottom-right corner; ~0.5s after the wipe starts, the save-the-date
-      // image fades in in the same spot the name mark occupied. Scrolling
-      // unlocks once the slowest of these final fades has finished.
+      // image fades in. Scrolling unlocks once the slowest of these final
+      // fades has finished.
+      //
+      // On phones the same shape holds, just shifted earlier to match the
+      // mark starting immediately instead of at 0.55s (so it's still "2s
+      // after the mark fully appears" that things move on) — and that
+      // same moment is also precisely when the flaps finish sliding the
+      // rest of the way open, via the "fully-open" class.
+      const stage2Delay = isPhoneWidth ? 3300 : 3850;
       setTimeout(() => {
         introMark.classList.remove('revealed');
         introMark.classList.add('faded-out');
         introBg3.classList.add('revealed');
-      }, 3850);
-      setTimeout(() => { introSaveDate.classList.add('revealed'); }, 4350);
+        if (isPhoneWidth) pile.classList.add('fully-open');
+      }, stage2Delay);
+
+      setTimeout(() => { introSaveDate.classList.add('revealed'); }, stage2Delay + 500);
+
       setTimeout(() => {
         document.documentElement.classList.remove('gate-locked');
-      }, 5850);
+      }, isPhoneWidth ? 5300 : 5850);
     }
 
     sealBtn.addEventListener('click', openEnvelope);

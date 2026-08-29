@@ -1589,17 +1589,20 @@
       if (opened) return;
       opened = true;
 
+      const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
+
       pile.classList.add('opened');
       stage.classList.add('opened');
       sealBtn.setAttribute('aria-hidden', 'true');
       sealBtn.disabled = true;
       introReveal.removeAttribute('aria-hidden');
 
-      // The name mark always starts fading in at the same moment (0.55s),
-      // exactly as before.
+      // On phones, the name mark starts fading in immediately, the instant
+      // the envelope is tapped open. On larger screens it still waits
+      // 0.55s, exactly as before.
       setTimeout(() => {
         introMark.classList.add('revealed');
-      }, 550);
+      }, isPhoneWidth ? 0 : 550);
 
       // On phones, the cream gate is set (via CSS above) to disappear
       // instantly rather than fading — so it needs to wait until the flap
@@ -1607,7 +1610,6 @@
       // away, or the flaps would appear to vanish mid-motion. On larger
       // screens the gate still fades gradually over ~0.9s starting at
       // 0.55s, as before, so it can start right away.
-      const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
       setTimeout(() => {
         gate.classList.add('gate-hidden');
       }, isPhoneWidth ? 1300 : 550);

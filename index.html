@@ -1104,6 +1104,12 @@
   }
 
   .envelope-hint {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    margin: 1.6rem 0 0;
+    width: max-content;
     font-family: 'Courier Prime', monospace;
     font-size: 0.68rem;
     letter-spacing: 0.32em;
@@ -1111,6 +1117,7 @@
     color: var(--maroon);
     opacity: 0.72;
     text-align: center;
+    white-space: nowrap;
     transition: opacity 0.5s ease;
   }
 
@@ -1124,28 +1131,31 @@
   }
 
   @media (max-width: 640px) {
-    /* Anchor the stage to the top of the screen (rather than centering it)
-       so any leftover space collects only at the bottom, below the hint
-       text, instead of being split evenly above and below the envelope. */
+    /* Center the stage again (rather than pinning it to the top): the
+       envelope now bleeds slightly past the screen on every edge, so
+       centering keeps that overflow even on all sides instead of lopsided. */
     .envelope-gate {
-      align-items: flex-start;
-    }
-
-    .envelope-stage {
-      width: 100%;
-      gap: 0.75rem;
-      padding: calc(0.75rem + env(safe-area-inset-top)) 0.75rem
-               calc(0.9rem + env(safe-area-inset-bottom));
+      align-items: center;
     }
 
     .envelope-pile {
-      /* Fill as much of the phone screen as possible without distorting
-         the artwork's fixed proportions: take whichever of the near-full
-         viewport width or the available height (minus room reserved for
-         the stage's own padding/gap and the hint text below) is the
-         tighter constraint, so the envelope reads as "full-screen" on a
-         phone while staying correctly proportioned. */
-      width: min(96vw, calc((100dvh - 3.6rem) * (1000 / 1861)));
+      /* "Cover" the phone screen the same way background-size:cover would:
+         take whichever of (a) the width needed to make the height reach
+         100dvh, or (b) the full viewport width, is LARGER — so the envelope
+         always fully covers both dimensions — then add a small 4% overscan
+         on top so it bleeds past every edge rather than landing flush,
+         guaranteeing no cream gaps show at the sides on any phone. */
+      width: calc(max(100dvh * 0.53735, 100vw) * 1.04);
+    }
+
+    /* The hint now sits as an overlay directly on the envelope, just below
+       the seal, using the same percentage-of-pile coordinate system as the
+       seal button itself (it's a child of .envelope-pile, same as the
+       seal), rather than trailing below the whole envelope. */
+    .envelope-hint {
+      top: 58%;
+      margin-top: 0;
+      text-shadow: 0 1px 8px rgba(245,239,224,0.85);
     }
   }
 
@@ -1271,8 +1281,8 @@
       <img class="env-lower" src="images/Envelope_lower.png" alt="" aria-hidden="true">
       <img class="env-upper" src="images/Envelope_upper.png" alt="" aria-hidden="true">
       <button class="env-seal-btn" id="sealBtn" aria-label="Break the wax seal to open the envelope"></button>
+      <p class="envelope-hint" id="envelopeHint">Tap the seal to open</p>
     </div>
-    <p class="envelope-hint" id="envelopeHint">Tap the seal to open</p>
   </div>
 </div>
 

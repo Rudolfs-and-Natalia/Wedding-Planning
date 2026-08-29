@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic test</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: monospace; background: #f5efe0; }
+
+  #debug {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 9999;
+    background: black;
+    color: #0f0;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 8px;
+    white-space: pre-wrap;
+  }
+
+  .stage {
+    margin-top: 140px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pile {
+    position: relative;
+    width: 260px;
+    aspect-ratio: 1625 / 3518;
+    background: #ddd;
+  }
+
+  .box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    transition: transform 1.05s cubic-bezier(.65,0,.35,1);
+  }
+
+  .upper { background: rgba(200,40,40,0.85); top: 0; height: 55%; }
+  .lower { background: rgba(40,100,200,0.85); top: 55%; height: 45%; }
+
+  .pile.opened .upper { transform: translateY(-80%); }
+  .pile.opened .lower { transform: translateY(80%); }
+  .pile.fully-open .upper { transform: translateY(-135%); }
+  .pile.fully-open .lower { transform: translateY(120%); }
+
+  @media (max-width: 640px) {
+    .pile.opened .upper { transform: translateY(-80%); background: rgba(200,40,40,0.85); }
+    .pile.opened .lower { transform: translateY(80%); }
+    .pile.fully-open .upper { transform: translateY(-135%); }
+    .pile.fully-open .lower { transform: translateY(120%); }
+    body { border: 10px solid lime; }
+  }
+
+  button {
+    display: block;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div id="debug">loading…</div>
+
+<div class="stage">
+  <div class="pile" id="pile">
+    <div class="box upper">UPPER</div>
+    <div class="box lower">LOWER</div>
+  </div>
+</div>
+
+<button id="btn">Click to run sequence</button>
+
+<script>
+  const debug = document.getElementById('debug');
+  const pile = document.getElementById('pile');
+  const btn = document.getElementById('btn');
+
+  function log(msg) {
+    debug.textContent = msg;
+  }
+
+  function updateDebug(extra) {
+    const mq = window.matchMedia('(max-width: 640px)');
+    log(
+      'innerWidth: ' + window.innerWidth + '\n' +
+      'matchMedia(max-width:640px).matches: ' + mq.matches + '\n' +
+      'devicePixelRatio: ' + window.devicePixelRatio + '\n' +
+      'userAgent: ' + navigator.userAgent + '\n' +
+      (extra || '')
+    );
+  }
+
+  updateDebug('(green border visible = mobile CSS media query is matching)');
+  window.addEventListener('resize', () => updateDebug('(green border visible = mobile CSS media query is matching)'));
+
+  btn.addEventListener('click', () => {
+    const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
+    updateDebug('CLICKED. isPhoneWidth = ' + isPhoneWidth + '\nAdding .opened now. You should see ~20% of each colored box remain visible if isPhoneWidth is true.');
+
+    pile.classList.add('opened');
+
+    setTimeout(() => {
+      pile.classList.add('fully-open');
+      updateDebug('3.3s later: adding .fully-open now. Boxes should fully slide away.');
+    }, 3300);
+  });
+</script>
+
+</body>
+</html>

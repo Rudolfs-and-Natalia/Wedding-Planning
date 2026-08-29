@@ -1106,9 +1106,9 @@
   .envelope-hint {
     position: absolute;
     left: 50%;
-    top: 100%;
+    top: 58%;
     transform: translateX(-50%);
-    margin: 1.6rem 0 0;
+    margin: 0;
     width: max-content;
     font-family: 'Courier Prime', monospace;
     font-size: 0.68rem;
@@ -1118,6 +1118,7 @@
     opacity: 0.72;
     text-align: center;
     white-space: nowrap;
+    text-shadow: 0 1px 8px rgba(245,239,224,0.85);
     transition: opacity 0.5s ease;
   }
 
@@ -1136,6 +1137,14 @@
        centering keeps that overflow even on all sides instead of lopsided. */
     .envelope-gate {
       align-items: center;
+      /* On phones, the cream backdrop should disappear the instant the
+         envelope has finished opening rather than gradually dissolving —
+         so the Second_page_background underneath appears immediately,
+         with no crossfade. (The name mark's own fade-in is unaffected;
+         it's a separate transition on a different element.) The JS below
+         also delays exactly when this happens on mobile, so it still
+         waits for the flap-slide animation to finish first. */
+      transition: none;
     }
 
     .envelope-pile {
@@ -1146,16 +1155,6 @@
          on top so it bleeds past every edge rather than landing flush,
          guaranteeing no cream gaps show at the sides on any phone. */
       width: calc(max(100dvh * 0.53735, 100vw) * 1.04);
-    }
-
-    /* The hint now sits as an overlay directly on the envelope, just below
-       the seal, using the same percentage-of-pile coordinate system as the
-       seal button itself (it's a child of .envelope-pile, same as the
-       seal), rather than trailing below the whole envelope. */
-    .envelope-hint {
-      top: 58%;
-      margin-top: 0;
-      text-shadow: 0 1px 8px rgba(245,239,224,0.85);
     }
   }
 
@@ -1584,14 +1583,22 @@
       sealBtn.disabled = true;
       introReveal.removeAttribute('aria-hidden');
 
-      // Let the flaps finish sliding, then fade the whole gate away and
-      // bring in the name mark at the same moment (previously handled via
-      // a baked-in CSS transition-delay; now timed here in JS so the later
-      // fade-out below can use its own, different transition duration).
+      // The name mark always starts fading in at the same moment (0.55s),
+      // exactly as before.
       setTimeout(() => {
-        gate.classList.add('gate-hidden');
         introMark.classList.add('revealed');
       }, 550);
+
+      // On phones, the cream gate is set (via CSS above) to disappear
+      // instantly rather than fading — so it needs to wait until the flap
+      // -slide animation has actually finished (~1.25s) before snapping
+      // away, or the flaps would appear to vanish mid-motion. On larger
+      // screens the gate still fades gradually over ~0.9s starting at
+      // 0.55s, as before, so it can start right away.
+      const isPhoneWidth = window.matchMedia('(max-width: 640px)').matches;
+      setTimeout(() => {
+        gate.classList.add('gate-hidden');
+      }, isPhoneWidth ? 1300 : 550);
 
       setTimeout(() => {
         gate.setAttribute('aria-hidden', 'true');

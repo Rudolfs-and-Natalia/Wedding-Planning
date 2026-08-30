@@ -1200,6 +1200,22 @@
     background-attachment: fixed;
   }
 
+  /* Only the image stack (mark + save-the-date) needs to be exempted from
+     the site-wide "body > section > *" reading-width rule above (760px)
+     — that's what was causing the off-center/overflow bug on mobile.
+     Deliberately scoped to just .intro-reveal-stack, NOT every child of
+     this section: the bg3 wipe layer relies on that same legacy rule to
+     stay at a narrower, centered width rather than stretching across the
+     full (very wide) screen, which is what keeps it looking sharp instead
+     of visibly stretched/blurry on wide viewports. */
+  body > section.intro-reveal > .intro-reveal-stack {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .intro-reveal-stack {
     display: grid;
     place-items: center;

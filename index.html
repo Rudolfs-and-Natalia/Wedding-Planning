@@ -1328,7 +1328,7 @@
        down to mobile browser chrome/safe-area quirks that a fixed-size
        headless viewport doesn't reproduce). */
     .intro-reveal-mark {
-      margin-top: -1.5rem;
+      margin-top: -4.5rem;
     }
 
     /* Removing the section's own side padding here gives us a plain,
@@ -1818,12 +1818,33 @@
       sealBtn.disabled = true;
       introReveal.removeAttribute('aria-hidden');
 
-      // On phones, the name mark starts fading in immediately, the instant
-      // the envelope is tapped open. On larger screens it still waits
-      // 0.55s, exactly as before.
+      // On phones, the mark now starts fading in just after the cream
+      // gate disappears (see below) rather than the instant you tap the
+      // seal. It used to start at the same moment as the tap — but the
+      // gate there is set to vanish instantly (no fade), so that whole
+      // 1.3s fade-in was completing entirely *behind* the still-visible
+      // gate, and all you'd ever see was the mark popping in fully-formed
+      // the moment the gate snapped away. Starting it just after the gate
+      // is gone means the fade actually plays out on screen, the same as
+      // it always visibly has on larger screens (where the gate itself
+      // fades gradually, so the two effects overlap and are both seen).
       setTimeout(() => {
-        introMark.classList.add('revealed');
-      }, isPhoneWidth ? 0 : 550);
+        // Guards against a known WebKit/Safari quirk where a transition
+        // can silently fail to fire — jumping straight to the end state
+        // instead of animating to it — if the browser hasn't fully
+        // committed the "before" style in its own paint cycle first.
+        // Waiting two animation frames (rather than just one, or a
+        // synchronous layout read) is the more robust, standard fix:
+        // the first frame lets the browser register the current state,
+        // the second runs only after that state has actually been
+        // painted, so the class change below is guaranteed to be seen
+        // by the browser as a genuine change to transition from.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            introMark.classList.add('revealed');
+          });
+        });
+      }, isPhoneWidth ? 1500 : 550);
 
       // On phones, the cream gate is set (via CSS above) to disappear
       // instantly rather than fading — so it needs to wait until the flap

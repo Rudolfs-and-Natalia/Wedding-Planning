@@ -1321,6 +1321,41 @@
     container-type: inline-size;
   }
 
+  @media (max-width: 640px) {
+    /* Removing the section's own side padding here gives us a plain,
+       padding-free 100vw to work with for the envelope bleed below —
+       avoids having to account for it in the vw math. */
+    body > section.intro-reveal {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    /* Pull the text image up closer to "SAVE THE DATE" et al. by
+       tightening the gap between it and the envelope below. */
+    .intro-reveal-savedate-wrap {
+      width: 94vw;
+      gap: 0.75rem;
+    }
+
+    /* Explicit vw width (not a % of the now-wider parent above) so this
+       stays the same visual size as before — only the envelope below is
+       meant to grow. */
+    .savedate-text-img {
+      width: 62vw;
+    }
+
+    /* The parent is 94vw, centered in a now-padding-free 100vw section,
+       leaving a 3vw gap on each side. Shifting this 3vw to the right
+       (an absolute vw shift, unaffected by any ancestor's own width)
+       turns that even 3vw/3vw gap into 6vw on the left and 0 on the
+       right — flush against the edge on the right, "just a little
+       space" on the left. */
+    .savedate-envelope-wrap {
+      position: relative;
+      left: 3vw;
+    }
+  }
+
   .intro-reveal-savedate-img {
     display: block;
     width: 100%;
@@ -1393,9 +1428,47 @@
   .intro-reveal-scroll.revealed {
     opacity: 0.9;
   }
+
+  /* ================================================================
+     Save-the-date-only launch gate
+     ================================================================
+     While the rest of the site is still being built, only the envelope
+     + save-the-date intro is public. Everything below it is hidden by
+     default (guests only ever see the intro, and the page has nothing
+     to scroll to — the "Scroll down" hint is hidden too, since there's
+     nothing below it right now).
+
+     To work on/preview the rest of the site yourself, open the site
+     with ?preview=rn2027 added to the URL — e.g.:
+       https://yoursite.github.io/?preview=rn2027
+     That sets a class on <body> via the inline script just below,
+     which this CSS checks for. Anyone with that link can also see the
+     full site, so don't post it anywhere public — this is a
+     convenience switch, not a password.
+
+     When the rest of the site is finished and ready for guests too,
+     delete this whole CSS block (and the matching inline script right
+     after <body> below) — nothing else needs to change. */
+  body:not(.preview-mode) > nav,
+  body:not(.preview-mode) > header.hero,
+  body:not(.preview-mode) > section:not(.intro-reveal),
+  body:not(.preview-mode) > footer,
+  body:not(.preview-mode) .intro-reveal-scroll {
+    display: none;
+  }
 </style>
 </head>
 <body>
+<script>
+  // Must run before the browser paints anything, so it's placed here
+  // rather than in the deferred scripts near the end of the page —
+  // that avoids any flash of the full site before it gets hidden.
+  // See the matching CSS block above for what this class controls, and
+  // for how to remove this gate entirely once ready.
+  if (new URLSearchParams(location.search).get('preview') === 'rn2027') {
+    document.body.classList.add('preview-mode');
+  }
+</script>
 
 <div class="envelope-gate" id="envelopeGate">
   <div class="envelope-stage" id="envelopeStage">

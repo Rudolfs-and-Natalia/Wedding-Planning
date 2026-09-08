@@ -1289,7 +1289,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.75rem;
+    gap: 2.25rem;
     filter: drop-shadow(0 10px 26px rgba(43,51,32,0.3));
     opacity: 0;
     transform: translateY(14px);
@@ -1365,10 +1365,16 @@
        (an absolute vw shift, unaffected by any ancestor's own width)
        turns that even 3vw/3vw gap into 6vw on the left and 0 on the
        right — flush against the edge on the right, "just a little
-       space" on the left. */
+       space" on the left. "top" adds a bit more room above (between it
+       and the text overlay) — this is a pure visual offset via
+       position:relative, so unlike a margin, it doesn't change how much
+       space this box reserves in the layout, meaning the text image's
+       anchor point (which is based on that reserved space, not this
+       rendered position) stays exactly where it was. */
     .savedate-envelope-wrap {
       position: relative;
       left: 3vw;
+      top: 0.6rem;
     }
   }
 
@@ -1387,7 +1393,7 @@
      own color; cqw units keep it locked to the image's own scale. */
   .savedate-timer {
     position: absolute;
-    left: 6%;
+    left: 8%;
     top: 42%;
     width: 32%;
     display: flex;

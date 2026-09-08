@@ -1119,13 +1119,14 @@
     width: max-content;
     font-family: 'Courier Prime', monospace;
     font-size: 0.68rem;
+    font-weight: 700;
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--maroon);
-    opacity: 0.72;
+    opacity: 0.9;
     text-align: center;
     white-space: nowrap;
-    text-shadow: 0 1px 8px rgba(245,239,224,0.85);
+    text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
     transition: opacity 0.5s ease;
   }
 
@@ -1285,11 +1286,10 @@
   .intro-reveal-savedate-wrap {
     position: relative;
     width: min(484px, 77vw);
-    /* Lets the timer inside use cqw (container-query width) units, so its
-       font sizes scale exactly in proportion to the image at any screen
-       size — the same way percentage positioning keeps it locked in
-       place. */
-    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
     filter: drop-shadow(0 10px 26px rgba(43,51,32,0.3));
     opacity: 0;
     transform: translateY(14px);
@@ -1305,6 +1305,22 @@
     .intro-reveal-savedate-wrap { transition-duration: 0.5s !important; }
   }
 
+  .savedate-text-img {
+    display: block;
+    width: 80%;
+    height: auto;
+  }
+
+  .savedate-envelope-wrap {
+    position: relative;
+    width: 100%;
+    /* Lets the timer inside use cqw (container-query width) units, so its
+       font sizes scale exactly in proportion to the envelope image at any
+       screen size — the same way percentage positioning keeps it locked
+       in place. */
+    container-type: inline-size;
+  }
+
   .intro-reveal-savedate-img {
     display: block;
     width: 100%;
@@ -1313,16 +1329,16 @@
 
   /* Countdown redesigned to sit right on the card in the save-the-date
      image, directly below the printed date. Position/size are measured
-     directly from the image (1625 × 2542): the date text sits at roughly
-     48–53% down, so the timer starts a little below that, and stays
-     within the card's left/clear portion (the velvet envelope flap
-     encroaches from the right lower down). Font matches the date's own
-     color; cqw units keep it locked to the image's own scale. */
+     directly from the new Envelope_open.png (1665 × 1526): the date text
+     sits at roughly 34–40% down and 8–42% across, so the timer starts a
+     little below that, staying clear of the velvet envelope flap which
+     encroaches diagonally from the lower right. Font matches the date's
+     own color; cqw units keep it locked to the image's own scale. */
   .savedate-timer {
     position: absolute;
-    left: 17%;
-    top: 55%;
-    width: 39%;
+    left: 6%;
+    top: 42%;
+    width: 32%;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -1337,38 +1353,45 @@
   }
 
   .savedate-timer .sdt-num {
-    font-size: 5cqw;
+    font-size: 3.6cqw;
     font-weight: 600;
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
 
   .savedate-timer .sdt-label {
-    font-size: 3cqw;
+    font-size: 2cqw;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     opacity: 0.72;
-    margin-top: 0.4cqw;
+    margin-top: 0.3cqw;
     white-space: nowrap;
   }
 
   .savedate-timer .sdt-sep {
-    font-size: 4cqw;
+    font-size: 3cqw;
     opacity: 0.45;
     align-self: center;
-    transform: translateY(-0.6cqw);
+    transform: translateY(-0.5cqw);
   }
 
   .intro-reveal-scroll {
     margin-top: 2.4rem;
     font-family: 'Courier Prime', monospace;
     font-size: 0.65rem;
+    font-weight: 700;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--maroon);
-    opacity: 0.8;
+    text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
+    opacity: 0;
     position: relative;
     z-index: 1;
+    transition: opacity 1s ease;
+  }
+
+  .intro-reveal-scroll.revealed {
+    opacity: 0.9;
   }
 </style>
 </head>
@@ -1390,19 +1413,22 @@
   <div class="intro-reveal-stack">
     <img class="intro-reveal-mark" id="introMark" src="images/RnN.png" alt="The Portuguese dream of Rūdolfs &amp; Natália — Alenquer, Portugal">
     <div class="intro-reveal-savedate-wrap" id="introSaveDate">
-      <img class="intro-reveal-savedate-img" src="images/envelope_open.png" alt="We are getting married — Save the date, 25.07.2027, Alenquer, Portugal">
-      <div class="savedate-timer" id="savedateTimer" aria-hidden="true">
-        <div class="sdt-unit"><span class="sdt-num" id="sdtDays">00</span><span class="sdt-label">Days</span></div>
-        <div class="sdt-sep">:</div>
-        <div class="sdt-unit"><span class="sdt-num" id="sdtHours">00</span><span class="sdt-label">Hrs</span></div>
-        <div class="sdt-sep">:</div>
-        <div class="sdt-unit"><span class="sdt-num" id="sdtMinutes">00</span><span class="sdt-label">Min</span></div>
-        <div class="sdt-sep">:</div>
-        <div class="sdt-unit"><span class="sdt-num" id="sdtSeconds">00</span><span class="sdt-label">Sec</span></div>
+      <img class="savedate-text-img" src="images/Envelope_text.png" alt="We are getting married — Save the date, Alenquer, Portugal">
+      <div class="savedate-envelope-wrap">
+        <img class="intro-reveal-savedate-img" src="images/envelope_open.png" alt="25.07.2027">
+        <div class="savedate-timer" id="savedateTimer" aria-hidden="true">
+          <div class="sdt-unit"><span class="sdt-num" id="sdtDays">00</span><span class="sdt-label">Days</span></div>
+          <div class="sdt-sep">:</div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtHours">00</span><span class="sdt-label">Hrs</span></div>
+          <div class="sdt-sep">:</div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtMinutes">00</span><span class="sdt-label">Min</span></div>
+          <div class="sdt-sep">:</div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtSeconds">00</span><span class="sdt-label">Sec</span></div>
+        </div>
       </div>
     </div>
   </div>
-  <span class="intro-reveal-scroll">Scroll down</span>
+  <span class="intro-reveal-scroll" id="introScroll">Scroll down</span>
 </section>
 
 <nav>
@@ -1682,6 +1708,7 @@
     const introMark = document.getElementById('introMark');
     const introBg3 = document.getElementById('introBg3');
     const introSaveDate = document.getElementById('introSaveDate');
+    const introScroll = document.getElementById('introScroll');
     let opened = false;
 
     function openEnvelope() {
@@ -1730,6 +1757,14 @@
         introBg3.classList.add('revealed');
       }, 3850);
       setTimeout(() => { introSaveDate.classList.add('revealed'); }, 4350);
+
+      // The "Scroll down" hint waits until the whole sequence above has
+      // actually finished appearing (third background wipe done ~5.75s,
+      // save-the-date fade done ~5.55s) before it fades in itself, rather
+      // than being visible the whole time.
+      setTimeout(() => {
+        introScroll.classList.add('revealed');
+      }, 5850);
       setTimeout(() => {
         document.documentElement.classList.remove('gate-locked');
       }, 5850);

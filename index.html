@@ -1322,6 +1322,15 @@
   }
 
   @media (max-width: 640px) {
+    /* Nudges the name mark up a little within its shared grid cell —
+       requested directly, since it can look slightly low on some real
+       devices even where the numbers say it's dead-center (likely
+       down to mobile browser chrome/safe-area quirks that a fixed-size
+       headless viewport doesn't reproduce). */
+    .intro-reveal-mark {
+      margin-top: -1.5rem;
+    }
+
     /* Removing the section's own side padding here gives us a plain,
        padding-free 100vw to work with for the envelope bleed below —
        avoids having to account for it in the vw math. */
@@ -1330,18 +1339,25 @@
       padding-right: 0;
     }
 
-    /* Pull the text image up closer to "SAVE THE DATE" et al. by
-       tightening the gap between it and the envelope below. */
+    /* Keeps the group wide enough for the envelope's bleed below. */
     .intro-reveal-savedate-wrap {
       width: 94vw;
-      gap: 0.75rem;
     }
 
-    /* Explicit vw width (not a % of the now-wider parent above) so this
-       stays the same visual size as before — only the envelope below is
-       meant to grow. */
+    /* Text is decoupled from the envelope's layout ONLY on phones: an
+       absolutely-positioned overlay anchored just above the envelope by
+       a fixed gap, instead of a normal-flow flex sibling of it. This
+       lets it be resized/repositioned here without shifting the
+       envelope's own position — which is otherwise determined purely by
+       .savedate-envelope-wrap, the only flex/flow child left once this
+       is taken out. (Desktop keeps the original flex layout untouched.)
+       10% larger than the previous phone-only size (62vw to 68.2vw). */
     .savedate-text-img {
-      width: 62vw;
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 0.4rem);
+      transform: translateX(-50%);
+      width: 68.2vw;
     }
 
     /* The parent is 94vw, centered in a now-padding-free 100vw section,

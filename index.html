@@ -1112,13 +1112,11 @@
   .envelope-hint {
     position: absolute;
     left: 50%;
-    /* Sits just below the seal's bottom edge (59.7%) with a small gap. */
-    top: 63%;
     transform: translateX(-50%);
     margin: 0;
     width: max-content;
     font-family: 'Courier Prime', monospace;
-    font-size: 0.68rem;
+    font-size: 0.92rem;
     font-weight: 700;
     letter-spacing: 0.32em;
     text-transform: uppercase;
@@ -1128,6 +1126,26 @@
     white-space: nowrap;
     text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
     transition: opacity 0.5s ease;
+    /* Above the flap image (z-index: 2) — needed for the "above the seal"
+       variant, which otherwise falls within the flap's opaque area and
+       renders invisibly underneath it. The "below" variant sits low
+       enough to clear the flap anyway, but this is harmless for it too. */
+    z-index: 4;
+  }
+
+  /* Sits just below the seal's bottom edge (59.7%) with a small gap. */
+  .envelope-hint-below {
+    top: 63%;
+  }
+
+  /* Exact mirror of the "below" spacing, reflected above the seal's top
+     edge (49%): same 3% gap, just on the other side. Positioned via
+     "bottom" (measured from the pile's own bottom edge) rather than
+     "top", since that's what lets the gap be measured from this text's
+     own bottom edge up to the seal, matching how the other hint's gap is
+     measured from the seal down to its top edge. */
+  .envelope-hint-above {
+    bottom: 61%;
   }
 
   .envelope-stage.opened .envelope-hint {
@@ -1497,8 +1515,9 @@
     <div class="envelope-pile" id="envelopePile">
       <img class="env-lower" src="images/Envelope_lower.png" alt="" aria-hidden="true">
       <img class="env-upper" src="images/Envelope_upper.png" alt="" aria-hidden="true">
+      <p class="envelope-hint envelope-hint-above" id="envelopeHintPt" aria-hidden="true">Toque no selo para abrir</p>
       <button class="env-seal-btn" id="sealBtn" aria-label="Break the wax seal to open the envelope"></button>
-      <p class="envelope-hint" id="envelopeHint">Tap the seal to open</p>
+      <p class="envelope-hint envelope-hint-below" id="envelopeHint">Tap the seal to open</p>
     </div>
   </div>
 </div>

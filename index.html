@@ -1571,6 +1571,10 @@
        the fallback. */
     --gap: 0px;
     padding-top: 0vh;
+    /* Sits above the lemon collage (z-index 1) so the postcard's shadow
+       at the bottom of this picture overlaps the lemon instead of being
+       hidden under it. */
+    z-index: 2;
     background-image: url("images/Third_background.png");
     background-size: cover;
     background-position: center top;
@@ -1580,7 +1584,16 @@
          bottom of "about us" */
   body > section.story > .story-lemon    { --gap: -6cqw; --w: 64%; z-index: 1; }
   /* 3 — Solar de Pancas: 10vh below the lemon */
-  body > section.story > .story-solar    { --gap: 10vh; }
+  body > section.story > .story-solar    {
+    --gap: 10vh;
+    /* Green behind the Solar picture: its own copy of Third_background,
+       covering exactly this slide. Its proportions almost match the
+       picture's, so it is barely cropped and not stretched. */
+    background-image: url("images/Third_background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
   /* Location was moved up (after the story strip). Section backgrounds
      alternate by position, so these pin the colours each section had
@@ -2274,7 +2287,12 @@
       const e = el.getBoundingClientRect();
       if (!p.width || !p.height || !e.height) return;
       const w = p.width;
-      const h = e.bottom - p.top;          // combined height of both slides
+      // GREEN_LENGTH: how much of the combined height (save-the-date +
+      // "about us") the green covers, measured from the top. 1 = all the
+      // way down; 0.93 = stops 7% short, leaving the page's pale colour
+      // below it. Lower = shorter green AND less stretch.
+      const GREEN_LENGTH = 0.93;
+      const h = (e.bottom - p.top) * GREEN_LENGTH;
       const size = w + 'px ' + h + 'px';
       panel.style.backgroundSize = size;
       panel.style.backgroundPosition = '0px 0px';

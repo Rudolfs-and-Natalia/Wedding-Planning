@@ -1601,15 +1601,17 @@
   body > section#location { background: var(--section-bg-2); }
   body > section#details  { background: var(--section-bg-1); }
 
-  /* Phones only: pull the whole story strip (about us → lemon → Solar →
-     and everything after) up, so "about us" starts ~10vh below the
-     "Scroll down" text instead of a full screen down. Everything below
-     moves up by the same amount; desktop is untouched.
-     On phones "Scroll down" ends ~42px below the middle of the screen,
-     so -40vh + 42px leaves a 10vh gap. Change 40vh to tune:
-     bigger = "about us" closer to the text. */
+  /* Phones only: the save-the-date content sits lower in the first
+     screen (bottom-aligned instead of centred), so the gap between
+     "Scroll down" and "about us" is smaller. The first slide is still
+     exactly one screen tall and "about us" still starts right after it.
+     padding-bottom = the space left under "Scroll down": bigger =
+     content higher, smaller = content lower. Desktop is untouched. */
   @media (max-width: 640px) {
-    body > section.story { margin-top: calc(-40vh + 42px); }
+    body > section.intro-reveal {
+      justify-content: flex-end;
+      padding-bottom: 12vh;
+    }
   }
 </style>
 </head>

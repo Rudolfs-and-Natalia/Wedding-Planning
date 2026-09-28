@@ -1600,6 +1600,17 @@
      before the move. */
   body > section#location { background: var(--section-bg-2); }
   body > section#details  { background: var(--section-bg-1); }
+
+  /* Phones only: pull the whole story strip (about us → lemon → Solar →
+     and everything after) up, so "about us" starts ~10vh below the
+     "Scroll down" text instead of a full screen down. Everything below
+     moves up by the same amount; desktop is untouched.
+     On phones "Scroll down" ends ~42px below the middle of the screen,
+     so -40vh + 42px leaves a 10vh gap. Change 40vh to tune:
+     bigger = "about us" closer to the text. */
+  @media (max-width: 640px) {
+    body > section.story { margin-top: calc(-40vh + 42px); }
+  }
 </style>
 </head>
 <body>

@@ -1692,14 +1692,21 @@
     line-height: 1.05;
     letter-spacing: 0.04em;
   }
-  /* Map a little smaller than the full column: change 85% to resize. */
+  /* Map a little smaller than the full column: change 89% to resize. */
   #location .map-wrap {
-    width: 85%;
+    width: 89%;
+    margin-bottom: 0.5rem;          /* was 2.5rem: less space under the map */
     margin-left: auto;
     margin-right: auto;
   }
 
+  /* Tighter vertical spacing (the default for sections is 4rem top and
+     bottom, plus 3rem under the divider). */
+  #location .divider { margin-bottom: 2.25rem; }
+
   body > section#location {
+    padding-top: 2.75rem;
+    padding-bottom: 3rem;
     /* Same warm paper texture as the lemon section. The colour before
        url() is only a fallback, shown if the image file can't be found. */
     background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
@@ -1778,8 +1785,10 @@
 
   <div class="map-wrap">
     <div class="map-crop">
+      <!-- ll = map centre (lat,lng), z = zoom. 39.6,-8.1 at zoom 7 shows all of
+           mainland Portugal; raise z to zoom in (8 ≈ Lisbon region). -->
       <iframe
-        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F"
+        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F&ll=39.6,-8.1&z=7"
         loading="lazy" referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>

@@ -1453,9 +1453,12 @@
   .intro-reveal-scroll {
     margin-top: 2.4rem;
     font-family: 'Courier Prime', monospace;
-    font-size: 0.65rem;
+    font-size: 0.92rem;          /* same size as "Tap the seal to open" */
+    /* Line box kept at the old height (0.65rem x 1.7) so the bigger text
+       doesn't push the save-the-date up — the layout stays identical. */
+    line-height: calc(0.65rem * 1.7);
     font-weight: 700;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.32em;      /* same spacing as "Tap the seal to open" */
     text-transform: uppercase;
     color: var(--maroon);
     text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
@@ -1469,6 +1472,12 @@
 
   .intro-reveal-scroll.revealed {
     opacity: 0.9;
+  }
+
+  /* Phones only: "Scroll down" sits a little lower. "top" moves just the
+     text, without shifting the save-the-date above it. */
+  @media (max-width: 640px) {
+    .intro-reveal-scroll { top: 1.2rem; }
   }
 
   /* ================================================================
@@ -1593,6 +1602,17 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+  }
+  /* The aerial photo at the top of the Solar picture stops a few pixels
+     short of the picture's top and right edges, so a sliver of green
+     showed there. Enlarge the picture very slightly, anchored at its
+     bottom-left corner, so the photo reaches those edges; the bit that
+     now sticks out top/right is trimmed off. SOLAR_SCALE-style knob:
+     1.015 = 1.5% bigger. */
+  body > section.story > .story-solar { overflow: hidden; }
+  body > section.story > .story-solar img {
+    transform: scale(1.015);
+    transform-origin: left bottom;
   }
 
   /* Location was moved up (after the story strip). Section backgrounds

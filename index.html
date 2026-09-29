@@ -1554,7 +1554,13 @@
   body > section.story {
     padding: 0;                  /* no pale space after Solar: Location starts right at the green edge */
     overflow: hidden;
-    background: #f7f7f7;
+    /* White paper texture behind the lemon collage (and the pale space
+       around it). The green slides above/below paint over it.
+       ONE sheet, never repeated (no seams): the JS at the end of the page
+       sizes it to just cover the visible lemon area - from where the
+       green ends above the lemon down to the top of the Solar slide -
+       zooming in only as much as that area's shape requires. */
+    background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
   }
   body > section.story > .story-slide {
     --gap: 0px;
@@ -1622,7 +1628,11 @@
   /* Location was moved up (after the story strip). Section backgrounds
      alternate by position, so these pin the colours each section had
      before the move. */
-  body > section#location { background: var(--section-bg-2); }
+  body > section#location {
+    /* Same warm paper texture as the lemon section. The colour before
+       url() is only a fallback, shown if the image file can't be found. */
+    background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
+  }
   body > section#details  { background: var(--section-bg-1); }
 </style>
 </head>
@@ -2359,6 +2369,19 @@
       el.style.backgroundSize = size;
       el.style.backgroundPosition = (p.left - e.left) + 'px ' + (p.top - e.top) + 'px';
       el.style.backgroundRepeat = 'no-repeat';
+      // Start the lemon section's paper exactly where the green ends.
+      const story = document.getElementById('story');
+      const solar = document.getElementById('solar');
+      if (story && solar) {
+        const st = story.getBoundingClientRect();
+        const areaTop = p.top + h - st.top;                        // where the green ends
+        const areaH = solar.getBoundingClientRect().top - st.top - areaTop;
+        const side = Math.max(st.width, areaH);                     // square paper: cover both ways
+        story.style.backgroundSize = side + 'px ' + side + 'px';
+        story.style.backgroundPosition =
+          ((st.width - side) / 2) + 'px ' + (areaTop + (areaH - side) / 2) + 'px';
+        story.style.backgroundRepeat = 'no-repeat';
+      }
     }
     window.addEventListener('resize', sync);
     window.addEventListener('load', sync);

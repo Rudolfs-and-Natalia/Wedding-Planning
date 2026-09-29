@@ -1598,6 +1598,37 @@
   /* 2 — Lemon collage: 64% size, left side, tucked slightly up into the
          bottom of "about us" */
   body > section.story > .story-lemon    { --gap: -6cqw; --w: 64%; z-index: 1; }
+
+  /* "Alenquer" headline + description: a narrow column in the paper
+     space to the RIGHT of the lemon collage (the collage takes the left
+     64% of the column). Vertically centred on the collage. All sizes are
+     cqw (% of the column width), so it scales with the pictures.
+       left   -> starts 3cqw past the collage's right edge
+       width  -> 28cqw, leaving ~5cqw margin at the column's right edge
+       top    -> centred, then nudged 3cqw down                         */
+  .story-lemon .lemon-text {
+    position: absolute;
+    left: calc(100% + 3cqw);
+    width: 28cqw;
+    top: calc(50% + 3cqw);
+    transform: translateY(-50%);
+    color: #541319;              /* same dark red as the countdown timer */
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .story-lemon .lemon-title {
+    font-weight: 600;
+    font-size: 6cqw;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    margin: 0 0 1.6cqw;
+    color: inherit;
+  }
+  .story-lemon .lemon-desc {
+    font-weight: 500;
+    font-size: 2.9cqw;             /* same size as the Solar de Pancas text */
+    line-height: 1.4;
+    margin: 0;
+  }
   /* 3 — Solar de Pancas: 10vh below the lemon */
   body > section.story > .story-solar    {
     --gap: 10vh;
@@ -1625,9 +1656,49 @@
     transform-origin: left bottom;
   }
 
+  /* Description under the "Solar de Pancas" headline, in the empty green
+     space between the headline, the disco ball's black shadow and the
+     ivy photo. Every value is in cqw (% of the column width, which is
+     also the picture's width), measured from solar-de-pancas.png, so it
+     stays locked to the picture at any screen size.
+       left 10.6  -> lines up with the headline's left edge
+       top 65.2   -> a small gap below "PANCAS"
+       width 54   -> reaches in toward the hand and disco ball; tested so
+                     the text breaks into 5 lines, the short last line
+                     sitting where the ball bulges out
+       font 2.9   -> sized so all lines end above the ivy photo
+     If you change the font size or width, re-check the line breaks.   */
+  .story-solar .solar-desc {
+    position: absolute;
+    left: 10.6cqw;
+    top: 65.2cqw;
+    width: 54cqw;
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 2.9cqw;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: #a4b9ce;            /* same blue as the headline */
+    z-index: 1;
+  }
+
   /* Location was moved up (after the story strip). Section backgrounds
      alternate by position, so these pin the colours each section had
      before the move. */
+  /* Location headline: same size as the "Alenquer" headline (6cqw). */
+  #location .section-title h2 {
+    font-size: 6cqw;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+  }
+  /* Map a little smaller than the full column: change 85% to resize. */
+  #location .map-wrap {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   body > section#location {
     /* Same warm paper texture as the lemon section. The colour before
        url() is only a fallback, shown if the image file can't be found. */
@@ -1690,17 +1761,21 @@
   </figure>
   <figure class="story-slide story-lemon" id="lemon">
     <img src="images/lemon-collage.png" alt="Collage — Casa Nº5 tile, vineyard grapes and a lemon">
+    <div class="lemon-text">
+      <h2 class="lemon-title" data-i18n="alenquer_title">Alenquer</h2>
+      <p class="lemon-desc" data-i18n="alenquer_desc">Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.</p>
+    </div>
   </figure>
   <figure class="story-slide story-solar" id="solar">
     <img src="images/solar-de-pancas.png" alt="Solar de Pancas — the estate among the vineyards, ivy-covered facade and a disco ball">
+    <p class="solar-desc" data-i18n="solar_desc">Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.</p>
   </figure>
 </section>
 
 <section id="location">
-  <div class="section-title"><span class="section-eyebrow" data-i18n="location_eyebrow">Find your way</span><h2 data-i18n="location_title">Location</h2></div>
+  <div class="section-title"><h2 data-i18n="location_title">Location</h2></div>
   <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
-  <p class="map-caption" data-i18n="loc_caption_venues">Alenquer, Portugal — ceremony, reception & the route between them</p>
   <div class="map-wrap">
     <div class="map-crop">
       <iframe
@@ -2117,6 +2192,9 @@
       rsvp_status_error: "Something went wrong — please try again, or reach out to us directly.",
       rsvp_gift_note: "A gifts page (registry or honeymoon fund) is coming soon.",
       footer_text: "Rudolf & Natalia — 25 July 2027",
+      alenquer_title: "Alenquer",
+      alenquer_desc: "Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.",
+      solar_desc: "Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.",
     },
     pt: {
       nav_home: "Início", nav_details: "Detalhes", nav_schedule: "Programa", nav_location: "Localização", nav_rsvp: "RSVP",
@@ -2166,6 +2244,10 @@
       rsvp_status_error: "Ocorreu um erro — por favor tente novamente ou contacte-nos diretamente.",
       rsvp_gift_note: "Brevemente: uma página de presentes (lista de casamento ou lua de mel).",
       footer_text: "Rudolf & Natalia — 25 de Julho de 2027",
+      // TODO: Portuguese versions of the Alenquer and Solar de Pancas
+      // descriptions. Until they're filled in, the English text stays.
+      // alenquer_desc: "…",
+      // solar_desc: "…",
     },
   };
 

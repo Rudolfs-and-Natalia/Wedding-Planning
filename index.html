@@ -1600,19 +1600,6 @@
      before the move. */
   body > section#location { background: var(--section-bg-2); }
   body > section#details  { background: var(--section-bg-1); }
-
-  /* Phones only: the save-the-date content sits lower in the first
-     screen (bottom-aligned instead of centred), so the gap between
-     "Scroll down" and "about us" is smaller. The first slide is still
-     exactly one screen tall and "about us" still starts right after it.
-     padding-bottom = the space left under "Scroll down": bigger =
-     content higher, smaller = content lower. Desktop is untouched. */
-  @media (max-width: 640px) {
-    body > section.intro-reveal {
-      justify-content: flex-end;
-      padding-bottom: 12vh;
-    }
-  }
 </style>
 </head>
 <body>
@@ -2285,6 +2272,42 @@
 </script>
 
 
+<script>
+  // PHONES ONLY: pull "about us" (and everything after it, by the same
+  // amount) up so it starts right where the first screen ends, instead of
+  // after the save-the-date section's full height. The save-the-date
+  // itself is not changed at all. Desktop is not touched.
+  //  - "first screen" = the visible screen height with the browser bars
+  //    showing (100svh), so nothing of "about us" shows on the first screen.
+  //  - it never comes closer than MIN_GAP px below the "Scroll down" text.
+  (function () {
+    const MIN_GAP = 24;
+    const mq = window.matchMedia('(max-width: 640px)');
+    const intro = document.getElementById('introReveal');
+    const hint = document.getElementById('introScroll');
+    const story = document.getElementById('story');
+    if (!intro || !hint || !story) return;
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.appendChild(probe);
+    function place() {
+      if (!mq.matches) { story.style.marginTop = ''; return; }
+      story.style.marginTop = '0px';
+      const y = window.scrollY;
+      const i = intro.getBoundingClientRect();
+      const introTop = i.top + y, introBottom = i.bottom + y;
+      const screenBottom = introTop + probe.getBoundingClientRect().height;
+      const hintBottom = hint.getBoundingClientRect().bottom + y;
+      const target = Math.max(screenBottom, hintBottom + MIN_GAP);
+      const shift = Math.min(0, target - introBottom);
+      story.style.marginTop = shift + 'px';
+    }
+    place();
+    window.addEventListener('load', place);
+    mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place);
+    if (window.ResizeObserver) new ResizeObserver(place).observe(intro);
+  })();
+</script>
 <script>
   // One Third_background image, shown whole, stretched over the
   // save-the-date panel AND the "about us" slide together. Both elements

@@ -1552,7 +1552,7 @@
        --gap     space ABOVE the slide (negative = overlap)
        --w       width, as % of the column                               */
   body > section.story {
-    padding: 0 0 18vh;
+    padding: 0;                  /* no pale space after Solar: Location starts right at the green edge */
     overflow: hidden;
     background: #f7f7f7;
   }
@@ -1599,8 +1599,12 @@
        covering exactly this slide. Its proportions almost match the
        picture's, so it is barely cropped and not stretched. */
     background-image: url("images/Third_background.png");
-    background-size: cover;
-    background-position: center;
+    /* Green runs ~7% below the picture: 12.3% of the width = 7% of the
+       picture's height (it is 1.758x taller than wide). The background is
+       stretched to fill the box, so its top edge stays where it was. */
+    padding-bottom: 12.3%;
+    background-size: 100% 100%;
+    background-position: center top;
     background-repeat: no-repeat;
   }
   /* The aerial photo at the top of the Solar picture stops a few pixels

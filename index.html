@@ -1651,7 +1651,9 @@
        --w       width, as % of the column                               */
   body > section.story {
     padding: 0;                  /* no pale space after Solar: Location starts right at the green edge */
-    overflow: hidden;
+    /* Clip sideways only, so the Solar picture can spill downwards. */
+    overflow-x: clip;
+    overflow-y: visible;
     /* White paper texture behind the lemon collage (and the pale space
        around it). The green slides above/below paint over it.
        ONE sheet, never repeated (no seams): the JS at the end of the page
@@ -1736,13 +1738,18 @@
        covering exactly this slide. Its proportions almost match the
        picture's, so it is barely cropped and not stretched. */
     background-image: url("images/Third_background.png");
-    /* Green runs ~7% below the picture: 12.3% of the width = 7% of the
-       picture's height (it is 1.758x taller than wide). The background is
-       stretched to fill the box, so its top edge stays where it was. */
-    padding-bottom: 12.3%;
-    background-size: 100% 100%;
+    /* The green now STOPS behind the picture, at 90% of its height, and
+       the bottom 10% of the picture (the printed photo) spills over into
+       the Location section below. The picture is 1.758x taller than wide,
+       so 10% of its height = 17.58% of the width.
+       SPILL knob: change 0.9 / 90% and 17.58% together
+       (e.g. 15% spill -> 85% and 26.37%). */
+    padding-bottom: 0;
+    margin-bottom: -17.58%;         /* next section starts at 90% of the picture */
+    background-size: 100% 90%;      /* green ends at 90% of the picture */
     background-position: center top;
     background-repeat: no-repeat;
+    z-index: 2;                     /* spilled part paints over Location */
   }
   /* The aerial photo at the top of the Solar picture stops a few pixels
      short of the picture's top and right edges, so a sliver of green
@@ -1807,7 +1814,15 @@
   #location .section-title { margin-bottom: 1.5rem; }
 
   body > section#location {
-    padding-top: 2.75rem;
+    /* Extra room at the top for the Solar picture spilling into it
+       (17.58% of the column width), plus the original 2.75rem. */
+    padding-top: calc(var(--col) * 0.1758 + 2.75rem);
+    /* PULL-UP knob: slides the whole Location section (background and
+       contents) up under the Solar picture to close the pale gap left by
+       the top edge of its green background. 0.06 = 6% of the column
+       width; raise it if a gap still shows, lower it if too much. */
+    --location-pullup: 0.06;
+    margin-top: calc(var(--col) * var(--location-pullup) * -1);
     padding-bottom: 3rem;
     /* Same green as the Solar de Pancas slide above it. The colour
        before url() is only a fallback if the image can't be found. */
@@ -2588,8 +2603,8 @@
 
 <script type="module">
   // ---- fill these in from Supabase: Project Settings > API Keys ----
-  const SUPABASE_URL = 'https://rqloocktutjmzhtgcdqa.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_O0NYdNIXpiFQQkltvRgPnw_MBNd3mnG';
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
   // --------------------------------------------------------------------
 
   // Supabase is loaded only when someone actually sends the form. Before,

@@ -65,6 +65,10 @@
   html { scroll-behavior: smooth; }
 
   body {
+    /* Light text on dark backgrounds looks heavier on Macs/iPhones
+       than it really is; this renders it at its true, thinner weight. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-body);
     background: var(--cream);
     color: var(--ink);
@@ -1024,12 +1028,13 @@
   }
   nav .nav-links a { font-size: 0.64rem; }       /* was 0.7rem */
   nav .lang-toggle { margin-left: auto; flex-shrink: 0; }
+  nav .lang-toggle button, nav .lang-toggle .lang-sep { font-size: 0.8rem; }   /* was 0.7rem */
   @media (max-width: 640px) {
     nav { padding-left: 0.75rem; padding-right: 0.75rem; gap: 0.6rem; }
     nav .nav-links { gap: 0.75rem; }
     nav .nav-links a { font-size: 0.56rem; letter-spacing: 0.12em; }
     nav .lang-toggle { padding-left: 0.6rem; }
-    nav .lang-toggle button { font-size: 0.6rem; letter-spacing: 0.12em; }
+    nav .lang-toggle button { font-size: 0.7rem; letter-spacing: 0.12em; }   /* was 0.6rem */
   }
 
   /* When a nav link jumps to a slide, stop just below the sticky bar
@@ -1719,7 +1724,7 @@
   }
   .story-lemon .lemon-desc {
     font-family: var(--font-body);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2.9cqw;             /* same size as the Solar de Pancas text */
     line-height: 1.4;
     margin: 0;
@@ -1770,7 +1775,7 @@
     width: 43.2cqw;   /* was 54cqw (20% narrower) */
     margin: 0;
     font-family: var(--font-body);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2.9cqw;
     line-height: 1.4;
     letter-spacing: 0.01em;
@@ -1799,14 +1804,14 @@
      bottom, plus 3rem under the divider). */
   /* Divider ornament removed; this keeps the gap between the
      headline and the map. */
-  #location .section-title { margin-bottom: 2rem; }
+  #location .section-title { margin-bottom: 1.5rem; }
 
   body > section#location {
     padding-top: 2.75rem;
     padding-bottom: 3rem;
-    /* Same warm paper texture as the lemon section. The colour before
-       url() is only a fallback, shown if the image file can't be found. */
-    background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
+    /* Same green as the Solar de Pancas slide above it. The colour
+       before url() is only a fallback if the image can't be found. */
+    background: #545f3b url("images/Third_background.png") center / cover no-repeat;
   }
   body > section#details  { background: var(--section-bg-1); }
 
@@ -1815,6 +1820,39 @@
   #rsvp, #rsvp *, #rsvp ::placeholder {
     font-family: var(--font-body);
     font-style: normal;
+  }
+  /* Intro line under the RSVP title: same size/spacing as the other
+     body texts, keeping its original dark colour. */
+  #rsvp .rsvp-intro {
+    width: 74cqw;
+    margin: 1.25rem auto 2.5rem;
+    padding: 0;
+    font-weight: 400;
+    font-size: 2.9cqw;
+    line-height: 1.4;
+    text-align: center;
+    opacity: 0.75;
+  }
+  /* Closing note under the form: styled like "Tap the seal to open"
+     on the envelope (it wraps onto more lines where needed). */
+  #rsvp .rsvp-closing {
+    font-size: 0.76rem;   /* was 0.92rem */
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    line-height: 1.6;
+    color: var(--maroon);
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
+    text-align: center;
+  }
+  /* Section labels ("Your details", "Travel & stay"…): same font as
+     the venue names on the map, in capitals. */
+  #rsvp .rsvp-legend {
+    font-family: var(--font-head);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   /* ---------- Headline pictures ----------
@@ -1841,8 +1879,26 @@
   html:not([lang="pt"]) .lang-only-pt,
   html[lang="pt"] .lang-only-en { display: none; }
   #location .location-title .title-img { margin: 0 auto; }
-  #location .location-title .lang-only-en { width: 32.7cqw; }
-  #location .location-title .lang-only-pt { width: 45.1cqw; }
+  /* Same picture scale as the other headers (0.07375cqw per px). */
+  #location .getthere-en { width: 64.2cqw; }
+  #location .getthere-pt { width: 51.6cqw; }
+  #location .stay-en     { width: 51cqw; }
+  #location .stay-pt     { width: 68cqw; }
+
+  /* Text under each header: light yellow body text, like "About us". */
+  #location .loc-text {
+    width: 74cqw;
+    margin: 0 auto 2.5rem;
+    padding: 0;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 2.9cqw;
+    line-height: 1.4;
+    color: rgb(255, 247, 190);
+    text-align: center;
+  }
+  #location .stay-title { margin-top: 3rem; }
+  #location .loc-text:last-child { margin-bottom: 0; }
 
   /* About us: header at the top of the "about us" slide, on the green.
      Same picture scale as Location (EN 447px / PT 566px wide). */
@@ -1860,7 +1916,7 @@
     width: 74cqw;
     margin: 0 auto 4cqw;
     font-family: var(--font-body);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2.9cqw;
     line-height: 1.4;
     color: rgb(255, 247, 190);
@@ -1882,7 +1938,7 @@
   /* RSVP: same letter height as Alenquer, centred. */
   #rsvp .rsvp-title .title-img {
     width: auto;
-    height: var(--title-h);
+    height: calc(var(--title-h) * 1.2);   /* 20% bigger than the other titles */
     margin: 0 auto;
   }
 
@@ -1987,15 +2043,22 @@
 
 <section id="location">
   <div class="section-title"><h2 class="location-title">
-    <img class="title-img lang-only-en" src="images/location-title-en.png" alt="Location">
-    <img class="title-img lang-only-pt" src="images/location-title-pt.png" alt="Localização">
+    <img class="title-img lang-only-en getthere-en" src="images/getthere-title-en.png" alt="How to get there">
+    <img class="title-img lang-only-pt getthere-pt" src="images/getthere-title-pt.png" alt="Como chegar">
   </h2></div>
+  <p class="loc-text" data-i18n="loc_getting_there">Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.</p>
 
   <div class="map-wrap">
     <div class="map-crop">
       <div id="venueMap" role="region" aria-label="Map of the ceremony and reception venues"></div>
     </div>
   </div>
+
+  <div class="section-title stay-title"><h2 class="location-title">
+    <img class="title-img lang-only-en stay-en" src="images/stay-title-en.png" alt="Where to stay">
+    <img class="title-img lang-only-pt stay-pt" src="images/stay-title-pt.png" alt="Onde se hospedar">
+  </h2></div>
+  <p class="loc-text" data-i18n="loc_stay">Alenquer is charming but small, with only a handful of places to stay. If you'd like to wake up among the vineyards, rent a house or apartment there, and book early. Prefer city comforts? Stay in Lisbon, just a short drive away, and the shuttle will get you to the party and back.</p>
 </section>
 
 
@@ -2138,7 +2201,7 @@
 
 <section id="rsvp">
   <div class="section-title"><h2 class="rsvp-title"><img class="title-img" src="images/rsvp-title.png" alt="RSVP"></h2></div>
-  <p data-i18n="rsvp_intro" style="text-align:center; margin-top:1.25rem; margin-bottom:2.5rem; font-size:0.95rem; opacity:0.75;">
+  <p class="rsvp-intro" data-i18n="rsvp_intro">
     We can't wait to celebrate with you — please let us know by filling in the form below.
   </p>
 
@@ -2203,10 +2266,6 @@
             <input type="checkbox" name="travel_to_lisbon">
             <span data-i18n="rsvp_travel_to">I would like transportation back to Lisbon</span>
           </label>
-          <label class="rsvp-checkbox-item">
-            <input type="checkbox" name="help_accommodation">
-            <span data-i18n="rsvp_travel_stay">I would like help finding accommodation</span>
-          </label>
         </div>
       </div>
     </div>
@@ -2225,7 +2284,7 @@
     <p class="rsvp-status" id="statusMsg"></p>
   </form>
 
-  <p class="notice" data-i18n="rsvp_gift_note">Further details of the celebration are coming soon.</p>
+  <p class="notice rsvp-closing" data-i18n="rsvp_gift_note">Further details of the celebration are coming soon.</p>
 </section>
 
 <footer>
@@ -2382,7 +2441,6 @@
       rsvp_legend_travel: "Travel & stay",
       rsvp_travel_from: "I would like transportation from Lisbon",
       rsvp_travel_to: "I would like transportation back to Lisbon",
-      rsvp_travel_stay: "I would like help finding accommodation",
       rsvp_legend_note: "A note for us",
       rsvp_ph_message: "Any well wishes, questions, or song requests",
       rsvp_btn_send: "Send RSVP", rsvp_btn_sending: "Sending…",
@@ -2393,6 +2451,8 @@
       intro_scroll: "Scroll down",
       map_open: "Open in Google Maps",
       map_lisbon: "Lisbon", map_lisbon_meta: "Arrivals & transfers",
+      loc_getting_there: "Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.",
+      loc_stay: "Alenquer is charming but small, with only a handful of places to stay. If you'd like to wake up among the vineyards, rent a house or apartment there, and book early. Prefer city comforts? Stay in Lisbon, just a short drive away, and the shuttle will get you to the party and back.",
       alenquer_title: "Alenquer",
       alenquer_desc: "Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.",
       solar_desc: "Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.",
@@ -2436,7 +2496,6 @@
       rsvp_legend_travel: "Viagem e alojamento",
       rsvp_travel_from: "Gostaria de transporte a partir de Lisboa",
       rsvp_travel_to: "Gostaria de transporte de regresso a Lisboa",
-      rsvp_travel_stay: "Gostaria de ajuda para encontrar alojamento",
       rsvp_legend_note: "Uma mensagem para nós",
       rsvp_ph_message: "Votos, perguntas ou pedidos de música",
       rsvp_btn_send: "Enviar Confirmação", rsvp_btn_sending: "A enviar…",
@@ -2447,6 +2506,8 @@
       intro_scroll: "Deslize para baixo",
       map_open: "Abrir no Google Maps",
       map_lisbon: "Lisboa", map_lisbon_meta: "Chegadas e transportes",
+      loc_getting_there: "Deixem a condução connosco. Um autocarro vai buscar todos a um ponto de encontro em Lisboa, deixa-vos na igreja e segue depois para o Solar de Pancas. Por volta das 2 da manhã traz-vos de volta a Lisboa: nada de alugar carro nem de sortear quem fica sem beber.",
+      loc_stay: "Alenquer é encantadora, mas pequena, e tem poucos sítios onde ficar. Se quiserem acordar entre as vinhas, aluguem uma casa ou um apartamento por lá, e reservem cedo. Preferem o conforto da cidade? Fiquem em Lisboa, a uma curta distância, e o autocarro leva-vos à festa e traz-vos de volta.",
       alenquer_desc: "Situada na região vinícola do Oeste, a cerca de 40 minutos de Lisboa, é uma vila histórica moldada pela sua herança árabe e medieval, construída nas encostas do vale do rio Alenquer.",
       solar_desc: "O Solar de Pancas, em Alenquer, foi fundado em 1498. É um solar histórico rodeado de vinhas, com uma arquitetura tradicional e uma forte ligação à produção de vinho da região.",
     },
@@ -2527,8 +2588,8 @@
 
 <script type="module">
   // ---- fill these in from Supabase: Project Settings > API Keys ----
-  const SUPABASE_URL = 'https://rqloocktutjmzhtgcdqa.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_O0NYdNIXpiFQQkltvRgPnw_MBNd3mnG';
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
   // --------------------------------------------------------------------
 
   // Supabase is loaded only when someone actually sends the form. Before,
@@ -2576,7 +2637,6 @@
       dietary_restrictions: attending === 'yes' ? (data.get('dietary_restrictions') || null) : null,
       travel_from_lisbon: data.get('travel_from_lisbon') === 'on',
       travel_to_lisbon: data.get('travel_to_lisbon') === 'on',
-      help_accommodation: data.get('help_accommodation') === 'on',
       message: data.get('message') || null,
     };
 
@@ -2795,6 +2855,13 @@
       cooperativeGestures: true,   // page scrolls normally; ctrl/2 fingers to move the map
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+    // The map-data credits are required by the data licence, so they
+    // stay - but folded into the small (i) button by default.
+    const foldCredits = () => el.querySelectorAll('.maplibregl-ctrl-attrib.maplibregl-compact-show')
+      .forEach(c => { c.classList.remove('maplibregl-compact-show'); c.removeAttribute('open'); });
+    map.on('load', foldCredits);
+    map.once('idle', foldCredits);
 
     VENUES.forEach(v => {
       const pin = document.createElement('div');

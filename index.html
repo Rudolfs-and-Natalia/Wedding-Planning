@@ -8,6 +8,37 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cormorant:ital,wght@0,500;1,500;1,600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
+  /* ================================================================
+     Site fonts
+     ================================================================
+     Body: Adobe Arabic   Headers: Celtic MN
+     Visitors only see these if the font files below exist in a
+     "fonts" folder next to index.html (guests won't have them
+     installed). Until then, each falls back to the previous font
+     (Courier Prime / Cormorant Garamond), so nothing breaks.
+     local() lets your own computer use the installed copy. */
+  @font-face {
+    font-family: 'Site Body';
+    src: local('Adobe Arabic'), local('AdobeArabic-Regular'),
+         url('fonts/AdobeArabic-Regular.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Site Body';
+    src: local('Adobe Arabic Bold'), local('AdobeArabic-Bold'),
+         url('fonts/AdobeArabic-Bold.woff2') format('woff2');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Site Head';
+    src: local('Celtic MN'), local('CelticMN'),
+         url('fonts/CelticMN.woff2') format('woff2');
+    font-weight: 400 700; font-style: normal; font-display: swap;
+  }
+  :root {
+    --font-body: 'Site Body', 'Courier Prime', 'Courier New', monospace;
+    --font-head: 'Site Head', 'Cormorant Garamond', 'Cormorant', serif;
+  }
   :root {
     --moss: #414a30;
     --moss-deep: #2b3320;
@@ -33,7 +64,7 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-family: var(--font-body);
     background: var(--cream);
     color: var(--ink);
     font-weight: 400;
@@ -42,7 +73,7 @@
   }
 
   h1, h2, h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-weight: 500;
     letter-spacing: 0.03em;
   }
@@ -167,7 +198,7 @@
   }
 
   .hero .eyebrow {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.72rem;
     letter-spacing: 0.38em;
     text-transform: uppercase;
@@ -178,7 +209,7 @@
   }
 
   .hero h1 {
-    font-family: 'Cormorant', serif;
+    font-family: var(--font-head);
     font-style: italic;
     font-weight: 500;
     font-size: clamp(3rem, 10cqw, 6.4rem);
@@ -192,7 +223,7 @@
 
   .hero .ampersand {
     display: block;
-    font-family: 'Cormorant', serif;
+    font-family: var(--font-head);
     font-style: italic;
     font-weight: 500;
     font-size: clamp(1.4rem, 4cqw, 2.2rem);
@@ -201,7 +232,7 @@
   }
 
   .hero .eyebrow-small {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
@@ -212,7 +243,7 @@
   }
 
   .hero .date-line {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.85rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -269,7 +300,7 @@
   }
 
   .countdown .num {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-size: clamp(1.4rem, 4.6cqw, 2.5rem);
     font-weight: 600;
     color: var(--cream-paper);
@@ -281,7 +312,7 @@
   }
 
   .countdown .label {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.62rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -291,7 +322,7 @@
   }
 
   .countdown .sep {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-size: clamp(1.8rem, 6cqw, 3.2rem);
     color: var(--gold-light);
     align-self: flex-start;
@@ -305,7 +336,7 @@
   }
 
   .hero .scroll-hint {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.65rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
@@ -342,7 +373,7 @@
 
   .section-eyebrow {
     display: block;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.65rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
@@ -426,7 +457,7 @@
   }
 
   .card .meta {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -444,7 +475,7 @@
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px dashed var(--line);
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -515,7 +546,7 @@
   }
 
   .arrival-label {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -523,7 +554,7 @@
   }
 
   .arrival-time {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.88rem;
     color: var(--ink);
     letter-spacing: 0.03em;
@@ -567,7 +598,7 @@
 
   .map-caption {
     text-align: center;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -605,7 +636,7 @@
 
   .plaque-title {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-weight: 700;
     font-size: 1.15rem;
     letter-spacing: 0.15em;
@@ -613,7 +644,7 @@
 
   .plaque-number {
     display: block;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.95rem;
     letter-spacing: 0.08em;
     margin-top: 0.2rem;
@@ -673,7 +704,7 @@
 
   .schedule-date {
     text-align: center;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.82rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -701,7 +732,7 @@
   .schedule li:last-child { border-bottom: none; }
 
   .schedule .time {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-weight: 600;
     font-style: italic;
     font-size: 1.3rem;
@@ -711,7 +742,7 @@
   }
 
   .schedule .event h4 {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-weight: 700;
     font-size: 0.9rem;
     letter-spacing: 0.06em;
@@ -729,7 +760,7 @@
     text-align: center;
     font-size: 0.85rem;
     font-style: italic;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     color: var(--ink);
     opacity: 0.65;
     margin-top: 2.2rem;
@@ -746,7 +777,7 @@
   footer .fan { margin: 0 auto 1.3rem; opacity: 0.85; }
 
   footer p {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.72rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
@@ -775,7 +806,7 @@
   }
 
   .rsvp-legend {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
     font-style: italic;
     font-weight: 600;
     font-size: 1.3rem;
@@ -787,7 +818,7 @@
 
   .rsvp-field label {
     display: block;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -806,7 +837,7 @@
     border-bottom: 1px solid var(--line);
     background: transparent;
     padding: 0.55rem 0.1rem;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.92rem;
     color: var(--ink);
     outline: none;
@@ -893,7 +924,7 @@
   .rsvp-submit-row { text-align: center; margin-top: 0.5rem; }
 
   .rsvp-form button {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -935,7 +966,7 @@
   }
 
   nav a {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.7rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -957,7 +988,7 @@
   }
 
   .lang-toggle button {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.7rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -1115,7 +1146,7 @@
     transform: translateX(-50%);
     margin: 0;
     width: max-content;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.92rem;
     font-weight: 700;
     letter-spacing: 0.32em;
@@ -1417,7 +1448,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    font-family: Constantia, 'Cormorant Garamond', serif;
+    font-family: Constantia, var(--font-head);
     color: #541319;
   }
 
@@ -1452,7 +1483,7 @@
 
   .intro-reveal-scroll {
     margin-top: 2.4rem;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--font-body);
     font-size: 0.92rem;          /* same size as "Tap the seal to open" */
     /* Line box kept at the old height (0.65rem x 1.7) so the bigger text
        doesn't push the save-the-date up — the layout stays identical. */
@@ -1487,8 +1518,9 @@
      + save-the-date intro is public. Everything below it is hidden by
      default. Exception: the "story" slides (about us → lemon → Solar)
      directly under the save-the-date ARE public, together with the
-     "Scroll down" hint that leads into them, and the Location map
-     that follows them.
+     "Scroll down" hint that leads into them, the Location map
+     that follows them, the RSVP form (always the last page), and the
+     nav bar with the EN/PT toggle - minus links to unfinished sections.
 
      To work on/preview the rest of the site yourself, open the site
      with ?preview=rn2027 added to the URL — e.g.:
@@ -1501,9 +1533,9 @@
      When the rest of the site is finished and ready for guests too,
      delete this whole CSS block (and the matching inline script right
      after <body> below) — nothing else needs to change. */
-  body:not(.preview-mode) > nav,
+  body:not(.preview-mode) > nav .nav-private,
   body:not(.preview-mode) > header.hero,
-  body:not(.preview-mode) > section:not(.intro-reveal):not(.story):not(#location),
+  body:not(.preview-mode) > section:not(.intro-reveal):not(.story):not(#location):not(#rsvp),
   body:not(.preview-mode) > footer {
     display: none;
   }
@@ -1613,7 +1645,7 @@
     top: calc(50% + 3cqw);
     transform: translateY(-50%);
     color: #541319;              /* same dark red as the countdown timer */
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-head);
   }
   .story-lemon .lemon-title {
     font-weight: 600;
@@ -1624,6 +1656,7 @@
     color: inherit;
   }
   .story-lemon .lemon-desc {
+    font-family: var(--font-body);
     font-weight: 500;
     font-size: 2.9cqw;             /* same size as the Solar de Pancas text */
     line-height: 1.4;
@@ -1674,7 +1707,7 @@
     top: 65.2cqw;
     width: 54cqw;
     margin: 0;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-body);
     font-weight: 500;
     font-size: 2.9cqw;
     line-height: 1.4;
@@ -1712,6 +1745,12 @@
     background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
   }
   body > section#details  { background: var(--section-bg-1); }
+
+  /* RSVP: same warm paper as Location, so the public page flows
+     straight from the map into the form without a colour jump. */
+  body > section#rsvp {
+    background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
+  }
 </style>
 </head>
 <body>
@@ -1758,8 +1797,21 @@
       </div>
     </div>
   </div>
-  <span class="intro-reveal-scroll" id="introScroll">Scroll down</span>
+  <span class="intro-reveal-scroll" id="introScroll" data-i18n="intro_scroll">Scroll down</span>
 </section>
+
+<nav>
+  <a class="nav-private" href="#home" data-i18n="nav_home">Home</a>
+  <a class="nav-private" href="#details" data-i18n="nav_details">Details</a>
+  <a href="#location" data-i18n="nav_location">Location</a>
+  <a class="nav-private" href="#schedule" data-i18n="nav_schedule">Schedule</a>
+  <a href="#rsvp" data-i18n="nav_rsvp">RSVP</a>
+  <span class="lang-toggle">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <span class="lang-sep">/</span>
+    <button type="button" class="lang-btn" data-lang="pt">PT</button>
+  </span>
+</nav>
 
 <!-- ===== Story slides (public, directly under the save-the-date) ===== -->
 <section class="story" id="story">
@@ -1795,18 +1847,6 @@
   </div>
 </section>
 
-<nav>
-  <a href="#home" data-i18n="nav_home">Home</a>
-  <a href="#details" data-i18n="nav_details">Details</a>
-  <a href="#location" data-i18n="nav_location">Location</a>
-  <a href="#schedule" data-i18n="nav_schedule">Schedule</a>
-  <a href="#rsvp" data-i18n="nav_rsvp">RSVP</a>
-  <span class="lang-toggle">
-    <button type="button" class="lang-btn active" data-lang="en">EN</button>
-    <span class="lang-sep">/</span>
-    <button type="button" class="lang-btn" data-lang="pt">PT</button>
-  </span>
-</nav>
 
 <header class="hero" id="home">
   <div class="hero-ground-texture" aria-hidden="true"></div>
@@ -2201,6 +2241,7 @@
       rsvp_status_error: "Something went wrong — please try again, or reach out to us directly.",
       rsvp_gift_note: "A gifts page (registry or honeymoon fund) is coming soon.",
       footer_text: "Rudolf & Natalia — 25 July 2027",
+      intro_scroll: "Scroll down",
       alenquer_title: "Alenquer",
       alenquer_desc: "Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.",
       solar_desc: "Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.",
@@ -2253,10 +2294,9 @@
       rsvp_status_error: "Ocorreu um erro — por favor tente novamente ou contacte-nos diretamente.",
       rsvp_gift_note: "Brevemente: uma página de presentes (lista de casamento ou lua de mel).",
       footer_text: "Rudolf & Natalia — 25 de Julho de 2027",
-      // TODO: Portuguese versions of the Alenquer and Solar de Pancas
-      // descriptions. Until they're filled in, the English text stays.
-      // alenquer_desc: "…",
-      // solar_desc: "…",
+      intro_scroll: "Deslize para baixo",
+      alenquer_desc: "Situada na região vinícola do Oeste, a cerca de 40 minutos de Lisboa, é uma vila histórica moldada pela sua herança árabe e medieval, construída nas encostas do vale do rio Alenquer.",
+      solar_desc: "O Solar de Pancas, em Alenquer, foi fundado em 1498. É um solar histórico rodeado de vinhas, com uma arquitetura tradicional e uma forte ligação à produção de vinho da região.",
     },
   };
 
@@ -2299,7 +2339,7 @@
 
     if (distance < 0) {
       document.getElementById('countdown').innerHTML =
-        '<p style="font-family: \'Cormorant Garamond\', serif; font-size: 1.8rem;">' + translations[currentLang].cd_married + '</p>';
+        '<p style="font-family: var(--font-head); font-size: 1.8rem;">' + translations[currentLang].cd_married + '</p>';
       const sdt = document.getElementById('savedateTimer');
       if (sdt) sdt.style.display = 'none';
       return;
@@ -2410,7 +2450,9 @@
     const mq = window.matchMedia('(max-width: 640px)');
     const intro = document.getElementById('introReveal');
     const hint = document.getElementById('introScroll');
-    const story = document.getElementById('story');
+    // Whatever directly follows the save-the-date (the nav bar, then the
+    // story slides) is what gets pulled up.
+    const story = intro.nextElementSibling;
     if (!intro || !hint || !story) return;
     const probe = document.createElement('div');
     probe.style.cssText = 'position:absolute;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';

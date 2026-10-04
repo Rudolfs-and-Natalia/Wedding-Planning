@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cormorant:ital,wght@0,500;1,500;1,600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
   /* ================================================================
      Site fonts
@@ -576,25 +577,55 @@
     aspect-ratio: 1 / 1;
   }
 
-  .map-crop::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 8px;
-    background: var(--cream-paper);
-    z-index: 2;
+  /* ---------- Venue map (MapLibre, custom-coloured) ----------
+     Colours live in MAP_COLORS in the script near the end of the page. */
+  #venueMap { position: absolute; inset: 0; }
+  #venueMap .maplibregl-ctrl-attrib { font-size: 10px; }
+  .venue-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
   }
-
-  .map-crop iframe {
-    position: absolute;
-    top: -70px;
-    left: 0;
-    width: 100%;
-    height: calc(100% + 70px);
-    border: 0;
-    display: block;
-    filter: sepia(28%) saturate(70%) hue-rotate(-8deg) contrast(1.04);
+  .venue-pin.label-above { flex-direction: column-reverse; }
+  .venue-pin.label-above .venue-pin-label { margin: 0 0 4px; }
+  .venue-pin-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #541319;
+    border: 2px solid #fff7be;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
   }
+  .venue-pin-label {
+    margin-top: 4px;
+    padding: 2px 7px;
+    background: #fff7be;
+    color: #541319;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+  /* Lisbon: bigger dot and a larger, bolder name tag. */
+  .venue-pin.is-city .venue-pin-dot { width: 20px; height: 20px; border-width: 3px; }
+  .venue-pin.is-city .venue-pin-label {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+  }
+  .maplibregl-popup-content {
+    background: #fff7be;
+    color: #541319;
+    font-family: var(--font-body);
+    padding: 10px 14px;
+    border-radius: 0;
+  }
+  .maplibregl-popup-tip { border-top-color: #fff7be !important; border-bottom-color: #fff7be !important; }
+  .maplibregl-popup-content .pop-meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; }
+  .maplibregl-popup-content .pop-name { font-family: var(--font-head); font-size: 17px; font-weight: 600; margin: 2px 0 6px; }
+  .maplibregl-popup-content a { color: #541319; font-size: 12px; }
 
   .map-caption {
     text-align: center;
@@ -959,9 +990,12 @@
     justify-content: center;
     gap: clamp(1rem, 4cqw, 2.5rem);
     padding: 1.05rem 1rem;
-    background: rgba(43, 51, 32, 0.92);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(217,184,120,0.25);
+    /* Bar colours: yellow background, text colour below. */
+    /* last number = opacity: 0.8 = 80% solid / 20% see-through */
+    --nav-bg: rgba(101, 97, 57, 0.8);
+    --nav-ink: rgb(255, 247, 190);   /* light yellow */
+    background: var(--nav-bg);
+    border-bottom: 1px solid rgba(255, 247, 190, 0.15);
     flex-wrap: wrap;
   }
 
@@ -970,13 +1004,17 @@
     font-size: 0.7rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--cream);
+    color: var(--nav-ink);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease;
     white-space: nowrap;
   }
 
-  nav a:hover { color: var(--gold-light); }
+  nav a:hover { opacity: 0.55; }
+
+  /* When a nav link jumps to a slide, stop just below the sticky bar
+     instead of hiding the slide's top edge underneath it. */
+  #about-us, #lemon, #rsvp { scroll-margin-top: 3.4rem; }
 
   .lang-toggle {
     display: flex;
@@ -984,7 +1022,7 @@
     gap: 0.4rem;
     margin-left: 0.25rem;
     padding-left: clamp(1rem, 4cqw, 2.5rem);
-    border-left: 1px solid rgba(217,184,120,0.25);
+    border-left: 1px solid rgba(255, 247, 190, 0.2);
   }
 
   .lang-toggle button {
@@ -995,20 +1033,20 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--cream);
-    opacity: 0.55;
+    color: var(--nav-ink);
+    opacity: 0.45;
     padding: 0.1rem 0;
     transition: opacity 0.2s ease, color 0.2s ease;
   }
 
   .lang-toggle button.active {
     opacity: 1;
-    color: var(--gold-light);
-    border-bottom: 1px solid var(--gold-light);
+    color: var(--nav-ink);
+    border-bottom: 1px solid var(--nav-ink);
   }
 
   .lang-toggle .lang-sep {
-    color: rgba(245,239,224,0.3);
+    color: rgba(255, 247, 190, 0.3);
     font-size: 0.7rem;
   }
 
@@ -1442,9 +1480,11 @@
      own color; cqw units keep it locked to the image's own scale. */
   .savedate-timer {
     position: absolute;
-    left: 8%;
-    top: 42%;
-    width: 32%;
+    /* Nudged right/up and widened slightly for the bigger numbers.
+       Was: left 8%, top 42%, width 32%. */
+    left: 15%;
+    top: 39%;
+    width: 34%;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -1459,14 +1499,14 @@
   }
 
   .savedate-timer .sdt-num {
-    font-size: 4.3cqw;
+    font-size: 4.9cqw;   /* was 4.3 */
     font-weight: 600;
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
 
   .savedate-timer .sdt-label {
-    font-size: 2cqw;
+    font-size: 2.3cqw;   /* was 2 */
     letter-spacing: 0.1em;
     text-transform: uppercase;
     opacity: 0.72;
@@ -1475,7 +1515,7 @@
   }
 
   .savedate-timer .sdt-sep {
-    font-size: 3cqw;
+    font-size: 3.4cqw;   /* was 3 */
     opacity: 0.45;
     align-self: center;
     transform: translateY(-0.5cqw);
@@ -1488,11 +1528,12 @@
     /* Line box kept at the old height (0.65rem x 1.7) so the bigger text
        doesn't push the save-the-date up — the layout stays identical. */
     line-height: calc(0.65rem * 1.7);
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: 0.32em;      /* same spacing as "Tap the seal to open" */
     text-transform: uppercase;
-    color: var(--maroon);
-    text-shadow: 0 1px 3px rgba(245,239,224,0.95), 0 1px 10px rgba(245,239,224,0.8);
+    /* Light yellow of the "We are getting married" lettering
+       (sampled from envelope-text-en.png). */
+    color: rgb(255, 247, 190);
     opacity: 0;
     position: relative;
     z-index: 1;
@@ -1640,9 +1681,10 @@
        top    -> centred, then nudged 3cqw down                         */
   .story-lemon .lemon-text {
     position: absolute;
-    left: calc(100% + 3cqw);
-    width: 28cqw;
-    top: calc(50% + 3cqw);
+    /* Was: left 100%+3cqw, width 28cqw, top 50%+3cqw. */
+    left: calc(100% - 9cqw);
+    width: 32cqw;
+    top: calc(63% + 3cqw);
     transform: translateY(-50%);
     color: #541319;              /* same dark red as the countdown timer */
     font-family: var(--font-head);
@@ -1705,7 +1747,7 @@
     position: absolute;
     left: 10.6cqw;
     top: 65.2cqw;
-    width: 54cqw;
+    width: 43.2cqw;   /* was 54cqw (20% narrower) */
     margin: 0;
     font-family: var(--font-body);
     font-weight: 500;
@@ -1735,7 +1777,9 @@
 
   /* Tighter vertical spacing (the default for sections is 4rem top and
      bottom, plus 3rem under the divider). */
-  #location .divider { margin-bottom: 2.25rem; }
+  /* Divider ornament removed; this keeps the gap between the
+     headline and the map. */
+  #location .section-title { margin-bottom: 2rem; }
 
   body > section#location {
     padding-top: 2.75rem;
@@ -1745,6 +1789,59 @@
     background: #efe6d3 url("images/paper-warm.jpg") center / cover no-repeat;
   }
   body > section#details  { background: var(--section-bg-1); }
+
+  /* ---------- Headline pictures ----------
+     Headlines drawn as images (lettering exported from the design).
+     The data-i18n attribute was removed from these h2s on purpose:
+     the language switch replaces an element's text, which would wipe
+     out the picture. Both words read the same in EN and PT.
+     TITLE_H = letter height, shared so all picture-headlines match
+     (as % of the column width, like the rest of the layout). */
+  :root { --title-h: 5.9cqw; }
+  .title-img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+  /* Alenquer: fills the narrow text column beside the lemon collage. */
+  /* Fixed size, so widening the text block doesn't enlarge the title. */
+  .story-lemon .lemon-title .title-img { width: 28cqw; }
+  /* Location: one picture per language. The language switch sets
+     <html lang="en|pt">, and these rules show only the matching one.
+     Both are sized on the same scale (EN 443px / PT 612px wide as
+     exported), so the letters are the same size in either language
+     and EN matches the RSVP letter height. */
+  html:not([lang="pt"]) .lang-only-pt,
+  html[lang="pt"] .lang-only-en { display: none; }
+  #location .location-title .title-img { margin: 0 auto; }
+  #location .location-title .lang-only-en { width: 32.7cqw; }
+  #location .location-title .lang-only-pt { width: 45.1cqw; }
+
+  /* About us: header at the top of the "about us" slide, on the green.
+     Same picture scale as Location (EN 447px / PT 566px wide). */
+  .story-about-us .about-title {
+    margin: 0;
+    padding: 6cqw 0 2cqw;
+    line-height: 0;
+  }
+  .story-about-us .about-title .title-img { margin: 0 auto; }
+  .story-about-us .about-title .lang-only-en { width: 33cqw; }
+  .story-about-us .about-title .lang-only-pt { width: 41.7cqw; }
+
+  /* Save-the-date text: PT picture is wider (964px vs 862px as
+     exported), so it gets proportionally more width to keep the
+     lettering the same size in both languages. */
+  .savedate-text-img.lang-only-pt { width: 89.5%; }
+  @media (max-width: 640px) {
+    .savedate-text-img.lang-only-pt { width: 96.9vw; }
+  }
+
+  /* RSVP: same letter height as Alenquer, centred. */
+  #rsvp .rsvp-title .title-img {
+    width: auto;
+    height: var(--title-h);
+    margin: 0 auto;
+  }
 
   /* RSVP: same warm paper as Location, so the public page flows
      straight from the map into the form without a colour jump. */
@@ -1782,7 +1879,8 @@
   <div class="intro-reveal-stack">
     <img class="intro-reveal-mark" id="introMark" src="images/RnN.png" alt="The Portuguese dream of Rūdolfs &amp; Natália — Alenquer, Portugal">
     <div class="intro-reveal-savedate-wrap" id="introSaveDate">
-      <img class="savedate-text-img" src="images/Envelope_text.png" alt="We are getting married — Save the date, Alenquer, Portugal">
+      <img class="savedate-text-img lang-only-en" src="images/envelope-text-en.png" alt="We are getting married! Save the date — Alenquer, Portugal">
+      <img class="savedate-text-img lang-only-pt" src="images/envelope-text-pt.png" alt="Vamos nos casar! Guarde a data — Alenquer, Portugal">
       <div class="savedate-envelope-wrap">
         <img class="intro-reveal-savedate-img" src="images/envelope_open.png" alt="25.07.2027">
         <div class="savedate-timer" id="savedateTimer" aria-hidden="true">
@@ -1801,10 +1899,9 @@
 </section>
 
 <nav>
-  <a class="nav-private" href="#home" data-i18n="nav_home">Home</a>
-  <a class="nav-private" href="#details" data-i18n="nav_details">Details</a>
-  <a href="#location" data-i18n="nav_location">Location</a>
-  <a class="nav-private" href="#schedule" data-i18n="nav_schedule">Schedule</a>
+  <a href="#introReveal" data-i18n="nav_date">Date</a>
+  <a href="#about-us" data-i18n="nav_about">About</a>
+  <a href="#lemon" data-i18n="nav_location">Location</a>
   <a href="#rsvp" data-i18n="nav_rsvp">RSVP</a>
   <span class="lang-toggle">
     <button type="button" class="lang-btn active" data-lang="en">EN</button>
@@ -1816,12 +1913,16 @@
 <!-- ===== Story slides (public, directly under the save-the-date) ===== -->
 <section class="story" id="story">
   <figure class="story-slide story-about-us" id="about-us">
+    <h2 class="about-title">
+      <img class="title-img lang-only-en" src="images/about-title-en.png" alt="About us">
+      <img class="title-img lang-only-pt" src="images/about-title-pt.png" alt="Sobre nós">
+    </h2>
     <img src="images/about-us.png" alt="A little bit about us — two hands reaching, and a postcard: See you there? Please reply by February 2027">
   </figure>
   <figure class="story-slide story-lemon" id="lemon">
     <img src="images/lemon-collage.png" alt="Collage — Casa Nº5 tile, vineyard grapes and a lemon">
     <div class="lemon-text">
-      <h2 class="lemon-title" data-i18n="alenquer_title">Alenquer</h2>
+      <h2 class="lemon-title"><img class="title-img" src="images/alenquer-title.png" alt="Alenquer"></h2>
       <p class="lemon-desc" data-i18n="alenquer_desc">Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.</p>
     </div>
   </figure>
@@ -1832,17 +1933,14 @@
 </section>
 
 <section id="location">
-  <div class="section-title"><h2 data-i18n="location_title">Location</h2></div>
-  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+  <div class="section-title"><h2 class="location-title">
+    <img class="title-img lang-only-en" src="images/location-title-en.png" alt="Location">
+    <img class="title-img lang-only-pt" src="images/location-title-pt.png" alt="Localização">
+  </h2></div>
 
   <div class="map-wrap">
     <div class="map-crop">
-      <!-- ll = map centre (lat,lng), z = zoom. 39.6,-8.1 at zoom 7 shows all of
-           mainland Portugal; raise z to zoom in (8 ≈ Lisbon region). -->
-      <iframe
-        src="https://www.google.com/maps/d/u/0/embed?mid=1uot2z2A2u4p7Fll0mCc_KZfxGPqL1oA&ehbc=2E312F&ll=39.6,-8.1&z=7"
-        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+      <div id="venueMap" role="region" aria-label="Map of the ceremony and reception venues"></div>
     </div>
   </div>
 </section>
@@ -1986,9 +2084,8 @@
 </section>
 
 <section id="rsvp">
-  <div class="section-title"><span class="section-eyebrow" data-i18n="rsvp_eyebrow">Join us</span><h2 data-i18n="rsvp_title">RSVP</h2></div>
-  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
-  <p data-i18n="rsvp_intro" style="text-align:center; margin-top:-1.5rem; margin-bottom:2.5rem; font-size:0.95rem; opacity:0.75;">
+  <div class="section-title"><h2 class="rsvp-title"><img class="title-img" src="images/rsvp-title.png" alt="RSVP"></h2></div>
+  <p data-i18n="rsvp_intro" style="text-align:center; margin-top:1.25rem; margin-bottom:2.5rem; font-size:0.95rem; opacity:0.75;">
     We can't wait to celebrate with you — please let us know by filling in the form below.
   </p>
 
@@ -2194,7 +2291,7 @@
 <script>
   const translations = {
     en: {
-      nav_home: "Home", nav_details: "Details", nav_schedule: "Schedule", nav_location: "Location", nav_rsvp: "RSVP",
+      nav_date: "Date", nav_about: "About", nav_home: "Home", nav_details: "Details", nav_schedule: "Schedule", nav_location: "Location", nav_rsvp: "RSVP",
       hero_eyebrow: "Together with their families", hero_month: "July", hero_scroll: "Scroll for details",
       hero_envelope_label: "Save the date",
       cd_days: "Days", cd_hours: "Hours", cd_minutes: "Minutes", cd_seconds: "Seconds", cd_married: "We are married!",
@@ -2202,7 +2299,6 @@
       details_eyebrow: "25 · 07 · 2027",
       location_eyebrow: "Find your way",
       schedule_eyebrow: "The day, hour by hour",
-      rsvp_eyebrow: "Join us",
       schedule_title: "Wedding Schedule",
       schedule_date: "25 July 2027 · Alenquer",
       sched1_title: "Arrival", sched2_title: "Ceremony", sched3_title: "Reception", sched4_title: "Cocktail Hour",
@@ -2242,12 +2338,14 @@
       rsvp_gift_note: "A gifts page (registry or honeymoon fund) is coming soon.",
       footer_text: "Rudolf & Natalia — 25 July 2027",
       intro_scroll: "Scroll down",
+      map_open: "Open in Google Maps",
+      map_lisbon: "Lisbon", map_lisbon_meta: "Arrivals & transfers",
       alenquer_title: "Alenquer",
       alenquer_desc: "Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.",
       solar_desc: "Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.",
     },
     pt: {
-      nav_home: "Início", nav_details: "Detalhes", nav_schedule: "Programa", nav_location: "Localização", nav_rsvp: "RSVP",
+      nav_date: "Data", nav_about: "Sobre nós", nav_home: "Início", nav_details: "Detalhes", nav_schedule: "Programa", nav_location: "Localização", nav_rsvp: "RSVP",
       hero_eyebrow: "Juntos com as suas famílias", hero_month: "Julho", hero_scroll: "Deslize para ver mais",
       hero_envelope_label: "Guardem a data",
       cd_days: "Dias", cd_hours: "Horas", cd_minutes: "Minutos", cd_seconds: "Segundos", cd_married: "Já somos casados!",
@@ -2255,7 +2353,6 @@
       details_eyebrow: "25 · 07 · 2027",
       location_eyebrow: "O caminho",
       schedule_eyebrow: "O dia, hora a hora",
-      rsvp_eyebrow: "Junte-se a nós",
       schedule_title: "Programa do Casamento",
       schedule_date: "25 de julho de 2027 · Alenquer",
       sched1_title: "Chegada", sched2_title: "Cerimónia", sched3_title: "Receção", sched4_title: "Hora de Cocktail",
@@ -2295,6 +2392,8 @@
       rsvp_gift_note: "Brevemente: uma página de presentes (lista de casamento ou lua de mel).",
       footer_text: "Rudolf & Natalia — 25 de Julho de 2027",
       intro_scroll: "Deslize para baixo",
+      map_open: "Abrir no Google Maps",
+      map_lisbon: "Lisboa", map_lisbon_meta: "Chegadas e transportes",
       alenquer_desc: "Situada na região vinícola do Oeste, a cerca de 40 minutos de Lisboa, é uma vila histórica moldada pela sua herança árabe e medieval, construída nas encostas do vale do rio Alenquer.",
       solar_desc: "O Solar de Pancas, em Alenquer, foi fundado em 1498. É um solar histórico rodeado de vinhas, com uma arquitetura tradicional e uma forte ligação à produção de vinho da região.",
     },
@@ -2520,6 +2619,141 @@
     window.addEventListener('load', sync);
     if (window.ResizeObserver) new ResizeObserver(sync).observe(document.body);
     sync();
+  })();
+</script>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+  // ================================================================
+  // Venue map — free OpenStreetMap data (OpenFreeMap tiles, no key
+  // needed), recoloured to match the site. Change colours here:
+  // ================================================================
+  const MAP_COLORS = {
+    land:     '#a9b184',   // base countryside green
+    landuse:  '#a0a87a',   // towns / farmland, a touch deeper
+    park:     '#939d6c',   // woods and parks
+    building: '#8b9363',
+    water:    '#a4b9ce',   // same soft blue as the Solar de Pancas text
+    road:     '#541319',   // the site's dark red (same as the timer)
+    roadOpacity: 0.5,      // 1 = solid, 0 = invisible
+    border:   'rgba(255, 247, 190, 0.7)',
+    text:     '#2b3320',
+    textHalo: 'rgba(214, 220, 190, 0.85)',
+  };
+
+  // Pins. "maps" = the venue's Google Maps page (opened from the popup).
+  // label: 'above' or 'below' the dot (the two venues are close, so
+  // their names go on opposite sides). city: bigger dot and name.
+  const VENUES = [
+    { lng: -9.03476, lat: 39.08266, name: 'Santa Quitéria de Meca', metaKey: 'loc_card1_meta',
+      label: 'above', maps: 'https://maps.google.com/?cid=1530734410214013978' },
+    { lng: -9.03309, lat: 39.05674, name: 'Solar de Pancas', metaKey: 'loc_card2_meta',
+      label: 'below', maps: 'https://maps.google.com/?cid=5606870038303177558' },
+    { lng: -9.13930, lat: 38.72230, nameKey: 'map_lisbon', metaKey: 'map_lisbon_meta',
+      label: 'below', city: true, maps: 'https://maps.google.com/?q=Lisboa,Portugal' },
+  ];
+  function venueName(v) {
+    const dict = translations[currentLang] || translations.en;
+    return v.nameKey ? dict[v.nameKey] : v.name;
+  }
+
+  function recolor(style) {
+    const C = MAP_COLORS;
+    style.layers.forEach(l => {
+      const sl = l['source-layer'] || '';
+      const id = l.id || '';
+      l.paint = l.paint || {};
+      if (l.type === 'background') {
+        l.paint['background-color'] = C.land;
+      } else if (l.type === 'fill' || l.type === 'fill-extrusion') {
+        const key = l.type === 'fill' ? 'fill-color' : 'fill-extrusion-color';
+        delete l.paint['fill-pattern'];
+        l.paint[key] =
+          sl === 'water' ? C.water :
+          (sl === 'park' || sl === 'landcover') ? C.park :
+          sl === 'building' ? C.building :
+          C.landuse;
+        if (l.type === 'fill') l.paint['fill-outline-color'] = l.paint[key];
+      } else if (l.type === 'line') {
+        if (sl === 'transportation') {
+          if (/casing/.test(id)) l.paint['line-color'] = C.land;           // no outlines: crisp red roads
+          else if (/rail/.test(id)) { l.paint['line-color'] = C.road; l.paint['line-opacity'] = C.roadOpacity * 0.6; }
+          else { l.paint['line-color'] = C.road; l.paint['line-opacity'] = C.roadOpacity; }
+        } else if (sl === 'waterway') {
+          l.paint['line-color'] = C.water;
+        } else if (sl === 'boundary') {
+          l.paint['line-color'] = C.border;
+        } else {
+          l.paint['line-color'] = C.landuse;
+        }
+      } else if (l.type === 'symbol') {
+        l.paint['text-color'] =
+          sl === 'transportation_name' ? C.road :
+          sl === 'water_name' ? '#3d5670' : C.text;
+        l.paint['text-halo-color'] = C.textHalo;
+        l.paint['text-halo-width'] = 1.6;
+        // Lisbon gets its own big pin label below, so hide the map's
+        // built-in capital-city label to avoid a doubled name.
+        if (sl === 'place' && /capital/.test(id)) l.layout = Object.assign(l.layout || {}, { visibility: 'none' });
+        if (sl === 'poi') l.layout = Object.assign(l.layout || {}, { visibility: 'none' });
+      }
+    });
+    return style;
+  }
+
+  function popupHtml(v) {
+    const dict = translations[currentLang] || translations.en;
+    return '<div class="pop-meta">' + (dict[v.metaKey] || '') + '</div>' +
+           '<div class="pop-name">' + venueName(v) + '</div>' +
+           '<a href="' + v.maps + '" target="_blank" rel="noopener">' + dict.map_open + ' ↗</a>';
+  }
+
+  async function initVenueMap() {
+    const el = document.getElementById('venueMap');
+    if (!el || !window.maplibregl) return;
+    const res = await fetch('https://tiles.openfreemap.org/styles/positron');
+    const style = recolor(await res.json());
+
+    const map = new maplibregl.Map({
+      container: el,
+      style,
+      // Starting view: Cabo da Roca to past Santarém, Setúbal to just
+      // above Santarém (matched to the screenshot you liked). Using an
+      // area rather than a zoom number keeps it the same on any screen.
+      bounds: [[-9.627, 38.378], [-8.352, 39.303]],
+      fitBoundsOptions: { padding: 0 },
+      attributionControl: { compact: true },
+      cooperativeGestures: true,   // page scrolls normally; ctrl/2 fingers to move the map
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+    VENUES.forEach(v => {
+      const pin = document.createElement('div');
+      pin.className = 'venue-pin' + (v.city ? ' is-city' : '') + (v.label === 'above' ? ' label-above' : '');
+      pin.innerHTML = '<div class="venue-pin-dot"></div><div class="venue-pin-label">' + venueName(v) + '</div>';
+      const label = pin.querySelector('.venue-pin-label');
+      const popup = new maplibregl.Popup({ offset: 14, closeButton: false });
+      popup.on('open', () => popup.setHTML(popupHtml(v)));   // always in the current language
+      // Anchor so the DOT (not the label) sits exactly on the location.
+      const dot = v.city ? 20 : 14;
+      new maplibregl.Marker({ element: pin, anchor: v.label === 'above' ? 'bottom' : 'top',
+                              offset: [0, v.label === 'above' ? dot / 2 : -dot / 2] })
+        .setLngLat([v.lng, v.lat]).setPopup(popup.setHTML(popupHtml(v))).addTo(map);
+      // Keep the Lisbon name in the selected language.
+      if (v.nameKey) document.querySelectorAll('.lang-btn').forEach(b =>
+        b.addEventListener('click', () => { label.textContent = venueName(v); }));
+    });
+  }
+
+  // Only load the map when it is about to scroll into view.
+  (function () {
+    const el = document.getElementById('venueMap');
+    if (!el) return;
+    if (!('IntersectionObserver' in window)) { initVenueMap(); return; }
+    const io = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) { io.disconnect(); initVenueMap(); }
+    }, { rootMargin: '400px' });
+    io.observe(el);
   })();
 </script>
 </body>

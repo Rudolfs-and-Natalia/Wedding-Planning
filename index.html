@@ -1826,6 +1826,8 @@
     padding-bottom: 3rem;
     /* Same green as the Solar de Pancas slide above it. The colour
        before url() is only a fallback if the image can't be found. */
+    /* Alternative kept for later: green velvet with dashed route lines
+       background: #656339 url("images/location-background.jpg") center top / cover no-repeat; */
     background: #545f3b url("images/Third_background.png") center / cover no-repeat;
   }
   body > section#details  { background: var(--section-bg-1); }
@@ -1912,7 +1914,62 @@
     color: rgb(255, 247, 190);
     text-align: center;
   }
-  #location .stay-title { margin-top: 3rem; }
+  #location .stay-title { margin-top: 1.5rem; }
+
+  /* ---------- Location: intro row + illustrations ----------
+     The intro row (header + first paragraph on the left, the lady with
+     binoculars on the right) has the same width as the map (89%), so
+     its edges line up with the map's. The row's bottom is the map's
+     top, so the lady's feet "stand" on the map frame. */
+  body > section#location > .loc-intro {
+    width: 89%;
+    max-width: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;          /* lady sits at the bottom of the row */
+    gap: 2cqw;                      /* space between text and lady */
+    position: relative;
+    z-index: 1;                     /* behind the map (map is z-index 2) */
+  }
+  #location .loc-intro-text { flex: 1; min-width: 0; padding-bottom: 2cqw; }
+  #location .loc-intro .section-title { text-align: left; }
+  #location .loc-intro .section-title .title-img { margin: 0; }
+  #location .loc-intro .loc-text {
+    width: auto;
+    margin: 0;
+  }
+  /* LADY_WIDTH: 24cqw (was 20). Bigger lady = narrower paragraph. */
+  #location .loc-lady {
+    display: block;
+    width: 24cqw;
+    height: auto;
+    flex-shrink: 0;
+    margin-bottom: -3cqw;           /* her bottom edge tucks behind the map frame */
+  }
+  /* Header keeps its full size even though the column is now narrower;
+     it just reaches into the small gap beside the lady. */
+  #location .loc-intro .section-title .title-img { max-width: none; }
+  #location .loc-intro + .map-wrap {
+    margin-top: 0;
+    position: relative;
+    z-index: 2;                     /* map in front of the lady */
+  }
+
+  /* Van: left side under the map, its roof overlapping the map's
+     bottom edge. VAN_OVERLAP = the negative margin-top (6cqw ~ top 30%
+     of the van). Clicks pass through it to the map. */
+  body > section#location > .loc-van {
+    display: block;
+    width: 46cqw;
+    max-width: none;
+    height: auto;
+    padding: 0;
+    margin: -6cqw 0 0 3cqw;
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+  }
   #location .loc-text:last-child { margin-bottom: 0; }
 
   /* About us: header at the top of the "about us" slide, on the green.
@@ -1938,6 +1995,33 @@
     text-align: center;
   }
   .story-about-us .about-text p { margin: 0 0 1em; }
+
+  /* ---------- Justified paragraphs ----------
+     All body paragraphs are justified (straight left and right edges).
+     The last line of each paragraph stays left-aligned, as in print.
+     hyphens: auto lets the browser split long words at line ends so the
+     justified lines don't get big gaps (uses the page's EN/PT language). */
+  /* (Alenquer and Solar de Pancas descriptions excluded on purpose:
+     they keep their original alignment and hand-tuned line breaks.) */
+  .story-about-us .about-text,
+  .story-about-us .about-text p,
+  #location .loc-text,
+  #rsvp .rsvp-intro {
+    text-align: justify;
+    text-align-last: left;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  /* Hands: full column width, edge to edge, right under the header. */
+  .story-slide img.about-hands {
+    width: 100%;
+    margin: 0 0 4cqw;
+  }
+  /* Postcard: full column width under the text. Its lower part spills
+     past the green onto the paper of the next slide (see POSTCARD_SPILL
+     in the script near the end of the page). */
+  .story-slide img.about-postcard { width: 100%; }
   .story-about-us .about-text p:last-child { margin-bottom: 0; }
   .story-about-us .about-title .lang-only-en { width: 33cqw; }
   .story-about-us .about-title .lang-only-pt { width: 41.7cqw; }
@@ -2033,6 +2117,7 @@
       <img class="title-img lang-only-en" src="images/about-title-en.png" alt="About us">
       <img class="title-img lang-only-pt" src="images/about-title-pt.png" alt="Sobre nós">
     </h2>
+    <img class="about-hands" src="images/about-hands.png" alt="Two hands reaching towards each other">
     <div class="about-text lang-only-en">
       <p>Portugal, once a gateway to the New World, became ours - the place where two explorers, having left their homelands, unexpectedly found each other.</p>
       <p>One path leading from sunny, dynamic and vibrant Brazil. The other, from the seasonal, quiet and understated Latvia. Our contrasts turned complementary, tastes aligned, incomprehensible references got created and neurons merged, leading us to delve into the inevitable next phase of our lives. A phase we wish to share with all we hold dear.</p>
@@ -2041,7 +2126,7 @@
       <p>Portugal, outrora porta de entrada para o Novo Mundo, tornou-se nosso – o lugar onde dois exploradores, tendo deixado as suas terras natais, se encontraram inesperadamente.</p>
       <p>Um caminho partindo do ensolarado, dinâmico e vibrante Brasil. O outro, da Letónia, sazonal, tranquila e discreta. Os nossos contrastes complementaram-se, os gostos alinharam-se, referências incompreensíveis foram criadas e neurónios fundiram-se, levando-nos a mergulhar na inevitável fase seguinte das nossas vidas. Uma fase que desejamos partilhar com todos aqueles que amamos.</p>
     </div>
-    <img src="images/about-us.png" alt="A little bit about us — two hands reaching, and a postcard: See you there? Please reply by February 2027">
+    <img class="about-postcard" id="aboutPostcard" src="images/about-postcard.png" alt="Postcard: See you there? Please reply by February 2027. Dear family and friends, we would love to share this day with you.">
   </figure>
   <figure class="story-slide story-lemon" id="lemon">
     <img src="images/lemon-collage.png" alt="Collage — Casa Nº5 tile, vineyard grapes and a lemon">
@@ -2057,17 +2142,24 @@
 </section>
 
 <section id="location">
-  <div class="section-title"><h2 class="location-title">
-    <img class="title-img lang-only-en getthere-en" src="images/getthere-title-en.png" alt="How to get there">
-    <img class="title-img lang-only-pt getthere-pt" src="images/getthere-title-pt.png" alt="Como chegar">
-  </h2></div>
-  <p class="loc-text" data-i18n="loc_getting_there">Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.</p>
-
+  <div class="loc-intro">
+    <div class="loc-intro-text">
+    <div class="section-title"><h2 class="location-title">
+      <img class="title-img lang-only-en getthere-en" src="images/getthere-title-en.png" alt="How to get there">
+      <img class="title-img lang-only-pt getthere-pt" src="images/getthere-title-pt.png" alt="Como chegar">
+    </h2></div>
+    <p class="loc-text" data-i18n="loc_getting_there">Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.</p>
+  
+    
+    </div>
+    <img class="loc-lady" src="images/lady.png" alt="">
+  </div>
   <div class="map-wrap">
     <div class="map-crop">
       <div id="venueMap" role="region" aria-label="Map of the ceremony and reception venues"></div>
     </div>
   </div>
+  <img class="loc-van" src="images/van.png" alt="">
 
   <div class="section-title stay-title"><h2 class="location-title">
     <img class="title-img lang-only-en stay-en" src="images/stay-title-en.png" alt="Where to stay">
@@ -2272,14 +2364,14 @@
 
       <div class="rsvp-fieldset">
         <p class="rsvp-legend" data-i18n="rsvp_legend_travel">Travel & stay</p>
-        <div class="rsvp-checkbox-list">
-          <label class="rsvp-checkbox-item">
-            <input type="checkbox" name="travel_from_lisbon">
-            <span data-i18n="rsvp_travel_from">I would like transportation from Lisbon</span>
+        <div class="rsvp-choice-group">
+          <label class="rsvp-choice">
+            <input type="radio" name="transport" value="car">
+            <span data-i18n="rsvp_travel_car">I am going by car</span>
           </label>
-          <label class="rsvp-checkbox-item">
-            <input type="checkbox" name="travel_to_lisbon">
-            <span data-i18n="rsvp_travel_to">I would like transportation back to Lisbon</span>
+          <label class="rsvp-choice">
+            <input type="radio" name="transport" value="shuttle">
+            <span data-i18n="rsvp_travel_shuttle">I would like a shuttle</span>
           </label>
         </div>
       </div>
@@ -2454,8 +2546,8 @@
       rsvp_label_dietary: "Dietary restrictions or allergies",
       rsvp_ph_dietary: "e.g. Vegetarian, gluten-free, nut allergy",
       rsvp_legend_travel: "Travel & stay",
-      rsvp_travel_from: "I would like transportation from Lisbon",
-      rsvp_travel_to: "I would like transportation back to Lisbon",
+      rsvp_travel_car: "I am going by car",
+      rsvp_travel_shuttle: "I would like a shuttle",
       rsvp_legend_note: "A note for us",
       rsvp_ph_message: "Any well wishes, questions, or song requests",
       rsvp_btn_send: "Send RSVP", rsvp_btn_sending: "Sending…",
@@ -2509,8 +2601,8 @@
       rsvp_label_dietary: "Restrições alimentares ou alergias",
       rsvp_ph_dietary: "ex.: Vegetariano, sem glúten, alergia a frutos secos",
       rsvp_legend_travel: "Viagem e alojamento",
-      rsvp_travel_from: "Gostaria de transporte a partir de Lisboa",
-      rsvp_travel_to: "Gostaria de transporte de regresso a Lisboa",
+      rsvp_travel_car: "Vou de carro",
+      rsvp_travel_shuttle: "Gostaria de transporte",
       rsvp_legend_note: "Uma mensagem para nós",
       rsvp_ph_message: "Votos, perguntas ou pedidos de música",
       rsvp_btn_send: "Enviar Confirmação", rsvp_btn_sending: "A enviar…",
@@ -2650,8 +2742,11 @@
       number_of_guests: attending === 'yes' ? parseInt(data.get('number_of_guests') || '1', 10) : 0,
       guest_names: attending === 'yes' ? (data.get('guest_names') || null) : null,
       dietary_restrictions: attending === 'yes' ? (data.get('dietary_restrictions') || null) : null,
-      travel_from_lisbon: data.get('travel_from_lisbon') === 'on',
-      travel_to_lisbon: data.get('travel_to_lisbon') === 'on',
+      // Transport choice, stored in the existing table columns so no
+      // Supabase change is needed:
+      //   shuttle -> both true | car -> both false | no answer -> empty
+      travel_from_lisbon: data.get('transport') ? data.get('transport') === 'shuttle' : null,
+      travel_to_lisbon:   data.get('transport') ? data.get('transport') === 'shuttle' : null,
       message: data.get('message') || null,
     };
 
@@ -2738,7 +2833,16 @@
       // way down; 0.93 = stops 7% short, leaving the page's pale colour
       // below it. Lower = shorter green AND less stretch.
       const GREEN_LENGTH = 0.93;
-      const h = (e.bottom - p.top) * GREEN_LENGTH;
+      let h = (e.bottom - p.top) * GREEN_LENGTH;
+      // POSTCARD_SPILL: share of the postcard picture (from its bottom)
+      // that hangs below the green onto the paper of the next slide.
+      // 0.25 = bottom quarter spills over. Raise = more spill.
+      const POSTCARD_SPILL = 0.25;
+      const card = document.getElementById('aboutPostcard');
+      if (card) {
+        const c = card.getBoundingClientRect();
+        if (c.height) h = (c.bottom - c.height * POSTCARD_SPILL) - p.top;
+      }
       const size = w + 'px ' + h + 'px';
       panel.style.backgroundSize = size;
       panel.style.backgroundPosition = '0px 0px';

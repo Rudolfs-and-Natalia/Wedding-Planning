@@ -1376,9 +1376,9 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-image: url("images/Third_background.png");
+    background-image: url("images/location-green.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: center top;
     background-repeat: no-repeat;
     opacity: 0;
     clip-path: circle(0% at 100% 100%);
@@ -1507,12 +1507,20 @@
     position: absolute;
     /* Nudged right/up and widened slightly for the bigger numbers.
        Was: left 8%, top 42%, width 32%. */
+    /* Four equal columns with the colons in narrow columns between
+       them, so the numbers (and colons) sit at exactly even intervals.
+       Same footprint on the card as before (15% to 49% across). Longer
+       labels like "Months" are allowed to reach a little under the
+       colons, which sit up at number height, so nothing collides.
+       Was: flex with space-between. */
     left: 15%;
     top: 39%;
     width: 34%;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+    column-gap: 0.6cqw;            /* space on each side of the colons */
     align-items: baseline;
-    justify-content: space-between;
+    justify-items: center;
     font-family: Constantia, var(--font-head);
     color: #541319;
   }
@@ -1531,8 +1539,8 @@
   }
 
   .savedate-timer .sdt-label {
-    font-size: 2.3cqw;   /* was 2 */
-    letter-spacing: 0.1em;
+    font-size: 1.9cqw;   /* was 2.3: longer labels (Months, Weeks) need room */
+    letter-spacing: 0.06em;   /* was 0.1em */
     text-transform: uppercase;
     opacity: 0.72;
     margin-top: 0.3cqw;
@@ -1690,10 +1698,27 @@
        at the bottom of this picture overlaps the lemon instead of being
        hidden under it. */
     z-index: 2;
-    background-image: url("images/Third_background.png");
-    background-size: cover;
-    background-position: center top;
+  }
+  /* The green of "about us": the same tall velvet as the Location
+     section (location-green.jpg), kept at its natural proportions so it
+     stays sharp. It sits on its own layer behind the slide's contents
+     so it can end partway down the postcard (the postcard's bottom then
+     spills onto the paper below). The JS near the end of the page sets
+     the three --green-* values so this continues seamlessly from the
+     save-the-date panel above; the values here are only a fallback. */
+  body > section.story > .story-about-us::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: var(--green-h, 100%);
+    z-index: -1;
+    background-image: url("images/location-green.jpg");
+    background-size: var(--green-size, cover);
+    background-position: var(--green-pos, center top);
     background-repeat: no-repeat;
+    pointer-events: none;
   }
   /* 2 — Lemon collage: 64% size, left side, tucked slightly up into the
          bottom of "about us" */
@@ -1710,8 +1735,8 @@
     position: absolute;
     /* Was: left 100%+3cqw, width 28cqw, top 50%+3cqw. */
     left: calc(100% - 9cqw);
-    width: 32cqw;
-    top: calc(63% + 3cqw);
+    width: 38cqw;   /* was 32cqw: text reaches further right */
+    top: calc(63% + 1cqw);   /* was 63%+3cqw: header + text moved up a little */
     transform: translateY(-50%);
     color: #541319;              /* same dark red as the countdown timer */
     font-family: var(--font-head);
@@ -1724,11 +1749,20 @@
     margin: 0 0 1.6cqw;
     color: inherit;
   }
+  /* Header picture only: nudged up and to the right, clear of the lemon
+     collage. Visual shift only, so the body text below doesn't move. */
+  .story-lemon .lemon-title .title-img {
+    position: relative;
+    left: 10cqw;   /* to the right */
+    top: -7cqw;    /* up */
+  }
   .story-lemon .lemon-desc {
+    position: relative;
+    top: -2cqw;    /* body text nudged up (header stays put) */
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 2.9cqw;             /* same size as the Solar de Pancas text */
-    line-height: 1.4;
+    font-size: 2.7cqw;   /* was 2.9cqw: body text a touch smaller */
+    line-height: 1.2;   /* was 1.4: rows closer together */
     margin: 0;
   }
   /* 3 — Solar de Pancas: 10vh below the lemon */
@@ -1783,8 +1817,8 @@
     margin: 0;
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 2.9cqw;
-    line-height: 1.4;
+    font-size: 2.7cqw;   /* was 2.9cqw: body text a touch smaller */
+    line-height: 1.2;   /* was 1.4: rows closer together */
     letter-spacing: 0.01em;
     color: #a4b9ce;            /* same blue as the headline */
     z-index: 1;
@@ -1828,7 +1862,11 @@
        before url() is only a fallback if the image can't be found. */
     /* Alternative kept for later: green velvet with dashed route lines
        background: #656339 url("images/location-background.jpg") center top / cover no-repeat; */
-    background: #545f3b url("images/Third_background.png") center / cover no-repeat;
+    /* Tall green velvet (1538 x 8000) made for this long section: it is
+       scaled to the column width and only the top part that is needed
+       shows; the rest is cropped off at the bottom. No stretching, so it
+       stays sharp. Was: Third_background.png, center / cover. */
+    background: #545f3b url("images/location-green.jpg") center top / cover no-repeat;
   }
   body > section#details  { background: var(--section-bg-1); }
 
@@ -1845,8 +1883,8 @@
     margin: 1.25rem auto 2.5rem;
     padding: 0;
     font-weight: 400;
-    font-size: 2.9cqw;
-    line-height: 1.4;
+    font-size: 2.7cqw;   /* was 2.9cqw: body text a touch smaller */
+    line-height: 1.2;   /* was 1.4: rows closer together */
     text-align: center;
     opacity: 0.75;
   }
@@ -1901,6 +1939,46 @@
   #location .getthere-pt { width: 51.6cqw; }
   #location .stay-en     { width: 51cqw; }
   #location .stay-pt     { width: 68cqw; }
+  /* Travel agency header: same picture scale (EN 703px / PT 964px wide). */
+  #location .agency-en   { width: 51.8cqw; }
+  #location .agency-pt   { width: 71.1cqw; }
+
+  /* ---------- Location: travel agency ----------
+     Header and text start at the same left edge as "How to get there"
+     (rows are 89% wide, centred). Text on the left, luggage picture on
+     the right; BELLHOP_WIDTH = 33cqw. A bigger picture
+     makes the text column narrower, they never overlap. */
+  body > section#location > .agency-title {
+    width: 89%;
+    max-width: none;
+    padding: 0;
+    margin: 2.5rem auto 1.5rem;
+    text-align: left;
+  }
+  #location .agency-title .title-img { margin: 0; max-width: none; }
+  body > section#location > .loc-agency {
+    width: 89%;
+    max-width: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;            /* picture centred beside the text */
+    gap: 3cqw;                      /* space between text and picture */
+  }
+  #location .loc-agency .loc-text { flex: 1; min-width: 0; width: auto; margin: 0; }
+  /* Travel agency text: left-aligned (ragged right), not justified. */
+  #location .loc-agency .loc-text { text-align: left; -webkit-hyphens: manual; hyphens: manual; }
+  #location .loc-bellhop {
+    display: block;
+    width: 33cqw;                   /* was 24cqw, then 30cqw: 10% bigger again */
+    height: auto;
+    flex-shrink: 0;
+    position: relative;
+    top: 5cqw;                      /* moved down a little (visual only) */
+  }
+  /* "Where to stay" text: same width and left edge as the other texts
+     in this section (89% rows), instead of the narrower 74cqw. */
+  body > section#location > .loc-stay-text { width: 89%; }
 
   /* Text under each header: light yellow body text, like "About us". */
   #location .loc-text {
@@ -1909,8 +1987,8 @@
     padding: 0;
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 2.9cqw;
-    line-height: 1.4;
+    font-size: 2.7cqw;   /* was 2.9cqw: body text a touch smaller */
+    line-height: 1.2;   /* was 1.4: rows closer together */
     color: rgb(255, 247, 190);
     text-align: center;
   }
@@ -1971,6 +2049,11 @@
     pointer-events: none;
   }
   #location .loc-text:last-child { margin-bottom: 0; }
+  /* Paragraphs that follow another paragraph directly (split texts):
+     one line of space between them instead of the full 2.5rem. */
+  #location .loc-text:has(+ .loc-text) { margin-bottom: 1em; }
+  #location .loc-intro .loc-text + .loc-text { margin-top: 1em; }
+  #location .loc-text strong { font-weight: 700; }
 
   /* About us: header at the top of the "about us" slide, on the green.
      Same picture scale as Location (EN 447px / PT 566px wide). */
@@ -1989,8 +2072,8 @@
     margin: 0 auto 4cqw;
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 2.9cqw;
-    line-height: 1.4;
+    font-size: 2.7cqw;   /* was 2.9cqw: body text a touch smaller */
+    line-height: 1.2;   /* was 1.4: rows closer together */
     color: rgb(255, 247, 190);
     text-align: center;
   }
@@ -2082,13 +2165,13 @@
       <div class="savedate-envelope-wrap">
         <img class="intro-reveal-savedate-img" src="images/envelope_open.png" alt="25.07.2027">
         <div class="savedate-timer" id="savedateTimer" aria-hidden="true">
-          <div class="sdt-unit"><span class="sdt-num" id="sdtDays">00</span><span class="sdt-label">Days</span></div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtMonths">00</span><span class="sdt-label" data-i18n="sdt_months">Months</span></div>
           <div class="sdt-sep">:</div>
-          <div class="sdt-unit"><span class="sdt-num" id="sdtHours">00</span><span class="sdt-label">Hrs</span></div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtWeeks">00</span><span class="sdt-label" data-i18n="sdt_weeks">Weeks</span></div>
           <div class="sdt-sep">:</div>
-          <div class="sdt-unit"><span class="sdt-num" id="sdtMinutes">00</span><span class="sdt-label">Min</span></div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtDays">00</span><span class="sdt-label" data-i18n="sdt_days">Days</span></div>
           <div class="sdt-sep">:</div>
-          <div class="sdt-unit"><span class="sdt-num" id="sdtSeconds">00</span><span class="sdt-label">Sec</span></div>
+          <div class="sdt-unit"><span class="sdt-num" id="sdtHours">00</span><span class="sdt-label" data-i18n="sdt_hours">Hrs</span></div>
         </div>
       </div>
     </div>
@@ -2119,12 +2202,14 @@
     </h2>
     <img class="about-hands" src="images/about-hands.png" alt="Two hands reaching towards each other">
     <div class="about-text lang-only-en">
-      <p>Portugal, once a gateway to the New World, became ours - the place where two explorers, having left their homelands, unexpectedly found each other.</p>
-      <p>One path leading from sunny, dynamic and vibrant Brazil. The other, from the seasonal, quiet and understated Latvia. Our contrasts turned complementary, tastes aligned, incomprehensible references got created and neurons merged, leading us to delve into the inevitable next phase of our lives. A phase we wish to share with all we hold dear.</p>
+      <p>Our story could be told in three countries and three languages, but it was in Portugal that our destinies agreed to meet. One of us came from sunny Brazil; the other, from chilly Latvia. One grew up building sandcastles; the other, snowmen. One never had to scrape ice off a car; the other never imagined a Christmas in shorts.</p>
+      <p>In this exchange, two worlds collided. Nat taught Ru the appreciation of Brazilian music, the sun and pão de queijo; Ru taught Nat that sauna makes perfect sense and that soup is an actual dinner. Tastes aligned, incomprehensible references appeared, and neurons merged. In the end, we discovered that the distance between Brazil and Latvia was much smaller than it seemed, and little by little we built a dictionary of our own, one that belongs not to Brazil, nor to Latvia, nor to Portugal, but only to the two of us.</p>
+      <p>It is this story that we would love to celebrate with you.</p>
     </div>
     <div class="about-text lang-only-pt" lang="pt">
-      <p>Portugal, outrora porta de entrada para o Novo Mundo, tornou-se nosso – o lugar onde dois exploradores, tendo deixado as suas terras natais, se encontraram inesperadamente.</p>
-      <p>Um caminho partindo do ensolarado, dinâmico e vibrante Brasil. O outro, da Letónia, sazonal, tranquila e discreta. Os nossos contrastes complementaram-se, os gostos alinharam-se, referências incompreensíveis foram criadas e neurónios fundiram-se, levando-nos a mergulhar na inevitável fase seguinte das nossas vidas. Uma fase que desejamos partilhar com todos aqueles que amamos.</p>
+      <p>A nossa história pode ser contada em três países e três línguas, mas foi em Portugal que os nossos destinos combinaram de se encontrar. Um de nós veio do ensolarado Brasil; o outro, da fria Letônia. Um cresceu construindo castelos de areia; o outro, bonecos de neve. Um nunca precisou raspar gelo do carro; o outro nunca imaginou um Natal de bermuda.</p>
+      <p>Nessa troca, dois mundos colidiram. A Nat ensinou o Ru a apreciar MPB, o sol e pão de queijo; o Ru ensinou a Nat que sauna faz todo sentido e que sopa é jantar. Os gostos se alinharam, referências incompreensíveis surgiram e os neurônios se fundiram. No fim, descobrimos que a distância entre o Brasil e a Letônia era bem menor do que parecia, e fomos criando um dicionário só nosso, que não pertence ao Brasil, nem à Letônia, nem a Portugal, mas só a nós dois.</p>
+      <p>É essa história que adoraríamos celebrar com vocês.</p>
     </div>
     <img class="about-postcard" id="aboutPostcard" src="images/about-postcard.png" alt="Postcard: See you there? Please reply by February 2027. Dear family and friends, we would love to share this day with you.">
   </figure>
@@ -2132,12 +2217,12 @@
     <img src="images/lemon-collage.png" alt="Collage — Casa Nº5 tile, vineyard grapes and a lemon">
     <div class="lemon-text">
       <h2 class="lemon-title"><img class="title-img" src="images/alenquer-title.png" alt="Alenquer"></h2>
-      <p class="lemon-desc" data-i18n="alenquer_desc">Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.</p>
+      <p class="lemon-desc" data-i18n="alenquer_desc">It’s a town with centuries (millennia, actually) of history. All around, vineyards stretch as far as the eye can see, in the heart of one of Portugal’s most enchanting wine regions. Just 40 minutes from Lisbon, Alenquer is a town made to be explored slowly, glass in hand. Come in comfortable shoes and ready to get a little lost in its history.</p>
     </div>
   </figure>
   <figure class="story-slide story-solar" id="solar">
     <img src="images/solar-de-pancas.png" alt="Solar de Pancas — the estate among the vineyards, ivy-covered facade and a disco ball">
-    <p class="solar-desc" data-i18n="solar_desc">Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.</p>
+    <p class="solar-desc" data-i18n="solar_desc">The party begins at Solar de Pancas: a manor house founded in 1495, surrounded by vineyards and wrapped in history. Here we’ll dine, toast and dance down to the last sip. Quinta de Pancas itself makes the wine, which we, at great personal sacrifice, have already tested and approved.</p>
   </figure>
 </section>
 
@@ -2148,10 +2233,9 @@
       <img class="title-img lang-only-en getthere-en" src="images/getthere-title-en.png" alt="How to get there">
       <img class="title-img lang-only-pt getthere-pt" src="images/getthere-title-pt.png" alt="Como chegar">
     </h2></div>
-    <p class="loc-text" data-i18n="loc_getting_there">Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.</p>
-  
-    
-    </div>
+    <p class="loc-text" data-i18n="loc_getting_there">The best way to reach Alenquer is by car. But we know not everyone will want to, or be able to, have a car at their disposal. Leave the driving to us! A coach will pick everyone up at a meeting point in Lisbon, take you to the church, and then continue on to Solar das Pancas. At the end of the party, it brings everyone back: no rental cars, and no drawing straws for who stays sober.</p>
+    <p class="loc-text"><strong data-i18n="loc_getting_there_rsvp">If you’re interested, let us know in the RSVP section below so we can plan the number of seats.</strong></p>
+</div>
     <img class="loc-lady" src="images/lady.png" alt="">
   </div>
   <div class="map-wrap">
@@ -2165,7 +2249,19 @@
     <img class="title-img lang-only-en stay-en" src="images/stay-title-en.png" alt="Where to stay">
     <img class="title-img lang-only-pt stay-pt" src="images/stay-title-pt.png" alt="Onde se hospedar">
   </h2></div>
-  <p class="loc-text" data-i18n="loc_stay">Alenquer is charming but small, with only a handful of places to stay. If you'd like to wake up among the vineyards, rent a house or apartment there, and book early. Prefer city comforts? Stay in Lisbon, just a short drive away, and the shuttle will get you to the party and back.</p>
+  <p class="loc-text loc-stay-text" data-i18n="loc_stay">Alenquer is enchanting but small, with few places to stay. If you’d like to wake up among the vineyards, rent a house or an apartment there, and book early.</p>
+  <p class="loc-text loc-stay-text" data-i18n="loc_stay_city">Prefer the comforts of the city? Stay in Lisbon, about 40 minutes away, and the coach will take you to the party and bring you back. We’ll arrange a meeting point, most likely around Saldanha or Campo Pequeno. If your dream is the historic center, that’s well worth it too, but plan on a taxi or ride-hailing app to get to your hotel after the party.</p>
+
+  <!-- Travel agency: header on its own row (left-aligned like "How to
+       get there"), then the text with the luggage picture to its right. -->
+  <div class="section-title agency-title"><h2 class="location-title">
+    <img class="title-img lang-only-en agency-en" src="images/agency-title-en.png" alt="Travel agency">
+    <img class="title-img lang-only-pt agency-pt" src="images/agency-title-pt.png" alt="Agência de viagens">
+  </h2></div>
+  <div class="loc-agency">
+    <p class="loc-text" data-i18n="loc_agency" data-i18n-html>We know that planning a trip between Brazil and Portugal can seem daunting. That’s why we’d like to recommend a travel agency we trust, and one that happens to be part of the family! We’re working with the official support of <strong>UNIR Eventos e Turismo</strong> (Mauro and Stella), specialists in group travel. They’ll take care of everything: flights at group fares, mandatory insurance, official accommodation, and transfers. We’re finalizing the next steps directly with the agency and will share more contact information in this section soon.</p>
+    <img class="loc-bellhop" src="images/agency-bellhop.png" alt="">
+  </div>
 </section>
 
 
@@ -2556,13 +2652,17 @@
       rsvp_gift_note: "Further details of the celebration are coming soon.",
       footer_text: "Rudolf & Natalia — 25 July 2027",
       intro_scroll: "Scroll down",
+      sdt_months: "Months", sdt_weeks: "Weeks", sdt_days: "Days", sdt_hours: "Hrs",
       map_open: "Open in Google Maps",
       map_lisbon: "Lisbon", map_lisbon_meta: "Arrivals & transfers",
-      loc_getting_there: "Leave the driving to us. A shuttle will collect everyone from a meeting point in Lisbon, drop you at the church, then carry on to Solar de Pancas. Around 2 a.m. it brings you back to Lisbon, so there's no car to rent and no designated driver to recruit.",
-      loc_stay: "Alenquer is charming but small, with only a handful of places to stay. If you'd like to wake up among the vineyards, rent a house or apartment there, and book early. Prefer city comforts? Stay in Lisbon, just a short drive away, and the shuttle will get you to the party and back.",
+      loc_getting_there: "The best way to reach Alenquer is by car. But we know not everyone will want to, or be able to, have a car at their disposal. Leave the driving to us! A coach will pick everyone up at a meeting point in Lisbon, take you to the church, and then continue on to Solar das Pancas. At the end of the party, it brings everyone back: no rental cars, and no drawing straws for who stays sober.",
+      loc_getting_there_rsvp: "If you’re interested, let us know in the RSVP section below so we can plan the number of seats.",
+      loc_stay: "Alenquer is enchanting but small, with few places to stay. If you’d like to wake up among the vineyards, rent a house or an apartment there, and book early.",
+      loc_stay_city: "Prefer the comforts of the city? Stay in Lisbon, about 40 minutes away, and the coach will take you to the party and bring you back. We’ll arrange a meeting point, most likely around Saldanha or Campo Pequeno. If your dream is the historic center, that’s well worth it too, but plan on a taxi or ride-hailing app to get to your hotel after the party.",
+      loc_agency: "We know that planning a trip between Brazil and Portugal can seem daunting. That’s why we’d like to recommend a travel agency we trust, and one that happens to be part of the family! We’re working with the official support of <strong>UNIR Eventos e Turismo</strong> (Mauro and Stella), specialists in group travel. They’ll take care of everything: flights at group fares, mandatory insurance, official accommodation, and transfers. We’re finalizing the next steps directly with the agency and will share more contact information in this section soon.",
       alenquer_title: "Alenquer",
-      alenquer_desc: "Located in the Oeste wine region about 40 minutes from Lisbon, is a historic town shaped by its Arab and medieval heritage, built on the slopes of the Alenquer River valley.",
-      solar_desc: "Solar de Pancas, located in Alenquer, was founded in 1498. It is a historic manor house, surrounded by vineyards, characterized by its traditional architecture and strong connection to the region's wine production.",
+      alenquer_desc: "It’s a town with centuries (millennia, actually) of history. All around, vineyards stretch as far as the eye can see, in the heart of one of Portugal’s most enchanting wine regions. Just 40 minutes from Lisbon, Alenquer is a town made to be explored slowly, glass in hand. Come in comfortable shoes and ready to get a little lost in its history.",
+      solar_desc: "The party begins at Solar de Pancas: a manor house founded in 1495, surrounded by vineyards and wrapped in history. Here we’ll dine, toast and dance down to the last sip. Quinta de Pancas itself makes the wine, which we, at great personal sacrifice, have already tested and approved.",
     },
     pt: {
       nav_date: "Data", nav_about: "Sobre nós", nav_home: "Início", nav_details: "Detalhes", nav_schedule: "Programa", nav_location: "Localização", nav_rsvp: "RSVP",
@@ -2611,12 +2711,16 @@
       rsvp_gift_note: "Mais detalhes da celebração serão partilhados em breve.",
       footer_text: "Rudolf & Natalia — 25 de Julho de 2027",
       intro_scroll: "Deslize para baixo",
+      sdt_months: "Meses", sdt_weeks: "Sem.", sdt_days: "Dias", sdt_hours: "Horas",
       map_open: "Abrir no Google Maps",
       map_lisbon: "Lisboa", map_lisbon_meta: "Chegadas e transportes",
-      loc_getting_there: "Deixem a condução connosco. Um autocarro vai buscar todos a um ponto de encontro em Lisboa, deixa-vos na igreja e segue depois para o Solar de Pancas. Por volta das 2 da manhã traz-vos de volta a Lisboa: nada de alugar carro nem de sortear quem fica sem beber.",
-      loc_stay: "Alenquer é encantadora, mas pequena, e tem poucos sítios onde ficar. Se quiserem acordar entre as vinhas, aluguem uma casa ou um apartamento por lá, e reservem cedo. Preferem o conforto da cidade? Fiquem em Lisboa, a uma curta distância, e o autocarro leva-vos à festa e traz-vos de volta.",
-      alenquer_desc: "Situada na região vinícola do Oeste, a cerca de 40 minutos de Lisboa, é uma vila histórica moldada pela sua herança árabe e medieval, construída nas encostas do vale do rio Alenquer.",
-      solar_desc: "O Solar de Pancas, em Alenquer, foi fundado em 1498. É um solar histórico rodeado de vinhas, com uma arquitetura tradicional e uma forte ligação à produção de vinho da região.",
+      loc_getting_there: "O melhor jeito de chegar a Alenquer é de carro. Mas sabemos que nem todos vão querer ou poder ter um carro à disposição. Deixem a condução com a gente! Um ônibus vai buscar todo mundo num ponto de encontro em Lisboa, leva até a igreja e depois segue para o Solar das Pancas. No final da festa, traz todo mundo de volta: nada de alugar carro nem de sortear quem fica sem beber.",
+      loc_getting_there_rsvp: "Se tiverem interesse, avisem na seção de RSVP abaixo, para planejarmos o número de lugares.",
+      loc_stay: "Alenquer é encantadora, mas pequena, e tem poucos lugares para ficar. Se quiserem acordar entre as vinhas, aluguem uma casa ou um apartamento por lá, e reservem cedo.",
+      loc_stay_city: "Preferem o conforto da cidade? Fiquem em Lisboa, a cerca de 40 minutos, e o ônibus leva vocês até a festa e traz de volta. Vamos combinar um ponto de encontro, provavelmente em Saldanha ou no Campo Pequeno. Se o sonho for o centro histórico, também vale muito a pena, mas contem com um táxi ou aplicativo para chegar ao hotel depois da festa.",
+      loc_agency: "Sabemos que organizar uma viagem entre Brasil e Portugal pode parecer desafiador. Por isso, queremos recomendar uma agência de confiança, que ainda por cima faz parte da família! Contamos com a assessoria oficial da <strong>UNIR Eventos e Turismo</strong> (Mauro e Stella), especialistas em viagens em grupo. Eles cuidarão de tudo: passagens aéreas com tarifa de grupo, seguro obrigatório, hospedagem oficial e transfers. Estamos alinhando os próximos passos diretamente com a agência e, em breve, vamos compartilhar nesta seção mais informações para contato.",
+      alenquer_desc: "É uma vila com séculos (milênios, na verdade) de história. Em volta, vinhedos a perder de vista, no coração de uma das regiões de vinho mais encantadoras de Portugal. A 40 minutos de Lisboa, Alenquer é uma vila feita para ser explorada sem pressa, com uma taça na mão. Venham de sapatos confortáveis e com vontade de se perder um pouco na história!",
+      solar_desc: "É no Solar de Pancas que a festa começa: uma casa senhorial fundada em 1495, cercada por vinhedos e com a arquitetura de quem viu muita história passar. Aqui vamos jantar, brindar e dançar até o último gole. A Quinta de Pancas produz o vinho, que nós, com enorme sacrifício, já testamos e aprovamos.",
     },
   };
 
@@ -2628,7 +2732,11 @@
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
-      if (dict[key] !== undefined) el.textContent = dict[key];
+      // data-i18n-html: text contains simple markup like <strong>.
+      if (dict[key] !== undefined) {
+        if (el.hasAttribute('data-i18n-html')) el.innerHTML = dict[key];
+        else el.textContent = dict[key];
+      }
     });
 
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
@@ -2678,12 +2786,34 @@
       document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
     }
 
-    const sdtDaysEl = document.getElementById('sdtDays');
-    if (sdtDaysEl) {
-      sdtDaysEl.textContent = String(days).padStart(2, '0');
-      document.getElementById('sdtHours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('sdtMinutes').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('sdtSeconds').textContent = String(seconds).padStart(2, '0');
+    // Save-the-date timer: months : weeks : days : hours.
+    // Months are real calendar months (e.g. 10 Oct -> 10 Nov = 1 month);
+    // what is left after the whole months is split into weeks, days and
+    // hours.
+    const sdtMonthsEl = document.getElementById('sdtMonths');
+    if (sdtMonthsEl) {
+      const start = new Date(now);
+      const target = new Date(weddingDate);
+      const addMonths = (d, n) => {
+        const r = new Date(d);
+        const day = r.getDate();
+        r.setDate(1);
+        r.setMonth(r.getMonth() + n);
+        const last = new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate();
+        r.setDate(Math.min(day, last));
+        return r;
+      };
+      let months = (target.getFullYear() - start.getFullYear()) * 12 + (target.getMonth() - start.getMonth());
+      while (months > 0 && addMonths(start, months) > target) months--;
+      const rest = target - addMonths(start, months);
+      const DAY = 1000 * 60 * 60 * 24;
+      const weeks = Math.floor(rest / (7 * DAY));
+      const sdays = Math.floor((rest % (7 * DAY)) / DAY);
+      const shours = Math.floor((rest % DAY) / (1000 * 60 * 60));
+      sdtMonthsEl.textContent = String(months).padStart(2, '0');
+      document.getElementById('sdtWeeks').textContent = String(weeks).padStart(2, '0');
+      document.getElementById('sdtDays').textContent = String(sdays).padStart(2, '0');
+      document.getElementById('sdtHours').textContent = String(shours).padStart(2, '0');
     }
   }
 
@@ -2814,11 +2944,11 @@
   })();
 </script>
 <script>
-  // One Third_background image, shown whole, stretched over the
-  // save-the-date panel AND the "about us" slide together. Both elements
-  // get the same image size (column width x combined height) and each is
-  // offset so together they show one continuous picture: top half-ish on
-  // the save-the-date, the rest on "about us". Recalculated on resize.
+  // One green velvet image (location-green.jpg) running continuously over
+  // the save-the-date panel AND the "about us" slide together. Both get
+  // the same image size and each is offset so together they show one
+  // continuous picture: the top on the save-the-date, the next part on
+  // "about us". Recalculated on resize.
   (function () {
     const panel = document.getElementById('introBg3');
     const el = document.getElementById('about-us');
@@ -2843,12 +2973,22 @@
         const c = card.getBoundingClientRect();
         if (c.height) h = (c.bottom - c.height * POSTCARD_SPILL) - p.top;
       }
-      const size = w + 'px ' + h + 'px';
+      // The green is location-green.jpg (1538 x 8000), kept at its own
+      // proportions: as wide as the column, as tall as that makes it,
+      // never stretched. Only if the green area were ever taller than
+      // that would it be enlarged (evenly) to still cover it.
+      const RATIO = 8000 / 1538;
+      const W = Math.max(w, h / RATIO);
+      const H = W * RATIO;
+      const offX = (w - W) / 2;
+      const size = W + 'px ' + H + 'px';
       panel.style.backgroundSize = size;
-      panel.style.backgroundPosition = '0px 0px';
-      el.style.backgroundSize = size;
-      el.style.backgroundPosition = (p.left - e.left) + 'px ' + (p.top - e.top) + 'px';
-      el.style.backgroundRepeat = 'no-repeat';
+      panel.style.backgroundPosition = offX + 'px 0px';
+      el.style.setProperty('--green-size', size);
+      el.style.setProperty('--green-pos',
+        (p.left - e.left + offX) + 'px ' + (p.top - e.top) + 'px');
+      // Where the green stops, measured from the top of "about us".
+      el.style.setProperty('--green-h', (p.top + h - e.top) + 'px');
       // Start the lemon section's paper exactly where the green ends.
       const story = document.getElementById('story');
       const solar = document.getElementById('solar');
